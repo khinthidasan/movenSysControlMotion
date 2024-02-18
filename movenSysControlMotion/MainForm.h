@@ -1096,7 +1096,7 @@ namespace movenSysControlMotion {
 		}
 
 
-		// Continuously Receiving by multithreading
+		// Continuously Receiving by thread
 		if (portState) {
 			this->thrPGVDataReceiving = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MainForm::PGVDataReading));
 			this->thrPGVDataReceiving->Start();
