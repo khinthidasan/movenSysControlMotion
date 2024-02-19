@@ -160,22 +160,25 @@ namespace movenSysControlMotion {
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::Label^ labelStatusAxis0;
 	private: System::Windows::Forms::GroupBox^ groupBox14;
-	private: System::Windows::Forms::Label^ label_agv_angleValueDecimal;
+
 	private: System::Windows::Forms::Label^ label_agv_warningValue;
-	private: System::Windows::Forms::Label^ label_agv_yValue;
-	private: System::Windows::Forms::Label^ label_agv_xValue;
-	private: System::Windows::Forms::Label^ label_agv_angleValue;
+
+
+
 	private: System::Windows::Forms::Label^ label_agv_tagValue;
 	private: System::Windows::Forms::Label^ label53;
-	private: System::Windows::Forms::Label^ label52;
-	private: System::Windows::Forms::Label^ label51;
-	private: System::Windows::Forms::Label^ label50;
+
+
+
 	private: System::Windows::Forms::Label^ label47;
 	private: System::Windows::Forms::Button^ button_start_motion;
 	private: System::Windows::Forms::TextBox^ textBoxDeviceName;
 	private: System::Windows::Forms::Button^ button_stop_motion;
 	private: System::Windows::Forms::GroupBox^ groupBox1;
 	private: System::Windows::Forms::GroupBox^ groupBox2;
+	private: System::Windows::Forms::GroupBox^ groupBox3;
+	private: System::Windows::Forms::Label^ label_IO;
+	private: System::Windows::Forms::Button^ button2;
 
 	private:
 		/// <summary>
@@ -216,26 +219,23 @@ namespace movenSysControlMotion {
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->labelStatusAxis0 = (gcnew System::Windows::Forms::Label());
 			this->groupBox14 = (gcnew System::Windows::Forms::GroupBox());
-			this->label_agv_angleValueDecimal = (gcnew System::Windows::Forms::Label());
 			this->label_agv_warningValue = (gcnew System::Windows::Forms::Label());
-			this->label_agv_yValue = (gcnew System::Windows::Forms::Label());
-			this->label_agv_xValue = (gcnew System::Windows::Forms::Label());
-			this->label_agv_angleValue = (gcnew System::Windows::Forms::Label());
 			this->label_agv_tagValue = (gcnew System::Windows::Forms::Label());
 			this->label53 = (gcnew System::Windows::Forms::Label());
-			this->label52 = (gcnew System::Windows::Forms::Label());
-			this->label51 = (gcnew System::Windows::Forms::Label());
-			this->label50 = (gcnew System::Windows::Forms::Label());
 			this->label47 = (gcnew System::Windows::Forms::Label());
 			this->button_start_motion = (gcnew System::Windows::Forms::Button());
 			this->textBoxDeviceName = (gcnew System::Windows::Forms::TextBox());
 			this->button_stop_motion = (gcnew System::Windows::Forms::Button());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->label_IO = (gcnew System::Windows::Forms::Label());
+			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
+			this->groupBox3->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// richTextBoxMessage
@@ -536,34 +536,17 @@ namespace movenSysControlMotion {
 			// groupBox14
 			// 
 			this->groupBox14->BackColor = System::Drawing::Color::Black;
-			this->groupBox14->Controls->Add(this->label_agv_angleValueDecimal);
 			this->groupBox14->Controls->Add(this->label_agv_warningValue);
-			this->groupBox14->Controls->Add(this->label_agv_yValue);
-			this->groupBox14->Controls->Add(this->label_agv_xValue);
-			this->groupBox14->Controls->Add(this->label_agv_angleValue);
 			this->groupBox14->Controls->Add(this->label_agv_tagValue);
 			this->groupBox14->Controls->Add(this->label53);
-			this->groupBox14->Controls->Add(this->label52);
-			this->groupBox14->Controls->Add(this->label51);
-			this->groupBox14->Controls->Add(this->label50);
 			this->groupBox14->Controls->Add(this->label47);
 			this->groupBox14->Location = System::Drawing::Point(19, 110);
 			this->groupBox14->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox14->Name = L"groupBox14";
 			this->groupBox14->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->groupBox14->Size = System::Drawing::Size(483, 134);
+			this->groupBox14->Size = System::Drawing::Size(483, 81);
 			this->groupBox14->TabIndex = 179;
 			this->groupBox14->TabStop = false;
-			// 
-			// label_agv_angleValueDecimal
-			// 
-			this->label_agv_angleValueDecimal->AutoSize = true;
-			this->label_agv_angleValueDecimal->ForeColor = System::Drawing::Color::Lime;
-			this->label_agv_angleValueDecimal->Location = System::Drawing::Point(144, 74);
-			this->label_agv_angleValueDecimal->Name = L"label_agv_angleValueDecimal";
-			this->label_agv_angleValueDecimal->Size = System::Drawing::Size(23, 15);
-			this->label_agv_angleValueDecimal->TabIndex = 173;
-			this->label_agv_angleValueDecimal->Text = L"00";
 			// 
 			// label_agv_warningValue
 			// 
@@ -571,41 +554,11 @@ namespace movenSysControlMotion {
 			this->label_agv_warningValue->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
 			this->label_agv_warningValue->ForeColor = System::Drawing::Color::Lime;
-			this->label_agv_warningValue->Location = System::Drawing::Point(329, 21);
+			this->label_agv_warningValue->Location = System::Drawing::Point(331, 42);
 			this->label_agv_warningValue->Name = L"label_agv_warningValue";
 			this->label_agv_warningValue->Size = System::Drawing::Size(25, 15);
 			this->label_agv_warningValue->TabIndex = 172;
 			this->label_agv_warningValue->Text = L"--";
-			// 
-			// label_agv_yValue
-			// 
-			this->label_agv_yValue->AutoSize = true;
-			this->label_agv_yValue->ForeColor = System::Drawing::Color::Lime;
-			this->label_agv_yValue->Location = System::Drawing::Point(225, 99);
-			this->label_agv_yValue->Name = L"label_agv_yValue";
-			this->label_agv_yValue->Size = System::Drawing::Size(23, 15);
-			this->label_agv_yValue->TabIndex = 171;
-			this->label_agv_yValue->Text = L"00";
-			// 
-			// label_agv_xValue
-			// 
-			this->label_agv_xValue->AutoSize = true;
-			this->label_agv_xValue->ForeColor = System::Drawing::Color::Lime;
-			this->label_agv_xValue->Location = System::Drawing::Point(69, 99);
-			this->label_agv_xValue->Name = L"label_agv_xValue";
-			this->label_agv_xValue->Size = System::Drawing::Size(23, 15);
-			this->label_agv_xValue->TabIndex = 170;
-			this->label_agv_xValue->Text = L"00";
-			// 
-			// label_agv_angleValue
-			// 
-			this->label_agv_angleValue->AutoSize = true;
-			this->label_agv_angleValue->ForeColor = System::Drawing::Color::Lime;
-			this->label_agv_angleValue->Location = System::Drawing::Point(227, 71);
-			this->label_agv_angleValue->Name = L"label_agv_angleValue";
-			this->label_agv_angleValue->Size = System::Drawing::Size(23, 15);
-			this->label_agv_angleValue->TabIndex = 169;
-			this->label_agv_angleValue->Text = L"00";
 			// 
 			// label_agv_tagValue
 			// 
@@ -629,36 +582,6 @@ namespace movenSysControlMotion {
 			this->label53->TabIndex = 167;
 			this->label53->Text = L"Tag";
 			// 
-			// label52
-			// 
-			this->label52->AutoSize = true;
-			this->label52->ForeColor = System::Drawing::Color::White;
-			this->label52->Location = System::Drawing::Point(173, 99);
-			this->label52->Name = L"label52";
-			this->label52->Size = System::Drawing::Size(15, 15);
-			this->label52->TabIndex = 166;
-			this->label52->Text = L"Y";
-			// 
-			// label51
-			// 
-			this->label51->AutoSize = true;
-			this->label51->ForeColor = System::Drawing::Color::White;
-			this->label51->Location = System::Drawing::Point(21, 99);
-			this->label51->Name = L"label51";
-			this->label51->Size = System::Drawing::Size(16, 15);
-			this->label51->TabIndex = 165;
-			this->label51->Text = L"X";
-			// 
-			// label50
-			// 
-			this->label50->AutoSize = true;
-			this->label50->ForeColor = System::Drawing::Color::White;
-			this->label50->Location = System::Drawing::Point(73, 71);
-			this->label50->Name = L"label50";
-			this->label50->Size = System::Drawing::Size(43, 15);
-			this->label50->TabIndex = 164;
-			this->label50->Text = L"Angle";
-			// 
 			// label47
 			// 
 			this->label47->AutoSize = true;
@@ -675,12 +598,12 @@ namespace movenSysControlMotion {
 			// 
 			this->button_start_motion->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_start_motion->Location = System::Drawing::Point(805, 288);
+			this->button_start_motion->Location = System::Drawing::Point(681, 315);
 			this->button_start_motion->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_start_motion->Name = L"button_start_motion";
 			this->button_start_motion->Size = System::Drawing::Size(136, 56);
 			this->button_start_motion->TabIndex = 180;
-			this->button_start_motion->Text = L"Start Motion";
+			this->button_start_motion->Text = L"Start Motion +";
 			this->button_start_motion->UseVisualStyleBackColor = true;
 			this->button_start_motion->Click += gcnew System::EventHandler(this, &MainForm::button_start_motion_Click);
 			// 
@@ -699,7 +622,7 @@ namespace movenSysControlMotion {
 			// 
 			this->button_stop_motion->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_stop_motion->Location = System::Drawing::Point(739, 288);
+			this->button_stop_motion->Location = System::Drawing::Point(1011, 315);
 			this->button_stop_motion->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_stop_motion->Name = L"button_stop_motion";
 			this->button_stop_motion->Size = System::Drawing::Size(60, 56);
@@ -715,7 +638,7 @@ namespace movenSysControlMotion {
 			this->groupBox1->Controls->Add(this->button_open_port);
 			this->groupBox1->Location = System::Drawing::Point(552, 12);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(530, 255);
+			this->groupBox1->Size = System::Drawing::Size(530, 207);
 			this->groupBox1->TabIndex = 183;
 			this->groupBox1->TabStop = false;
 			// 
@@ -732,11 +655,45 @@ namespace movenSysControlMotion {
 			this->groupBox2->TabIndex = 184;
 			this->groupBox2->TabStop = false;
 			// 
+			// groupBox3
+			// 
+			this->groupBox3->Controls->Add(this->label_IO);
+			this->groupBox3->Location = System::Drawing::Point(552, 225);
+			this->groupBox3->Name = L"groupBox3";
+			this->groupBox3->Size = System::Drawing::Size(530, 85);
+			this->groupBox3->TabIndex = 185;
+			this->groupBox3->TabStop = false;
+			// 
+			// label_IO
+			// 
+			this->label_IO->AutoSize = true;
+			this->label_IO->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->label_IO->Location = System::Drawing::Point(24, 37);
+			this->label_IO->Name = L"label_IO";
+			this->label_IO->Size = System::Drawing::Size(36, 24);
+			this->label_IO->TabIndex = 0;
+			this->label_IO->Text = L"--";
+			// 
+			// button2
+			// 
+			this->button2->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->button2->Location = System::Drawing::Point(823, 315);
+			this->button2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(136, 56);
+			this->button2->TabIndex = 186;
+			this->button2->Text = L"Start Motion -";
+			this->button2->UseVisualStyleBackColor = true;
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1094, 393);
+			this->Controls->Add(this->button2);
+			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->button_stop_motion);
@@ -755,6 +712,8 @@ namespace movenSysControlMotion {
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox2->ResumeLayout(false);
 			this->groupBox2->PerformLayout();
+			this->groupBox3->ResumeLayout(false);
+			this->groupBox3->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -800,7 +759,7 @@ namespace movenSysControlMotion {
 	private: System::Void timer_PGV(System::Object^ sender, System::EventArgs^ e) {
 		if (PGVStart) {
 			//////Warning value
-			std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[0]) << std::endl;
+			//std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[0]) << std::endl;
 			int warningInt = static_cast<int>(receivedData[0]);
 			if (warningInt == 2) {
 
@@ -812,7 +771,6 @@ namespace movenSysControlMotion {
 			//////Tag Value
 			else {
 				isAGVTagPosition = true;
-
 				std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[14]) << std::endl;
 				std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[15]) << std::endl;
 				std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[16]) << std::endl;
@@ -866,9 +824,6 @@ namespace movenSysControlMotion {
 				this->thrAwaitSlow->Abort();
 			}
 			else {
-				//richTextBoxMessage->Text = " ";
-				//Sleep(100);
-				//richTextBoxMessage->Text = "Reading";
 				// nothing TODO
 			}
 		}
