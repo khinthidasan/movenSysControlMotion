@@ -759,7 +759,6 @@ namespace movenSysControlMotion {
 	}
 
 	private: System::Void timer_IO(System::Object^ sender, System::EventArgs^ e) {
-		printf("1Bit  Get Input  Memory Read\n");
 		Wmx3Lib_Io.GetInBit(0x04, 0x01, &inData[0]); // For the address [4.1  -> 0x04 ( address ) , 0x01 ( bit ) ]
 		unsigned char* data = &inData[0];
 		const char* convertedData = reinterpret_cast<const char*>(data);
