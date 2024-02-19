@@ -16,6 +16,7 @@
 #include <iomanip>
 
 
+
 /*****************************************************************************/
 /* Define                                                                    */
 /*****************************************************************************/
@@ -69,6 +70,10 @@ namespace movenSysControlMotion {
 	//defined variable 
 	char defaultDeviceName[] = "Lab2mDevice";
 	char pathDir[] = "C:\\Program Files\\SoftServo\\WMX3\\";
+
+	unsigned char inData[8000]; // IO input data
+	unsigned char  outData[8000];
+
 	bool communicationOnOff = false;
 	bool servoOnOff0 = false;
 	int err;
@@ -89,17 +94,20 @@ namespace movenSysControlMotion {
 	bool portState = false;  //COM port state for PGV connection
 	bool PGVStart = false; //PGV request start & Stop communication
 	bool isAGVTagPosition = false;
-
+	
+	//define specific Tagname
+	string tagName = "0006";
+	bool isTargetTagFound = false;
 
 	//define speed & velocity for NORMAL Operation
-	double normalJogSpeed = 5000;
-	double normalAccelSpeed = 5000;
-	double normalDecelSpeed = 5000;
+	double normalJogSpeed = 10000;
+	double normalAccelSpeed = 10000;
+	double normalDecelSpeed = 10000;
 
 	//define speed & velocity for SLOW Operation
-	double slowJogSpeed = 1000;
-	double slowAccelSpeed = 1000;
-	double slowDecelSpeed = 1000;
+	double slowJogSpeed = 5000;
+	double slowAccelSpeed = 5000;
+	double slowDecelSpeed = 5000;
 
 	/// <summary>
 	/// Summary for MainForm
@@ -132,7 +140,7 @@ namespace movenSysControlMotion {
 	//define thread
 	private: static System::Threading::Thread^ thrPGVDataReceiving; //PGV sensor data reading
 	private: static System::Threading::Thread^ thrAwaitSlow; //Slow By QR Code
-	private: static System::Threading::Thread^ thrAwaitStop; //Stop By IO sensor
+	// private: static System::Threading::Thread^ thrAwaitStop; //Stop By IO sensor
 
 	private: System::Windows::Forms::RichTextBox^ richTextBoxMessage;
 	private: System::Windows::Forms::Button^ button6;
@@ -178,7 +186,7 @@ namespace movenSysControlMotion {
 	private: System::Windows::Forms::GroupBox^ groupBox2;
 	private: System::Windows::Forms::GroupBox^ groupBox3;
 	private: System::Windows::Forms::Label^ label_IO;
-	private: System::Windows::Forms::Button^ button2;
+
 
 	private:
 		/// <summary>
@@ -230,7 +238,6 @@ namespace movenSysControlMotion {
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
 			this->label_IO = (gcnew System::Windows::Forms::Label());
-			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -240,10 +247,10 @@ namespace movenSysControlMotion {
 			// 
 			// richTextBoxMessage
 			// 
-			this->richTextBoxMessage->Location = System::Drawing::Point(16, 274);
+			this->richTextBoxMessage->Location = System::Drawing::Point(14, 219);
 			this->richTextBoxMessage->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->richTextBoxMessage->Name = L"richTextBoxMessage";
-			this->richTextBoxMessage->Size = System::Drawing::Size(530, 87);
+			this->richTextBoxMessage->Size = System::Drawing::Size(464, 70);
 			this->richTextBoxMessage->TabIndex = 9;
 			this->richTextBoxMessage->Text = L"";
 			// 
@@ -251,10 +258,10 @@ namespace movenSysControlMotion {
 			// 
 			this->button6->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button6->Location = System::Drawing::Point(-712, 153);
+			this->button6->Location = System::Drawing::Point(-623, 122);
 			this->button6->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button6->Name = L"button6";
-			this->button6->Size = System::Drawing::Size(400, 113);
+			this->button6->Size = System::Drawing::Size(350, 90);
 			this->button6->TabIndex = 10;
 			this->button6->Text = L"Create Device";
 			this->button6->UseVisualStyleBackColor = true;
@@ -264,10 +271,10 @@ namespace movenSysControlMotion {
 			this->button1->Enabled = false;
 			this->button1->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button1->Location = System::Drawing::Point(-712, 192);
+			this->button1->Location = System::Drawing::Point(-623, 154);
 			this->button1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(400, 113);
+			this->button1->Size = System::Drawing::Size(350, 90);
 			this->button1->TabIndex = 8;
 			this->button1->Text = L"Stopped";
 			this->button1->UseVisualStyleBackColor = true;
@@ -276,10 +283,10 @@ namespace movenSysControlMotion {
 			// 
 			this->button_create_device->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_create_device->Location = System::Drawing::Point(22, 43);
+			this->button_create_device->Location = System::Drawing::Point(19, 34);
 			this->button_create_device->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_create_device->Name = L"button_create_device";
-			this->button_create_device->Size = System::Drawing::Size(136, 59);
+			this->button_create_device->Size = System::Drawing::Size(119, 47);
 			this->button_create_device->TabIndex = 12;
 			this->button_create_device->Text = L"Create Device";
 			this->button_create_device->UseVisualStyleBackColor = true;
@@ -290,10 +297,10 @@ namespace movenSysControlMotion {
 			this->button_communication->Enabled = false;
 			this->button_communication->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_communication->Location = System::Drawing::Point(164, 45);
+			this->button_communication->Location = System::Drawing::Point(144, 36);
 			this->button_communication->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_communication->Name = L"button_communication";
-			this->button_communication->Size = System::Drawing::Size(136, 59);
+			this->button_communication->Size = System::Drawing::Size(119, 47);
 			this->button_communication->TabIndex = 11;
 			this->button_communication->Text = L"Stopped";
 			this->button_communication->UseVisualStyleBackColor = true;
@@ -303,10 +310,10 @@ namespace movenSysControlMotion {
 			// 
 			this->button_clear_message->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_clear_message->Location = System::Drawing::Point(484, 365);
+			this->button_clear_message->Location = System::Drawing::Point(424, 292);
 			this->button_clear_message->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_clear_message->Name = L"button_clear_message";
-			this->button_clear_message->Size = System::Drawing::Size(62, 26);
+			this->button_clear_message->Size = System::Drawing::Size(54, 21);
 			this->button_clear_message->TabIndex = 174;
 			this->button_clear_message->Text = L"Clear Message";
 			this->button_clear_message->UseVisualStyleBackColor = true;
@@ -316,10 +323,10 @@ namespace movenSysControlMotion {
 			// 
 			this->button_open_port->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_open_port->Location = System::Drawing::Point(19, 43);
+			this->button_open_port->Location = System::Drawing::Point(17, 34);
 			this->button_open_port->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_open_port->Name = L"button_open_port";
-			this->button_open_port->Size = System::Drawing::Size(136, 59);
+			this->button_open_port->Size = System::Drawing::Size(119, 47);
 			this->button_open_port->TabIndex = 176;
 			this->button_open_port->Text = L"Open Port";
 			this->button_open_port->UseVisualStyleBackColor = true;
@@ -329,10 +336,10 @@ namespace movenSysControlMotion {
 			// 
 			this->button_connect_PGV->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_connect_PGV->Location = System::Drawing::Point(161, 45);
+			this->button_connect_PGV->Location = System::Drawing::Point(141, 36);
 			this->button_connect_PGV->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_connect_PGV->Name = L"button_connect_PGV";
-			this->button_connect_PGV->Size = System::Drawing::Size(136, 59);
+			this->button_connect_PGV->Size = System::Drawing::Size(119, 47);
 			this->button_connect_PGV->TabIndex = 175;
 			this->button_connect_PGV->Text = L"PGV";
 			this->button_connect_PGV->UseVisualStyleBackColor = true;
@@ -342,10 +349,10 @@ namespace movenSysControlMotion {
 			// 
 			this->button_servo->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_servo->Location = System::Drawing::Point(306, 44);
+			this->button_servo->Location = System::Drawing::Point(268, 35);
 			this->button_servo->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_servo->Name = L"button_servo";
-			this->button_servo->Size = System::Drawing::Size(136, 59);
+			this->button_servo->Size = System::Drawing::Size(119, 47);
 			this->button_servo->TabIndex = 177;
 			this->button_servo->Text = L"Servo On";
 			this->button_servo->UseVisualStyleBackColor = true;
@@ -370,11 +377,11 @@ namespace movenSysControlMotion {
 			this->groupBox4->Controls->Add(this->label5);
 			this->groupBox4->Controls->Add(this->labelStatusAxis0);
 			this->groupBox4->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-			this->groupBox4->Location = System::Drawing::Point(19, 110);
+			this->groupBox4->Location = System::Drawing::Point(17, 88);
 			this->groupBox4->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox4->Name = L"groupBox4";
 			this->groupBox4->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->groupBox4->Size = System::Drawing::Size(483, 134);
+			this->groupBox4->Size = System::Drawing::Size(423, 107);
 			this->groupBox4->TabIndex = 178;
 			this->groupBox4->TabStop = false;
 			// 
@@ -384,9 +391,9 @@ namespace movenSysControlMotion {
 			this->label49->Font = (gcnew System::Drawing::Font(L"Gadugi", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label49->ForeColor = System::Drawing::Color::Yellow;
-			this->label49->Location = System::Drawing::Point(7, 0);
+			this->label49->Location = System::Drawing::Point(6, 0);
 			this->label49->Name = L"label49";
-			this->label49->Size = System::Drawing::Size(90, 19);
+			this->label49->Size = System::Drawing::Size(72, 16);
 			this->label49->TabIndex = 163;
 			this->label49->Text = L"Motor Data";
 			// 
@@ -394,9 +401,9 @@ namespace movenSysControlMotion {
 			// 
 			this->labelStatusActVel3->AutoSize = true;
 			this->labelStatusActVel3->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusActVel3->Location = System::Drawing::Point(749, 166);
+			this->labelStatusActVel3->Location = System::Drawing::Point(655, 133);
 			this->labelStatusActVel3->Name = L"labelStatusActVel3";
-			this->labelStatusActVel3->Size = System::Drawing::Size(15, 15);
+			this->labelStatusActVel3->Size = System::Drawing::Size(11, 12);
 			this->labelStatusActVel3->TabIndex = 28;
 			this->labelStatusActVel3->Text = L"0";
 			// 
@@ -404,9 +411,9 @@ namespace movenSysControlMotion {
 			// 
 			this->labelStatusActVel2->AutoSize = true;
 			this->labelStatusActVel2->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusActVel2->Location = System::Drawing::Point(749, 140);
+			this->labelStatusActVel2->Location = System::Drawing::Point(655, 112);
 			this->labelStatusActVel2->Name = L"labelStatusActVel2";
-			this->labelStatusActVel2->Size = System::Drawing::Size(15, 15);
+			this->labelStatusActVel2->Size = System::Drawing::Size(11, 12);
 			this->labelStatusActVel2->TabIndex = 27;
 			this->labelStatusActVel2->Text = L"0";
 			// 
@@ -414,9 +421,9 @@ namespace movenSysControlMotion {
 			// 
 			this->labelStatusActVel0->AutoSize = true;
 			this->labelStatusActVel0->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusActVel0->Location = System::Drawing::Point(346, 82);
+			this->labelStatusActVel0->Location = System::Drawing::Point(303, 66);
 			this->labelStatusActVel0->Name = L"labelStatusActVel0";
-			this->labelStatusActVel0->Size = System::Drawing::Size(15, 15);
+			this->labelStatusActVel0->Size = System::Drawing::Size(11, 12);
 			this->labelStatusActVel0->TabIndex = 25;
 			this->labelStatusActVel0->Text = L"0";
 			// 
@@ -424,9 +431,9 @@ namespace movenSysControlMotion {
 			// 
 			this->labelStatusVelCmd3->AutoSize = true;
 			this->labelStatusVelCmd3->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusVelCmd3->Location = System::Drawing::Point(592, 166);
+			this->labelStatusVelCmd3->Location = System::Drawing::Point(518, 133);
 			this->labelStatusVelCmd3->Name = L"labelStatusVelCmd3";
-			this->labelStatusVelCmd3->Size = System::Drawing::Size(15, 15);
+			this->labelStatusVelCmd3->Size = System::Drawing::Size(11, 12);
 			this->labelStatusVelCmd3->TabIndex = 24;
 			this->labelStatusVelCmd3->Text = L"0";
 			// 
@@ -434,9 +441,9 @@ namespace movenSysControlMotion {
 			// 
 			this->labelStatusVelCmd2->AutoSize = true;
 			this->labelStatusVelCmd2->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusVelCmd2->Location = System::Drawing::Point(592, 140);
+			this->labelStatusVelCmd2->Location = System::Drawing::Point(518, 112);
 			this->labelStatusVelCmd2->Name = L"labelStatusVelCmd2";
-			this->labelStatusVelCmd2->Size = System::Drawing::Size(15, 15);
+			this->labelStatusVelCmd2->Size = System::Drawing::Size(11, 12);
 			this->labelStatusVelCmd2->TabIndex = 23;
 			this->labelStatusVelCmd2->Text = L"0";
 			// 
@@ -444,9 +451,9 @@ namespace movenSysControlMotion {
 			// 
 			this->labelStatusVelCmd0->AutoSize = true;
 			this->labelStatusVelCmd0->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusVelCmd0->Location = System::Drawing::Point(346, 54);
+			this->labelStatusVelCmd0->Location = System::Drawing::Point(303, 43);
 			this->labelStatusVelCmd0->Name = L"labelStatusVelCmd0";
-			this->labelStatusVelCmd0->Size = System::Drawing::Size(15, 15);
+			this->labelStatusVelCmd0->Size = System::Drawing::Size(11, 12);
 			this->labelStatusVelCmd0->TabIndex = 21;
 			this->labelStatusVelCmd0->Text = L"0";
 			// 
@@ -454,9 +461,9 @@ namespace movenSysControlMotion {
 			// 
 			this->labelStatusActPos0->AutoSize = true;
 			this->labelStatusActPos0->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusActPos0->Location = System::Drawing::Point(125, 82);
+			this->labelStatusActPos0->Location = System::Drawing::Point(109, 66);
 			this->labelStatusActPos0->Name = L"labelStatusActPos0";
-			this->labelStatusActPos0->Size = System::Drawing::Size(15, 15);
+			this->labelStatusActPos0->Size = System::Drawing::Size(11, 12);
 			this->labelStatusActPos0->TabIndex = 17;
 			this->labelStatusActPos0->Text = L"0";
 			// 
@@ -464,9 +471,9 @@ namespace movenSysControlMotion {
 			// 
 			this->labelStatusPosCmd0->AutoSize = true;
 			this->labelStatusPosCmd0->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusPosCmd0->Location = System::Drawing::Point(125, 54);
+			this->labelStatusPosCmd0->Location = System::Drawing::Point(109, 43);
 			this->labelStatusPosCmd0->Name = L"labelStatusPosCmd0";
-			this->labelStatusPosCmd0->Size = System::Drawing::Size(15, 15);
+			this->labelStatusPosCmd0->Size = System::Drawing::Size(11, 12);
 			this->labelStatusPosCmd0->TabIndex = 13;
 			this->labelStatusPosCmd0->Text = L"0";
 			// 
@@ -474,9 +481,9 @@ namespace movenSysControlMotion {
 			// 
 			this->labelStatusOP0->AutoSize = true;
 			this->labelStatusOP0->BackColor = System::Drawing::Color::Green;
-			this->labelStatusOP0->Location = System::Drawing::Point(214, 20);
+			this->labelStatusOP0->Location = System::Drawing::Point(187, 16);
 			this->labelStatusOP0->Name = L"labelStatusOP0";
-			this->labelStatusOP0->Size = System::Drawing::Size(64, 15);
+			this->labelStatusOP0->Size = System::Drawing::Size(55, 12);
 			this->labelStatusOP0->TabIndex = 9;
 			this->labelStatusOP0->Text = L"OFFLINE";
 			// 
@@ -485,9 +492,9 @@ namespace movenSysControlMotion {
 			this->label8->AutoSize = true;
 			this->label8->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->label8->Location = System::Drawing::Point(274, 82);
+			this->label8->Location = System::Drawing::Point(240, 66);
 			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(53, 15);
+			this->label8->Size = System::Drawing::Size(47, 12);
 			this->label8->TabIndex = 8;
 			this->label8->Text = L"ActVel";
 			// 
@@ -496,9 +503,9 @@ namespace movenSysControlMotion {
 			this->label7->AutoSize = true;
 			this->label7->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->label7->Location = System::Drawing::Point(266, 54);
+			this->label7->Location = System::Drawing::Point(233, 43);
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(61, 15);
+			this->label7->Size = System::Drawing::Size(56, 12);
 			this->label7->TabIndex = 7;
 			this->label7->Text = L"VelCmd";
 			// 
@@ -507,9 +514,9 @@ namespace movenSysControlMotion {
 			this->label6->AutoSize = true;
 			this->label6->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->label6->Location = System::Drawing::Point(32, 82);
+			this->label6->Location = System::Drawing::Point(28, 66);
 			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(61, 15);
+			this->label6->Size = System::Drawing::Size(51, 12);
 			this->label6->TabIndex = 6;
 			this->label6->Text = L"ActPos";
 			// 
@@ -518,18 +525,18 @@ namespace movenSysControlMotion {
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->label5->Location = System::Drawing::Point(24, 54);
+			this->label5->Location = System::Drawing::Point(21, 43);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(69, 15);
+			this->label5->Size = System::Drawing::Size(60, 12);
 			this->label5->TabIndex = 5;
 			this->label5->Text = L"PosCmd";
 			// 
 			// labelStatusAxis0
 			// 
 			this->labelStatusAxis0->AutoSize = true;
-			this->labelStatusAxis0->Location = System::Drawing::Point(120, 21);
+			this->labelStatusAxis0->Location = System::Drawing::Point(105, 17);
 			this->labelStatusAxis0->Name = L"labelStatusAxis0";
-			this->labelStatusAxis0->Size = System::Drawing::Size(44, 15);
+			this->labelStatusAxis0->Size = System::Drawing::Size(36, 12);
 			this->labelStatusAxis0->TabIndex = 0;
 			this->labelStatusAxis0->Text = L"Axis0";
 			// 
@@ -540,11 +547,11 @@ namespace movenSysControlMotion {
 			this->groupBox14->Controls->Add(this->label_agv_tagValue);
 			this->groupBox14->Controls->Add(this->label53);
 			this->groupBox14->Controls->Add(this->label47);
-			this->groupBox14->Location = System::Drawing::Point(19, 110);
+			this->groupBox14->Location = System::Drawing::Point(17, 88);
 			this->groupBox14->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox14->Name = L"groupBox14";
 			this->groupBox14->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->groupBox14->Size = System::Drawing::Size(483, 81);
+			this->groupBox14->Size = System::Drawing::Size(423, 65);
 			this->groupBox14->TabIndex = 179;
 			this->groupBox14->TabStop = false;
 			// 
@@ -554,9 +561,9 @@ namespace movenSysControlMotion {
 			this->label_agv_warningValue->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
 			this->label_agv_warningValue->ForeColor = System::Drawing::Color::Lime;
-			this->label_agv_warningValue->Location = System::Drawing::Point(331, 42);
+			this->label_agv_warningValue->Location = System::Drawing::Point(290, 34);
 			this->label_agv_warningValue->Name = L"label_agv_warningValue";
-			this->label_agv_warningValue->Size = System::Drawing::Size(25, 15);
+			this->label_agv_warningValue->Size = System::Drawing::Size(19, 12);
 			this->label_agv_warningValue->TabIndex = 172;
 			this->label_agv_warningValue->Text = L"--";
 			// 
@@ -566,9 +573,9 @@ namespace movenSysControlMotion {
 			this->label_agv_tagValue->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
 			this->label_agv_tagValue->ForeColor = System::Drawing::Color::Lime;
-			this->label_agv_tagValue->Location = System::Drawing::Point(142, 42);
+			this->label_agv_tagValue->Location = System::Drawing::Point(124, 34);
 			this->label_agv_tagValue->Name = L"label_agv_tagValue";
-			this->label_agv_tagValue->Size = System::Drawing::Size(25, 15);
+			this->label_agv_tagValue->Size = System::Drawing::Size(19, 12);
 			this->label_agv_tagValue->TabIndex = 168;
 			this->label_agv_tagValue->Text = L"00";
 			// 
@@ -576,9 +583,9 @@ namespace movenSysControlMotion {
 			// 
 			this->label53->AutoSize = true;
 			this->label53->ForeColor = System::Drawing::Color::White;
-			this->label53->Location = System::Drawing::Point(83, 42);
+			this->label53->Location = System::Drawing::Point(73, 34);
 			this->label53->Name = L"label53";
-			this->label53->Size = System::Drawing::Size(31, 15);
+			this->label53->Size = System::Drawing::Size(27, 12);
 			this->label53->TabIndex = 167;
 			this->label53->Text = L"Tag";
 			// 
@@ -588,9 +595,9 @@ namespace movenSysControlMotion {
 			this->label47->Font = (gcnew System::Drawing::Font(L"Gadugi", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label47->ForeColor = System::Drawing::Color::Yellow;
-			this->label47->Location = System::Drawing::Point(6, 0);
+			this->label47->Location = System::Drawing::Point(5, 0);
 			this->label47->Name = L"label47";
-			this->label47->Size = System::Drawing::Size(103, 19);
+			this->label47->Size = System::Drawing::Size(81, 16);
 			this->label47->TabIndex = 164;
 			this->label47->Text = L"Position Data";
 			// 
@@ -598,10 +605,10 @@ namespace movenSysControlMotion {
 			// 
 			this->button_start_motion->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_start_motion->Location = System::Drawing::Point(681, 315);
+			this->button_start_motion->Location = System::Drawing::Point(626, 252);
 			this->button_start_motion->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_start_motion->Name = L"button_start_motion";
-			this->button_start_motion->Size = System::Drawing::Size(136, 56);
+			this->button_start_motion->Size = System::Drawing::Size(119, 45);
 			this->button_start_motion->TabIndex = 180;
 			this->button_start_motion->Text = L"Start Motion +";
 			this->button_start_motion->UseVisualStyleBackColor = true;
@@ -611,10 +618,10 @@ namespace movenSysControlMotion {
 			// 
 			this->textBoxDeviceName->Font = (gcnew System::Drawing::Font(L"Gulim", 10.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBoxDeviceName->Location = System::Drawing::Point(26, 14);
+			this->textBoxDeviceName->Location = System::Drawing::Point(23, 11);
 			this->textBoxDeviceName->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBoxDeviceName->Name = L"textBoxDeviceName";
-			this->textBoxDeviceName->Size = System::Drawing::Size(140, 27);
+			this->textBoxDeviceName->Size = System::Drawing::Size(123, 23);
 			this->textBoxDeviceName->TabIndex = 181;
 			this->textBoxDeviceName->Text = L"Lab2mDevice";
 			// 
@@ -622,10 +629,10 @@ namespace movenSysControlMotion {
 			// 
 			this->button_stop_motion->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_stop_motion->Location = System::Drawing::Point(1011, 315);
+			this->button_stop_motion->Location = System::Drawing::Point(885, 252);
 			this->button_stop_motion->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_stop_motion->Name = L"button_stop_motion";
-			this->button_stop_motion->Size = System::Drawing::Size(60, 56);
+			this->button_stop_motion->Size = System::Drawing::Size(52, 45);
 			this->button_stop_motion->TabIndex = 182;
 			this->button_stop_motion->Text = L"STOP";
 			this->button_stop_motion->UseVisualStyleBackColor = true;
@@ -636,9 +643,11 @@ namespace movenSysControlMotion {
 			this->groupBox1->Controls->Add(this->groupBox14);
 			this->groupBox1->Controls->Add(this->button_connect_PGV);
 			this->groupBox1->Controls->Add(this->button_open_port);
-			this->groupBox1->Location = System::Drawing::Point(552, 12);
+			this->groupBox1->Location = System::Drawing::Point(483, 10);
+			this->groupBox1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(530, 207);
+			this->groupBox1->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->groupBox1->Size = System::Drawing::Size(464, 166);
 			this->groupBox1->TabIndex = 183;
 			this->groupBox1->TabStop = false;
 			// 
@@ -649,18 +658,22 @@ namespace movenSysControlMotion {
 			this->groupBox2->Controls->Add(this->button_communication);
 			this->groupBox2->Controls->Add(this->textBoxDeviceName);
 			this->groupBox2->Controls->Add(this->button_create_device);
-			this->groupBox2->Location = System::Drawing::Point(16, 12);
+			this->groupBox2->Location = System::Drawing::Point(14, 10);
+			this->groupBox2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(530, 255);
+			this->groupBox2->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->groupBox2->Size = System::Drawing::Size(464, 204);
 			this->groupBox2->TabIndex = 184;
 			this->groupBox2->TabStop = false;
 			// 
 			// groupBox3
 			// 
 			this->groupBox3->Controls->Add(this->label_IO);
-			this->groupBox3->Location = System::Drawing::Point(552, 225);
+			this->groupBox3->Location = System::Drawing::Point(483, 180);
+			this->groupBox3->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox3->Name = L"groupBox3";
-			this->groupBox3->Size = System::Drawing::Size(530, 85);
+			this->groupBox3->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->groupBox3->Size = System::Drawing::Size(464, 68);
 			this->groupBox3->TabIndex = 185;
 			this->groupBox3->TabStop = false;
 			// 
@@ -669,30 +682,17 @@ namespace movenSysControlMotion {
 			this->label_IO->AutoSize = true;
 			this->label_IO->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->label_IO->Location = System::Drawing::Point(24, 37);
+			this->label_IO->Location = System::Drawing::Point(21, 30);
 			this->label_IO->Name = L"label_IO";
-			this->label_IO->Size = System::Drawing::Size(36, 24);
+			this->label_IO->Size = System::Drawing::Size(27, 19);
 			this->label_IO->TabIndex = 0;
 			this->label_IO->Text = L"--";
 			// 
-			// button2
-			// 
-			this->button2->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(129)));
-			this->button2->Location = System::Drawing::Point(823, 315);
-			this->button2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(136, 56);
-			this->button2->TabIndex = 186;
-			this->button2->Text = L"Start Motion -";
-			this->button2->UseVisualStyleBackColor = true;
-			// 
 			// MainForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
+			this->AutoScaleDimensions = System::Drawing::SizeF(7, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1094, 393);
-			this->Controls->Add(this->button2);
+			this->ClientSize = System::Drawing::Size(957, 314);
 			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
@@ -702,6 +702,7 @@ namespace movenSysControlMotion {
 			this->Controls->Add(this->button_clear_message);
 			this->Controls->Add(this->button6);
 			this->Controls->Add(this->button1);
+			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->Name = L"MainForm";
 			this->Text = L"PGV sensor controlled motion";
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
@@ -753,6 +754,19 @@ namespace movenSysControlMotion {
 			labelStatusActPos0->Text = cmAxis->actualPos.ToString();
 			labelStatusVelCmd0->Text = cmAxis->velocityCmd.ToString();
 			labelStatusActVel0->Text = cmAxis->actualVelocity.ToString();
+		}
+	}
+
+	private: System::Void timer_IO(System::Object^ sender, System::EventArgs^ e) {
+		printf("1Bit  Get Input  Memory Read\n");
+		Wmx3Lib_Io.GetInBit(0x04, 0x01, &inData[0]); // For the address [4.1  -> 0x04 ( address ) , 0x01 ( bit ) ]
+		unsigned char* data = &inData[0];
+		const char* convertedData = reinterpret_cast<const char*>(data);
+
+		size_t length = strlen(convertedData);
+		//cout << length; // length == 0 ( no signal OFF )
+		if ((length == 1) && (isTargetTagFound)) {  // if sensor is ON, motor is stopped.
+			wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
 		}
 	}
 
@@ -811,7 +825,8 @@ namespace movenSysControlMotion {
 
 	private: System::Void threadReadQR() {
 		while (true) {
-			if (isAGVTagPosition) {
+			std::string strTagName = msclr::interop::marshal_as<std::string>(label_agv_tagValue->Text);
+			if(strTagName == tagName) {
 				
 				Motion::JogCommand jogCommand = Motion::JogCommand();
 				jogCommand.profile.type = ProfileType::SCurve;
@@ -820,6 +835,8 @@ namespace movenSysControlMotion {
 				jogCommand.profile.acc = slowAccelSpeed;
 				jogCommand.profile.dec = slowDecelSpeed;
 				wmxlib_cm.motion->StartJog(&jogCommand);
+
+				isTargetTagFound = true;
 
 				this->thrAwaitSlow->Abort();
 			}
@@ -840,8 +857,8 @@ namespace movenSysControlMotion {
 		char createdPort[50];
 
 		// Open the serial port
-		//hSerial = CreateFile(_T("COM1~9"), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-		hSerial = CreateFile(_T("\\\\.\\COM12"), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+		hSerial = CreateFile(_T("COM7"), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+		//hSerial = CreateFile(_T("\\\\.\\COM12"), GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 		if (hSerial == INVALID_HANDLE_VALUE) {
 			richTextBoxMessage->Text = "Error: Unable to open serial port." + GetLastError().ToString();
@@ -952,6 +969,13 @@ namespace movenSysControlMotion {
 		timerPGV0->Tick += gcnew System::EventHandler(this, &MainForm::timer_PGV);
 		timerPGV0->Start();
 
+
+		// Set Timer to show status of IO
+		Timer^ timerIO = gcnew Timer();
+		timerIO->Interval = sensorDataInterval;
+		timerIO->Tick += gcnew System::EventHandler(this, &MainForm::timer_IO);
+		timerIO->Start();
+
 	}
 
 	private: System::Void button_create_device_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1057,5 +1081,7 @@ namespace movenSysControlMotion {
 			this->thrPGVDataReceiving->Start();
 		}
 	}
+
+
 };
 }
