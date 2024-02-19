@@ -95,7 +95,8 @@ namespace movenSysControlMotion {
 	bool PGVStart = false; //PGV request start & Stop communication
 	bool isAGVTagPosition = false;
 	
-	//define specific Tagname
+
+	//define specific Tagname to find
 	string tagName = "0006";
 	bool isTargetTagFound = false;
 
