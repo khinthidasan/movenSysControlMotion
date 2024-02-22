@@ -109,6 +109,9 @@ namespace movenSysControlMotion {
 	double slowJogSpeed = 5000;
 	double slowAccelSpeed = 5000;
 	double slowDecelSpeed = 5000;
+	
+
+
 
 	/// <summary>
 	/// Summary for MainForm
@@ -193,6 +196,21 @@ namespace movenSysControlMotion {
 	private: System::Windows::Forms::TextBox^ textBox1;
 	private: System::Windows::Forms::Button^ button_save_position;
 	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::TextBox^ textBox_tag1;
+
+	private: System::Windows::Forms::Label^ label2;
+	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::TextBox^ textBox_position1;
+
+	private: System::Windows::Forms::Label^ label4;
+	private: System::Windows::Forms::TextBox^ textBox_io1;
+	private: System::Windows::Forms::TextBox^ textBox_io2;
+
+
+	private: System::Windows::Forms::TextBox^ textBox_position2;
+
+	private: System::Windows::Forms::TextBox^ textBox_tag2;
+
 
 
 	private:
@@ -249,6 +267,15 @@ namespace movenSysControlMotion {
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->button_save_position = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->textBox_tag1 = (gcnew System::Windows::Forms::TextBox());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->textBox_position1 = (gcnew System::Windows::Forms::TextBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->textBox_io1 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_io2 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_position2 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_tag2 = (gcnew System::Windows::Forms::TextBox());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -261,7 +288,7 @@ namespace movenSysControlMotion {
 			this->richTextBoxMessage->Location = System::Drawing::Point(16, 274);
 			this->richTextBoxMessage->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->richTextBoxMessage->Name = L"richTextBoxMessage";
-			this->richTextBoxMessage->Size = System::Drawing::Size(530, 162);
+			this->richTextBoxMessage->Size = System::Drawing::Size(530, 234);
 			this->richTextBoxMessage->TabIndex = 9;
 			this->richTextBoxMessage->Text = L"";
 			// 
@@ -321,7 +348,7 @@ namespace movenSysControlMotion {
 			// 
 			this->button_clear_message->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_clear_message->Location = System::Drawing::Point(484, 440);
+			this->button_clear_message->Location = System::Drawing::Point(474, 512);
 			this->button_clear_message->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_clear_message->Name = L"button_clear_message";
 			this->button_clear_message->Size = System::Drawing::Size(62, 26);
@@ -616,7 +643,7 @@ namespace movenSysControlMotion {
 			// 
 			this->button_start_motion->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_start_motion->Location = System::Drawing::Point(894, 432);
+			this->button_start_motion->Location = System::Drawing::Point(896, 512);
 			this->button_start_motion->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_start_motion->Name = L"button_start_motion";
 			this->button_start_motion->Size = System::Drawing::Size(136, 34);
@@ -640,7 +667,7 @@ namespace movenSysControlMotion {
 			// 
 			this->button_stop_motion->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_stop_motion->Location = System::Drawing::Point(924, 328);
+			this->button_stop_motion->Location = System::Drawing::Point(443, 48);
 			this->button_stop_motion->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_stop_motion->Name = L"button_stop_motion";
 			this->button_stop_motion->Size = System::Drawing::Size(59, 56);
@@ -669,6 +696,7 @@ namespace movenSysControlMotion {
 			this->groupBox2->Controls->Add(this->button_communication);
 			this->groupBox2->Controls->Add(this->textBoxDeviceName);
 			this->groupBox2->Controls->Add(this->button_create_device);
+			this->groupBox2->Controls->Add(this->button_stop_motion);
 			this->groupBox2->Location = System::Drawing::Point(16, 12);
 			this->groupBox2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox2->Name = L"groupBox2";
@@ -703,7 +731,7 @@ namespace movenSysControlMotion {
 			// 
 			this->button_calibration_start->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_calibration_start->Location = System::Drawing::Point(651, 328);
+			this->button_calibration_start->Location = System::Drawing::Point(16, 512);
 			this->button_calibration_start->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_calibration_start->Name = L"button_calibration_start";
 			this->button_calibration_start->Size = System::Drawing::Size(136, 56);
@@ -716,7 +744,7 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox1->Location = System::Drawing::Point(630, 432);
+			this->textBox1->Location = System::Drawing::Point(632, 512);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(258, 34);
 			this->textBox1->TabIndex = 187;
@@ -725,7 +753,7 @@ namespace movenSysControlMotion {
 			// 
 			this->button_save_position->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_save_position->Location = System::Drawing::Point(787, 328);
+			this->button_save_position->Location = System::Drawing::Point(163, 512);
 			this->button_save_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_save_position->Name = L"button_save_position";
 			this->button_save_position->Size = System::Drawing::Size(136, 56);
@@ -742,11 +770,101 @@ namespace movenSysControlMotion {
 			this->label1->TabIndex = 189;
 			this->label1->Text = L"IO Sensor";
 			// 
+			// textBox_tag1
+			// 
+			this->textBox_tag1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_tag1->Location = System::Drawing::Point(630, 342);
+			this->textBox_tag1->Name = L"textBox_tag1";
+			this->textBox_tag1->Size = System::Drawing::Size(137, 34);
+			this->textBox_tag1->TabIndex = 190;
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(633, 324);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(135, 19);
+			this->label2->TabIndex = 191;
+			this->label2->Text = L"Tag/RFID Value";
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(774, 324);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(101, 15);
+			this->label3->TabIndex = 192;
+			this->label3->Text = L"Position Value";
+			// 
+			// textBox_position1
+			// 
+			this->textBox_position1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_position1->Location = System::Drawing::Point(774, 342);
+			this->textBox_position1->Name = L"textBox_position1";
+			this->textBox_position1->Size = System::Drawing::Size(137, 34);
+			this->textBox_position1->TabIndex = 193;
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(914, 320);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(62, 15);
+			this->label4->TabIndex = 194;
+			this->label4->Text = L"IO Value";
+			// 
+			// textBox_io1
+			// 
+			this->textBox_io1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_io1->Location = System::Drawing::Point(917, 342);
+			this->textBox_io1->Name = L"textBox_io1";
+			this->textBox_io1->Size = System::Drawing::Size(137, 34);
+			this->textBox_io1->TabIndex = 195;
+			// 
+			// textBox_io2
+			// 
+			this->textBox_io2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_io2->Location = System::Drawing::Point(917, 382);
+			this->textBox_io2->Name = L"textBox_io2";
+			this->textBox_io2->Size = System::Drawing::Size(137, 34);
+			this->textBox_io2->TabIndex = 198;
+			// 
+			// textBox_position2
+			// 
+			this->textBox_position2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_position2->Location = System::Drawing::Point(774, 382);
+			this->textBox_position2->Name = L"textBox_position2";
+			this->textBox_position2->Size = System::Drawing::Size(137, 34);
+			this->textBox_position2->TabIndex = 197;
+			// 
+			// textBox_tag2
+			// 
+			this->textBox_tag2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_tag2->Location = System::Drawing::Point(630, 382);
+			this->textBox_tag2->Name = L"textBox_tag2";
+			this->textBox_tag2->Size = System::Drawing::Size(137, 34);
+			this->textBox_tag2->TabIndex = 196;
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1094, 496);
+			this->ClientSize = System::Drawing::Size(1094, 615);
+			this->Controls->Add(this->textBox_io2);
+			this->Controls->Add(this->textBox_position2);
+			this->Controls->Add(this->textBox_tag2);
+			this->Controls->Add(this->textBox_io1);
+			this->Controls->Add(this->label4);
+			this->Controls->Add(this->textBox_position1);
+			this->Controls->Add(this->label3);
+			this->Controls->Add(this->label2);
+			this->Controls->Add(this->textBox_tag1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->button_save_position);
 			this->Controls->Add(this->textBox1);
@@ -754,7 +872,6 @@ namespace movenSysControlMotion {
 			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
-			this->Controls->Add(this->button_stop_motion);
 			this->Controls->Add(this->richTextBoxMessage);
 			this->Controls->Add(this->button_start_motion);
 			this->Controls->Add(this->button_clear_message);
@@ -1014,6 +1131,7 @@ namespace movenSysControlMotion {
 	// Event Functions.
 	//----------------------------------------------------------------------------
 	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
+
 
 		// Set Timer to show status of the axis
 		Timer^ timerAxis0 = gcnew Timer();
