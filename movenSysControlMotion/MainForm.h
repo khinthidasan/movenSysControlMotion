@@ -141,6 +141,8 @@ namespace movenSysControlMotion {
 	//define thread
 	private: static System::Threading::Thread^ thrPGVDataReceiving; //PGV sensor data reading
 	private: static System::Threading::Thread^ thrAwaitSlow; //Slow By QR Code
+
+	private: static System::Threading::Thread^ thrCalibration; //Thread for calibriation
 	// private: static System::Threading::Thread^ thrAwaitStop; //Stop By IO sensor
 
 	private: System::Windows::Forms::RichTextBox^ richTextBoxMessage;
@@ -638,7 +640,7 @@ namespace movenSysControlMotion {
 			// 
 			this->button_stop_motion->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_stop_motion->Location = System::Drawing::Point(918, 328);
+			this->button_stop_motion->Location = System::Drawing::Point(924, 328);
 			this->button_stop_motion->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_stop_motion->Name = L"button_stop_motion";
 			this->button_stop_motion->Size = System::Drawing::Size(59, 56);
@@ -701,13 +703,14 @@ namespace movenSysControlMotion {
 			// 
 			this->button_calibration_start->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_calibration_start->Location = System::Drawing::Point(634, 328);
+			this->button_calibration_start->Location = System::Drawing::Point(651, 328);
 			this->button_calibration_start->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_calibration_start->Name = L"button_calibration_start";
 			this->button_calibration_start->Size = System::Drawing::Size(136, 56);
 			this->button_calibration_start->TabIndex = 186;
 			this->button_calibration_start->Text = L"Calibriation Start";
 			this->button_calibration_start->UseVisualStyleBackColor = true;
+			this->button_calibration_start->Click += gcnew System::EventHandler(this, &MainForm::button_calibration_start_Click);
 			// 
 			// textBox1
 			// 
@@ -722,7 +725,7 @@ namespace movenSysControlMotion {
 			// 
 			this->button_save_position->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_save_position->Location = System::Drawing::Point(776, 328);
+			this->button_save_position->Location = System::Drawing::Point(787, 328);
 			this->button_save_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_save_position->Name = L"button_save_position";
 			this->button_save_position->Size = System::Drawing::Size(136, 56);
@@ -1138,5 +1141,11 @@ namespace movenSysControlMotion {
 	}
 
 
+	private: System::Void button_calibration_start_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		
+
+
+	}
 };
 }
