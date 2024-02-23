@@ -106,9 +106,9 @@ namespace movenSysControlMotion {
 	bool isTargetTagFound = false;
 
 	//define speed & velocity for NORMAL Operation
-	double normalJogSpeed = 50000;
-	double normalAccelSpeed = 50000;
-	double normalDecelSpeed = 50000;
+	double normalJogSpeed = 10000;
+	double normalAccelSpeed = 10000;
+	double normalDecelSpeed = 10000;
 
 	//define speed & velocity for SLOW Operation
 	double slowJogSpeed = 5000;
@@ -400,7 +400,7 @@ namespace movenSysControlMotion {
 			// 
 			this->button_servo->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_servo->Location = System::Drawing::Point(268, 35);
+			this->button_servo->Location = System::Drawing::Point(268, 37);
 			this->button_servo->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_servo->Name = L"button_servo";
 			this->button_servo->Size = System::Drawing::Size(119, 47);
@@ -777,17 +777,16 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_tag1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag1->Location = System::Drawing::Point(551, 274);
+			this->textBox_tag1->Location = System::Drawing::Point(669, 274);
 			this->textBox_tag1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag1->Name = L"textBox_tag1";
 			this->textBox_tag1->Size = System::Drawing::Size(120, 29);
 			this->textBox_tag1->TabIndex = 190;
-			this->textBox_tag1->Text = L"0001";
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(554, 259);
+			this->label2->Location = System::Drawing::Point(672, 259);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(95, 12);
 			this->label2->TabIndex = 191;
@@ -815,7 +814,7 @@ namespace movenSysControlMotion {
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(677, 256);
+			this->label4->Location = System::Drawing::Point(541, 256);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(53, 12);
 			this->label4->TabIndex = 194;
@@ -825,7 +824,7 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_io1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_io1->Location = System::Drawing::Point(679, 274);
+			this->textBox_io1->Location = System::Drawing::Point(543, 274);
 			this->textBox_io1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_io1->Name = L"textBox_io1";
 			this->textBox_io1->Size = System::Drawing::Size(120, 29);
@@ -836,7 +835,7 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_io2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_io2->Location = System::Drawing::Point(679, 306);
+			this->textBox_io2->Location = System::Drawing::Point(543, 306);
 			this->textBox_io2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_io2->Name = L"textBox_io2";
 			this->textBox_io2->Size = System::Drawing::Size(120, 29);
@@ -857,12 +856,11 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_tag2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag2->Location = System::Drawing::Point(551, 306);
+			this->textBox_tag2->Location = System::Drawing::Point(669, 306);
 			this->textBox_tag2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag2->Name = L"textBox_tag2";
 			this->textBox_tag2->Size = System::Drawing::Size(120, 29);
 			this->textBox_tag2->TabIndex = 196;
-			this->textBox_tag2->Text = L"0006";
 			// 
 			// button_goto_position
 			// 
@@ -979,8 +977,9 @@ namespace movenSysControlMotion {
 
 			if (length2 == 1) {  // if sensor is ON, motor is stopped.
 				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
-				Sleep(100);
+				Sleep(500);
 				textBox_position1->Text = labelStatusActPos0->Text;
+				textBox_tag1->Text = label_agv_tagValue->Text;
 				isDuringCalibrition = false;
 			}
 		}
@@ -994,8 +993,9 @@ namespace movenSysControlMotion {
 
 			if (length0 == 1) {  // if sensor is ON, motor is stopped.
 				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
-				Sleep(100);
+				Sleep(500);
 				textBox_position2->Text = labelStatusActPos0->Text;
+				textBox_tag2->Text = label_agv_tagValue->Text;
 				isDuringCalibrition = false;
 			}
 		}
