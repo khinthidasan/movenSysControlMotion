@@ -106,9 +106,9 @@ namespace movenSysControlMotion {
 	bool isTargetTagFound = false;
 
 	//define speed & velocity for NORMAL Operation
-	double normalJogSpeed = 10000;
-	double normalAccelSpeed = 10000;
-	double normalDecelSpeed = 10000;
+	double normalJogSpeed = 100000;
+	double normalAccelSpeed = 100000;
+	double normalDecelSpeed = 100000;
 
 	//define speed & velocity for SLOW Operation
 	double slowJogSpeed = 5000;
@@ -122,6 +122,7 @@ namespace movenSysControlMotion {
 	double calDecelSpeed = 10000;
 	
 	bool isDuringCalibrition = false;
+	bool isDuringGoTo = false;
 
 
 	/// <summary>
@@ -223,6 +224,7 @@ namespace movenSysControlMotion {
 
 	private: System::Windows::Forms::TextBox^ textBox_tag2;
 	private: System::Windows::Forms::Button^ button_goto_position;
+	private: System::Windows::Forms::Button^ button_goto_IO;
 
 
 
@@ -289,6 +291,7 @@ namespace movenSysControlMotion {
 			this->textBox_position2 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox_tag2 = (gcnew System::Windows::Forms::TextBox());
 			this->button_goto_position = (gcnew System::Windows::Forms::Button());
+			this->button_goto_IO = (gcnew System::Windows::Forms::Button());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -758,10 +761,10 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_goto->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_goto->Location = System::Drawing::Point(553, 410);
+			this->textBox_goto->Location = System::Drawing::Point(605, 392);
 			this->textBox_goto->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_goto->Name = L"textBox_goto";
-			this->textBox_goto->Size = System::Drawing::Size(226, 29);
+			this->textBox_goto->Size = System::Drawing::Size(244, 29);
 			this->textBox_goto->TabIndex = 187;
 			// 
 			// label1
@@ -805,7 +808,7 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_position1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_position1->Location = System::Drawing::Point(805, 274);
+			this->textBox_position1->Location = System::Drawing::Point(796, 274);
 			this->textBox_position1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_position1->Name = L"textBox_position1";
 			this->textBox_position1->Size = System::Drawing::Size(120, 29);
@@ -846,7 +849,7 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_position2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_position2->Location = System::Drawing::Point(805, 306);
+			this->textBox_position2->Location = System::Drawing::Point(796, 306);
 			this->textBox_position2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_position2->Name = L"textBox_position2";
 			this->textBox_position2->Size = System::Drawing::Size(120, 29);
@@ -866,20 +869,34 @@ namespace movenSysControlMotion {
 			// 
 			this->button_goto_position->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_goto_position->Location = System::Drawing::Point(792, 396);
+			this->button_goto_position->Location = System::Drawing::Point(730, 433);
 			this->button_goto_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_goto_position->Name = L"button_goto_position";
-			this->button_goto_position->Size = System::Drawing::Size(119, 48);
+			this->button_goto_position->Size = System::Drawing::Size(159, 25);
 			this->button_goto_position->TabIndex = 199;
-			this->button_goto_position->Text = L"GOTO Position";
+			this->button_goto_position->Text = L"GOTO (By Position)";
 			this->button_goto_position->UseVisualStyleBackColor = true;
 			this->button_goto_position->Click += gcnew System::EventHandler(this, &MainForm::button_goto_position_Click);
+			// 
+			// button_goto_IO
+			// 
+			this->button_goto_IO->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->button_goto_IO->Location = System::Drawing::Point(551, 433);
+			this->button_goto_IO->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_goto_IO->Name = L"button_goto_IO";
+			this->button_goto_IO->Size = System::Drawing::Size(173, 25);
+			this->button_goto_IO->TabIndex = 200;
+			this->button_goto_IO->Text = L"GOTO (  By IO )";
+			this->button_goto_IO->UseVisualStyleBackColor = true;
+			this->button_goto_IO->Click += gcnew System::EventHandler(this, &MainForm::button_goto_IO_Click);
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(957, 492);
+			this->Controls->Add(this->button_goto_IO);
 			this->Controls->Add(this->button_goto_position);
 			this->Controls->Add(this->textBox_io2);
 			this->Controls->Add(this->textBox_position2);
@@ -958,23 +975,32 @@ namespace movenSysControlMotion {
 	}
 
 	private: System::Void timer_IO(System::Object^ sender, System::EventArgs^ e) {
+
+		// Metal detector  at IO position 4.7
 		Wmx3Lib_Io.GetInBit(0x04, 0x07, &inData7[0]); // For the address [4.7  -> 0x04 ( address ) , 0x07 ( bit ) ]
 		unsigned char* data = &inData7[0];
 		const char* convertedData = reinterpret_cast<const char*>(data);
-
 		size_t length = strlen(convertedData);
 		if ((length == 1) && (isTargetTagFound)) {  // if sensor is ON, motor is stopped.
 			wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
 		}
 
 
+		// Peppel Fruch pass-thru sensor at IO position 4.2
+		Wmx3Lib_Io.GetInBit(0x04, 0x02, &inData2[0]); // For the address [4.2  -> 0x04 ( address ) , 0x02 ( bit ) ]
+		unsigned char* data2 = &inData2[0];
+		const char* convertedData2 = reinterpret_cast<const char*>(data2);
+		size_t length2 = strlen(convertedData2);
+
+		if ((isDuringGoTo) && (isTargetTagFound)) {
+			if (length2 == 1) {  // if sensor is ON, motor is stopped.
+				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
+				isDuringGoTo = false;
+				isTargetTagFound = false;
+			}
+		}
 
 		if ((isDuringCalibrition) && (textBox_position1->Text == "")) {
-			Wmx3Lib_Io.GetInBit(0x04, 0x02, &inData2[0]); // For the address [4.2  -> 0x04 ( address ) , 0x02 ( bit ) ]
-			unsigned char* data2 = &inData2[0];
-			const char* convertedData2 = reinterpret_cast<const char*>(data2);
-			size_t length2 = strlen(convertedData2);
-
 			if (length2 == 1) {  // if sensor is ON, motor is stopped.
 				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
 				Sleep(500);
@@ -985,12 +1011,24 @@ namespace movenSysControlMotion {
 		}
 
 
-		if ((isDuringCalibrition) && (textBox_position2->Text == ""))  {
-			Wmx3Lib_Io.GetInBit(0x04, 0x00, &inData0[0]); // For the address [4.0  -> 0x04 ( address ) , 0x00 ( bit ) ]
-			unsigned char* data0 = &inData0[0];
-			const char* convertedData0 = reinterpret_cast<const char*>(data0);
-			size_t length0 = strlen(convertedData0);
 
+		// Peppel Fruch pass-thru sensor at IO position 4.0
+		Wmx3Lib_Io.GetInBit(0x04, 0x00, &inData0[0]); // For the address [4.0  -> 0x04 ( address ) , 0x00 ( bit ) ]
+		unsigned char* data0 = &inData0[0];
+		const char* convertedData0 = reinterpret_cast<const char*>(data0);
+		size_t length0 = strlen(convertedData0);
+
+
+		if ((isDuringGoTo) && (isTargetTagFound)) {
+			if (length0 == 1) {  // if sensor is ON, motor is stopped.
+				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
+				isDuringGoTo = false;
+				isTargetTagFound = false;
+			}
+		}
+
+
+		if ((isDuringCalibrition) && (textBox_position2->Text == ""))  {
 			if (length0 == 1) {  // if sensor is ON, motor is stopped.
 				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
 				Sleep(500);
@@ -999,6 +1037,10 @@ namespace movenSysControlMotion {
 				isDuringCalibrition = false;
 			}
 		}
+
+
+
+
 
 	}
 
@@ -1060,7 +1102,7 @@ namespace movenSysControlMotion {
 			std::string strTagName = msclr::interop::marshal_as<std::string>(label_agv_tagValue->Text);
 			if(strTagName == tagName) {
 				
-				Motion::PosCommand posCommand = Motion::PosCommand();
+				/*Motion::PosCommand posCommand = Motion::PosCommand();
 				posCommand.profile.type = ProfileType::SCurve;
 				posCommand.axis = 0;
 				posCommand.target = gotoPosition;
@@ -1068,6 +1110,16 @@ namespace movenSysControlMotion {
 				posCommand.profile.acc = slowJogSpeed;
 				posCommand.profile.dec = slowJogSpeed;
 				wmxlib_cm.motion->StartPos(&posCommand);
+				*/
+
+
+				Motion::JogCommand jogCommand = Motion::JogCommand();
+				jogCommand.profile.type = ProfileType::SCurve;
+				jogCommand.axis = 0;
+				jogCommand.profile.velocity = slowJogSpeed;
+				jogCommand.profile.acc = slowAccelSpeed;
+				jogCommand.profile.dec = slowDecelSpeed;
+				wmxlib_cm.motion->StartJog(&jogCommand);
 
 				isTargetTagFound = true;
 
@@ -1338,7 +1390,43 @@ namespace movenSysControlMotion {
 	}
 
 	private: System::Void button_goto_position_Click(System::Object^ sender, System::EventArgs^ e) {
+		isTargetTagFound = false;
+		// Get Tag Goto value from input Text
+		std::string strGotoTag = msclr::interop::marshal_as<std::string>(textBox_goto->Text);
 
+		// TODO Check it is valid Tag or not In programatic way
+		// Testing version check test with default value ( 0001 0r 0006 )
+		if (strGotoTag == "0001") {
+			tagName = "0001";
+			std::string strPosition = msclr::interop::marshal_as<std::string>(textBox_position1->Text);
+			gotoPosition = std::stod(strPosition);
+		}
+		else if (strGotoTag == "0006") {
+			tagName = "0006";
+			std::string strPosition = msclr::interop::marshal_as<std::string>(textBox_position2->Text);
+			gotoPosition = std::stod(strPosition);
+		}
+		else {
+			this->richTextBoxMessage->Text = "Invalid Tag!!";
+			return;
+		}
+
+		Motion::PosCommand posCommand = Motion::PosCommand();
+		posCommand.profile.type = ProfileType::SCurve;
+		posCommand.axis = 0;
+		posCommand.target = gotoPosition;
+		posCommand.profile.velocity = normalJogSpeed;
+		posCommand.profile.acc = normalAccelSpeed;
+		posCommand.profile.dec = normalDecelSpeed;
+		wmxlib_cm.motion->StartPos(&posCommand);
+
+		// A thread is called to change the SLOW speed when QR code is read
+		// this->thrAwaitSlow = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MainForm::threadReadQR));
+		// this->thrAwaitSlow->Start();
+	}
+	private: System::Void button_goto_IO_Click(System::Object^ sender, System::EventArgs^ e) {
+		isTargetTagFound = false;
+		isDuringGoTo = true;
 
 		// Get Tag Goto value from input Text
 		std::string strGotoTag = msclr::interop::marshal_as<std::string>(textBox_goto->Text);
@@ -1360,16 +1448,13 @@ namespace movenSysControlMotion {
 			return;
 		}
 
-
-		Motion::PosCommand posCommand = Motion::PosCommand();
-		posCommand.profile.type = ProfileType::SCurve;
-		posCommand.axis = 0;
-		posCommand.target = gotoPosition;
-		posCommand.profile.velocity = normalJogSpeed;
-		posCommand.profile.acc = normalAccelSpeed;
-		posCommand.profile.dec = normalDecelSpeed;
-		wmxlib_cm.motion->StartPos(&posCommand);
-
+		Motion::JogCommand jogCommand = Motion::JogCommand();
+		jogCommand.profile.type = ProfileType::SCurve;
+		jogCommand.axis = 0;
+		jogCommand.profile.velocity = normalJogSpeed;
+		jogCommand.profile.acc = normalAccelSpeed;
+		jogCommand.profile.dec = normalDecelSpeed;
+		wmxlib_cm.motion->StartJog(&jogCommand);
 
 		// A thread is called to change the SLOW speed when QR code is read
 		this->thrAwaitSlow = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MainForm::threadReadQR));
