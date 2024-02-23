@@ -74,6 +74,10 @@ namespace movenSysControlMotion {
 	unsigned char inData[8000]; // IO input data
 	unsigned char  outData[8000];
 
+
+
+
+
 	bool communicationOnOff = false;
 	bool servoOnOff0 = false;
 	int err;
