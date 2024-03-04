@@ -14,6 +14,7 @@
 #include <thread>
 #include <sstream>
 #include <iomanip>
+#include <vector>
 
 
 
@@ -124,6 +125,9 @@ namespace movenSysControlMotion {
 	bool isDuringCalibrition = false;
 	bool isDuringGoTo = false;
 
+	//RFID Value line
+	string RFIDLine = "";
+
 
 	/// <summary>
 	/// Summary for MainForm
@@ -156,9 +160,7 @@ namespace movenSysControlMotion {
 	//define thread
 	private: static System::Threading::Thread^ thrPGVDataReceiving; //PGV sensor data reading
 	private: static System::Threading::Thread^ thrAwaitSlow; //Slow By QR Code
-
-	// private: static System::Threading::Thread^ thrCalibration; //Thread for calibriation
-	// private: static System::Threading::Thread^ thrAwaitStop; //Stop By IO sensor
+	private: static System::Threading::Thread^ thrRFIDScanning; //Scanning RFID Tag from RFID module by serial communication
 
 	private: System::Windows::Forms::RichTextBox^ richTextBoxMessage;
 	private: System::Windows::Forms::Button^ button6;
@@ -227,7 +229,13 @@ namespace movenSysControlMotion {
 	private: System::Windows::Forms::Button^ button_goto_IO;
 	private: System::IO::Ports::SerialPort^ serialPort1;
 	private: System::Windows::Forms::Button^ button_serial_port;
-	private: System::Windows::Forms::Button^ button_read;
+
+	private: System::Windows::Forms::Label^ label9;
+	private: System::Windows::Forms::ComboBox^ comboBox_serialPort;
+private: System::Windows::Forms::ComboBox^ comboBox_brautRate;
+
+private: System::Windows::Forms::Label^ label10;
+
 	private: System::ComponentModel::IContainer^ components;
 
 
@@ -281,6 +289,10 @@ namespace movenSysControlMotion {
 			this->textBoxDeviceName = (gcnew System::Windows::Forms::TextBox());
 			this->button_stop_motion = (gcnew System::Windows::Forms::Button());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->comboBox_brautRate = (gcnew System::Windows::Forms::ComboBox());
+			this->label10 = (gcnew System::Windows::Forms::Label());
+			this->label9 = (gcnew System::Windows::Forms::Label());
+			this->comboBox_serialPort = (gcnew System::Windows::Forms::ComboBox());
 			this->button_serial_port = (gcnew System::Windows::Forms::Button());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
@@ -300,7 +312,6 @@ namespace movenSysControlMotion {
 			this->button_goto_position = (gcnew System::Windows::Forms::Button());
 			this->button_goto_IO = (gcnew System::Windows::Forms::Button());
 			this->serialPort1 = (gcnew System::IO::Ports::SerialPort(this->components));
-			this->button_read = (gcnew System::Windows::Forms::Button());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -386,26 +397,28 @@ namespace movenSysControlMotion {
 			// 
 			this->button_open_port->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_open_port->Location = System::Drawing::Point(19, -18);
+			this->button_open_port->Location = System::Drawing::Point(156, 527);
 			this->button_open_port->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_open_port->Name = L"button_open_port";
 			this->button_open_port->Size = System::Drawing::Size(136, 59);
 			this->button_open_port->TabIndex = 176;
 			this->button_open_port->Text = L"Open Port";
 			this->button_open_port->UseVisualStyleBackColor = true;
+			this->button_open_port->Visible = false;
 			this->button_open_port->Click += gcnew System::EventHandler(this, &MainForm::button_open_port_Click);
 			// 
 			// button_connect_PGV
 			// 
 			this->button_connect_PGV->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_connect_PGV->Location = System::Drawing::Point(161, -18);
+			this->button_connect_PGV->Location = System::Drawing::Point(304, 527);
 			this->button_connect_PGV->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_connect_PGV->Name = L"button_connect_PGV";
 			this->button_connect_PGV->Size = System::Drawing::Size(136, 59);
 			this->button_connect_PGV->TabIndex = 175;
-			this->button_connect_PGV->Text = L"RFID";
+			this->button_connect_PGV->Text = L"PGV";
 			this->button_connect_PGV->UseVisualStyleBackColor = true;
+			this->button_connect_PGV->Visible = false;
 			this->button_connect_PGV->Click += gcnew System::EventHandler(this, &MainForm::button_connect_PGV_Click);
 			// 
 			// button_servo
@@ -636,7 +649,7 @@ namespace movenSysControlMotion {
 			this->label_agv_tagValue->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
 			this->label_agv_tagValue->ForeColor = System::Drawing::Color::Lime;
-			this->label_agv_tagValue->Location = System::Drawing::Point(142, 42);
+			this->label_agv_tagValue->Location = System::Drawing::Point(182, 42);
 			this->label_agv_tagValue->Name = L"label_agv_tagValue";
 			this->label_agv_tagValue->Size = System::Drawing::Size(25, 15);
 			this->label_agv_tagValue->TabIndex = 168;
@@ -648,9 +661,9 @@ namespace movenSysControlMotion {
 			this->label53->ForeColor = System::Drawing::Color::White;
 			this->label53->Location = System::Drawing::Point(83, 42);
 			this->label53->Name = L"label53";
-			this->label53->Size = System::Drawing::Size(31, 15);
+			this->label53->Size = System::Drawing::Size(67, 15);
 			this->label53->TabIndex = 167;
-			this->label53->Text = L"Tag";
+			this->label53->Text = L"RFID Tag";
 			// 
 			// label47
 			// 
@@ -704,11 +717,12 @@ namespace movenSysControlMotion {
 			// 
 			// groupBox1
 			// 
-			this->groupBox1->Controls->Add(this->button_read);
+			this->groupBox1->Controls->Add(this->comboBox_brautRate);
+			this->groupBox1->Controls->Add(this->label10);
+			this->groupBox1->Controls->Add(this->label9);
+			this->groupBox1->Controls->Add(this->comboBox_serialPort);
 			this->groupBox1->Controls->Add(this->button_serial_port);
 			this->groupBox1->Controls->Add(this->groupBox14);
-			this->groupBox1->Controls->Add(this->button_connect_PGV);
-			this->groupBox1->Controls->Add(this->button_open_port);
 			this->groupBox1->Location = System::Drawing::Point(552, 12);
 			this->groupBox1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox1->Name = L"groupBox1";
@@ -717,13 +731,48 @@ namespace movenSysControlMotion {
 			this->groupBox1->TabIndex = 183;
 			this->groupBox1->TabStop = false;
 			// 
+			// comboBox_brautRate
+			// 
+			this->comboBox_brautRate->FormattingEnabled = true;
+			this->comboBox_brautRate->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"9600", L"38400", L"57600", L"115200" });
+			this->comboBox_brautRate->Location = System::Drawing::Point(104, 66);
+			this->comboBox_brautRate->Name = L"comboBox_brautRate";
+			this->comboBox_brautRate->Size = System::Drawing::Size(143, 23);
+			this->comboBox_brautRate->TabIndex = 203;
+			// 
+			// label10
+			// 
+			this->label10->AutoSize = true;
+			this->label10->Location = System::Drawing::Point(25, 69);
+			this->label10->Name = L"label10";
+			this->label10->Size = System::Drawing::Size(76, 15);
+			this->label10->TabIndex = 202;
+			this->label10->Text = L"Braut Rate";
+			// 
+			// label9
+			// 
+			this->label9->AutoSize = true;
+			this->label9->Location = System::Drawing::Point(25, 21);
+			this->label9->Name = L"label9";
+			this->label9->Size = System::Drawing::Size(73, 15);
+			this->label9->TabIndex = 201;
+			this->label9->Text = L"COM Port";
+			// 
+			// comboBox_serialPort
+			// 
+			this->comboBox_serialPort->FormattingEnabled = true;
+			this->comboBox_serialPort->Location = System::Drawing::Point(104, 18);
+			this->comboBox_serialPort->Name = L"comboBox_serialPort";
+			this->comboBox_serialPort->Size = System::Drawing::Size(143, 23);
+			this->comboBox_serialPort->TabIndex = 182;
+			// 
 			// button_serial_port
 			// 
-			this->button_serial_port->Location = System::Drawing::Point(19, 65);
+			this->button_serial_port->Location = System::Drawing::Point(282, 32);
 			this->button_serial_port->Name = L"button_serial_port";
-			this->button_serial_port->Size = System::Drawing::Size(143, 39);
+			this->button_serial_port->Size = System::Drawing::Size(143, 37);
 			this->button_serial_port->TabIndex = 180;
-			this->button_serial_port->Text = L"Open Serial Port";
+			this->button_serial_port->Text = L"Connect Serial Port";
 			this->button_serial_port->UseVisualStyleBackColor = true;
 			this->button_serial_port->Click += gcnew System::EventHandler(this, &MainForm::button_serial_port_Click);
 			// 
@@ -912,16 +961,6 @@ namespace movenSysControlMotion {
 			this->button_goto_IO->UseVisualStyleBackColor = true;
 			this->button_goto_IO->Click += gcnew System::EventHandler(this, &MainForm::button_goto_IO_Click);
 			// 
-			// button_read
-			// 
-			this->button_read->Location = System::Drawing::Point(168, 66);
-			this->button_read->Name = L"button_read";
-			this->button_read->Size = System::Drawing::Size(143, 39);
-			this->button_read->TabIndex = 181;
-			this->button_read->Text = L"Read";
-			this->button_read->UseVisualStyleBackColor = true;
-			this->button_read->Click += gcnew System::EventHandler(this, &MainForm::button_read_Click);
-			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
@@ -930,7 +969,9 @@ namespace movenSysControlMotion {
 			this->Controls->Add(this->button_goto_IO);
 			this->Controls->Add(this->button_goto_position);
 			this->Controls->Add(this->textBox_io2);
+			this->Controls->Add(this->button_connect_PGV);
 			this->Controls->Add(this->textBox_position2);
+			this->Controls->Add(this->button_open_port);
 			this->Controls->Add(this->textBox_tag2);
 			this->Controls->Add(this->textBox_io1);
 			this->Controls->Add(this->label4);
@@ -958,6 +999,7 @@ namespace movenSysControlMotion {
 			this->groupBox14->ResumeLayout(false);
 			this->groupBox14->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
 			this->groupBox2->ResumeLayout(false);
 			this->groupBox2->PerformLayout();
 			this->groupBox3->ResumeLayout(false);
@@ -970,6 +1012,30 @@ namespace movenSysControlMotion {
 	//----------------------------------------------------------------------------
 	// Custom Functions.
 	//----------------------------------------------------------------------------
+	
+	// Function to get a list of active COM ports
+		std::vector<std::wstring> GetActiveCOMPorts() {
+			std::vector<std::wstring> comPorts;
+
+			// Enumerate the COM ports
+			for (int i = 1; i <= 256; ++i) {  // COM ports are typically numbered from 1 to 256
+				wchar_t portName[20];
+				wsprintf(portName, L"\\\\.\\COM%d", i);
+
+				// Try to open the COM port
+				HANDLE hPort = CreateFile(portName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
+				if (hPort != INVALID_HANDLE_VALUE) {
+					std::wstring portNameStr = portName;
+					// Port opened successfully, so it's active
+					CloseHandle(hPort);
+					portNameStr.erase(0, 4);
+					comPorts.push_back(portNameStr);
+				}
+			}
+
+			return comPorts;
+		}
+
 	//Control servo On/Off
 		Void servoOnOff(int axis, bool controlFlag, System::Windows::Forms::Button^ btn) {
 			int onOffStatus = 0;
@@ -1069,14 +1135,10 @@ namespace movenSysControlMotion {
 			}
 		}
 
-
-
-
-
 	}
 
 	private: System::Void timer_PGV(System::Object^ sender, System::EventArgs^ e) {
-		if (PGVStart) {
+		/*if (PGVStart) {
 			//////Warning value
 			//std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[0]) << std::endl;
 			int warningInt = static_cast<int>(receivedData[0]);
@@ -1087,7 +1149,31 @@ namespace movenSysControlMotion {
 				label_agv_tagValue->Text = "No Position";
 				label_agv_tagValue->ForeColor = System::Drawing::Color::Red;
 			}
+		}*/
+
+		if (this->serialPort1->IsOpen) {
+			if (RFIDLine == "") {
+				label_agv_tagValue->Text = "No Position";
+			}
+			else
+			{
+				label_agv_tagValue->Text = gcnew System::String(RFIDLine.c_str());
+			}
 		}
+
+		/*if (RFIDLine == "") {
+			
+			if (label_agv_tagValue->Text == "") {
+				label_agv_tagValue->Text = "No Position";
+				label_agv_tagValue->ForeColor = System::Drawing::Color::Red;
+			}
+			else {
+				if( this->serialPort1->IsOpen){
+				label_agv_tagValue->Text = this->serialPort1->ReadLine();
+				}
+			}
+
+		}*/
 	
 	}
 
@@ -1200,17 +1286,12 @@ namespace movenSysControlMotion {
 		return true;
 	}
 	private: System::Void RFIDDataReading() {
+		
 		while (true) {
+			
 			if (this->serialPort1->IsOpen) {
-
-				try {
-					std::string line = "";
-					line = msclr::interop::marshal_as<std::string>(this->serialPort1->ReadLine());
-					cout << line << endl;
-				}
-				catch (TimeoutException^) {
-					this->richTextBoxMessage->Text = "Timeout Exception";
-				}
+				RFIDLine = msclr::interop::marshal_as<std::string>(this->serialPort1->ReadLine());
+				cout << RFIDLine << endl;
 			}
 			Sleep(sensorDataInterval);
 		}
@@ -1251,13 +1332,28 @@ namespace movenSysControlMotion {
 			Sleep(sensorDataInterval);
 		}
 	}
-
+	
+	System::String^ ToSystemString(const std::wstring& str) {
+		return gcnew System::String(str.c_str());
+	}
 
 
 	//----------------------------------------------------------------------------
 	// Event Functions.
 	//----------------------------------------------------------------------------
+
+
 	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
+
+		//Get active Serial COM port to Combo dropdown list
+		std::vector<std::wstring> activeCOMPorts = GetActiveCOMPorts();
+		// Print the list of active COM ports
+		//std::wcout << "Active COM ports:" << std::endl;
+		for (const auto& port : activeCOMPorts) {
+			//std::wcout << port << std::endl;
+			System::String^ portString = ToSystemString(port);
+			this->comboBox_serialPort->Items->Add(portString);
+		}
 
 
 		// Set Timer to show status of the axis
@@ -1348,7 +1444,7 @@ namespace movenSysControlMotion {
 		this->thrAwaitSlow->Start();*/
 	}
 	private: System::Void button_open_port_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (portState) {
+		/*if (portState) {
 			CloseHandle(hSerial);
 			portState = false;
 			button_open_port->Text = "Open Port";
@@ -1358,11 +1454,11 @@ namespace movenSysControlMotion {
 		}
 		else {
 			portState = portConnection();
-		}
+		}*/
 	}
 
 	private: System::Void button_connect_PGV_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (!portState) {
+		/*if (!portState) {
 			richTextBoxMessage->Text = "PGV port is not connected yet!";
 			return;
 		}
@@ -1382,7 +1478,7 @@ namespace movenSysControlMotion {
 		if (portState) {
 			this->thrPGVDataReceiving = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MainForm::PGVDataReading));
 			this->thrPGVDataReceiving->Start();
-		}
+		}*/
 	}
 
 
@@ -1477,23 +1573,34 @@ namespace movenSysControlMotion {
 
 	}
 	private: System::Void button_serial_port_Click(System::Object^ sender, System::EventArgs^ e) {
-		
-		
+	
+		if (this->serialPort1->IsOpen) {
+			this->serialPort1->Close();
+			this->button_serial_port->BackColor = System::Drawing::Color::White;
+			this->thrRFIDScanning->Abort();
+			return;
+		}
+
+
+		if (this->comboBox_serialPort->Text == String::Empty || this->comboBox_brautRate->Text == String::Empty) {
+			this->richTextBoxMessage->Text = "Please Select Port & BrautRate!";
+			this->button_serial_port->BackColor = System::Drawing::Color::White;
+			return;
+		}
+			
 		try {
-			this->serialPort1->PortName = "COM14";
-			this->serialPort1->BaudRate = 9600;
+			this->serialPort1->PortName = this->comboBox_serialPort->Text;
+			this->serialPort1->BaudRate = Int32::Parse(this->comboBox_brautRate->Text);
 			this->serialPort1->Open();
-
-
-
+			this->button_serial_port->BackColor = System::Drawing::Color::GreenYellow;
+			
+			this->thrRFIDScanning = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MainForm::RFIDDataReading));
+			this->thrRFIDScanning->Start();
 		}
 		catch (UnauthorizedAccessException^) {
-			this->richTextBoxMessage->Text = "UnauthorizedAccess";
+			this->richTextBoxMessage->Text = "Serial Port cannot connect!";
 		}
 	}
-	private: System::Void button_read_Click(System::Object^ sender, System::EventArgs^ e) {
-		this->thrPGVDataReceiving = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MainForm::RFIDDataReading));
-		this->thrPGVDataReceiving->Start();
-	}
+
 };
 }
