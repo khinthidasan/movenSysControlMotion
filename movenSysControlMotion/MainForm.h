@@ -15,6 +15,7 @@
 #include <sstream>
 #include <iomanip>
 #include <vector>
+#include <algorithm>
 
 
 
@@ -42,6 +43,7 @@
      "")
 
 
+
 namespace movenSysControlMotion {
 
 	using namespace System;
@@ -55,6 +57,15 @@ namespace movenSysControlMotion {
 	using namespace wmx3Api;
 	using namespace std;
 	using namespace ecApi;
+
+
+	//TODO IO address should be programmatically parameter
+	struct KeyValue {
+		string key;
+		string value;
+	};
+
+
 
 	//variable releated to MovenSys WOS
 	WMX3Api Device;
