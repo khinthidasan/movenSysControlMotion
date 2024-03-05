@@ -125,8 +125,10 @@ namespace movenSysControlMotion {
 	bool isDuringCalibrition = false;
 	bool isDuringGoTo = false;
 
-	//RFID Value line
+	//RFID Tag Value line
 	string RFIDLine = "";
+
+
 
 
 	/// <summary>
@@ -1214,14 +1216,11 @@ private: System::Windows::Forms::Label^ label10;
 
 	private: System::Void calibratePosition() {
 		while (true) {
-		
 		}
 	}
 
 	private: System::Void threadReadIO() {
 		while (true) {
-
-
 		}
 	}
 
@@ -1286,15 +1285,14 @@ private: System::Windows::Forms::Label^ label10;
 		return true;
 	}
 	private: System::Void RFIDDataReading() {
-		
 		while (true) {
-			
 			if (this->serialPort1->IsOpen) {
 				RFIDLine = msclr::interop::marshal_as<std::string>(this->serialPort1->ReadLine());
-				cout << RFIDLine << endl;
+				//cout << RFIDLine << endl;
 			}
 			Sleep(sensorDataInterval);
 		}
+
 	}
 
 	private: System::Void PGVDataReading() {
@@ -1425,8 +1423,6 @@ private: System::Windows::Forms::Label^ label10;
 
 	private: System::Void button_stop_motion_Click(System::Object^ sender, System::EventArgs^ e) {
 		wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
-		// Test
-		// isAGVTagPosition = true;
 	}
 	
 	private: System::Void button_start_motion_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1456,7 +1452,6 @@ private: System::Windows::Forms::Label^ label10;
 			portState = portConnection();
 		}*/
 	}
-
 	private: System::Void button_connect_PGV_Click(System::Object^ sender, System::EventArgs^ e) {
 		/*if (!portState) {
 			richTextBoxMessage->Text = "PGV port is not connected yet!";
@@ -1576,8 +1571,8 @@ private: System::Windows::Forms::Label^ label10;
 	
 		if (this->serialPort1->IsOpen) {
 			this->serialPort1->Close();
-			this->button_serial_port->BackColor = System::Drawing::Color::White;
 			this->thrRFIDScanning->Abort();
+			this->button_serial_port->BackColor = System::Drawing::Color::White;
 			return;
 		}
 
