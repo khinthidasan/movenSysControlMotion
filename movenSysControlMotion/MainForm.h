@@ -124,20 +124,20 @@ namespace movenSysControlMotion {
 	bool isTargetTagFound = false;
 
 	//define speed & velocity for NORMAL Operation
-	double normalJogSpeed = 100000;
-	double normalAccelSpeed = 100000;
-	double normalDecelSpeed = 100000;
+	double normalJogSpeed = 1000;
+	double normalAccelSpeed = 1000;
+	double normalDecelSpeed = 1000;
 
 	//define speed & velocity for SLOW Operation
-	double slowJogSpeed = 5000;
-	double slowAccelSpeed = 5000;
-	double slowDecelSpeed = 5000;
+	double slowJogSpeed = 1000;
+	double slowAccelSpeed = 1000;
+	double slowDecelSpeed = 1000;
 
 
 	//define speed & velocity for Position Calibrition Operation
-	double calJogSpeed = 10000;
-	double calAccelSpeed = 10000;
-	double calDecelSpeed = 10000;
+	double calJogSpeed = 1000;
+	double calAccelSpeed = 1000;
+	double calDecelSpeed = 1000;
 	
 	bool isDuringCalibrition = false;
 	bool isDuringGoTo = false;
@@ -145,7 +145,7 @@ namespace movenSysControlMotion {
 
 	//RFID Tag Value line
 	string RFIDLine = "";
-
+	const int encoderPPR = 10000;
 
 
 
@@ -255,6 +255,8 @@ namespace movenSysControlMotion {
 private: System::Windows::Forms::ComboBox^ comboBox_brautRate;
 
 private: System::Windows::Forms::Label^ label10;
+private: System::Windows::Forms::Button^ button_CW;
+private: System::Windows::Forms::Button^ button_ccw;
 
 	private: System::ComponentModel::IContainer^ components;
 
@@ -329,6 +331,8 @@ private: System::Windows::Forms::Label^ label10;
 			this->button_goto_position = (gcnew System::Windows::Forms::Button());
 			this->button_goto_IO = (gcnew System::Windows::Forms::Button());
 			this->serialPort1 = (gcnew System::IO::Ports::SerialPort(this->components));
+			this->button_CW = (gcnew System::Windows::Forms::Button());
+			this->button_ccw = (gcnew System::Windows::Forms::Button());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -413,10 +417,10 @@ private: System::Windows::Forms::Label^ label10;
 			// 
 			this->button_open_port->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_open_port->Location = System::Drawing::Point(136, 422);
+			this->button_open_port->Location = System::Drawing::Point(60, 454);
 			this->button_open_port->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_open_port->Name = L"button_open_port";
-			this->button_open_port->Size = System::Drawing::Size(119, 47);
+			this->button_open_port->Size = System::Drawing::Size(49, 15);
 			this->button_open_port->TabIndex = 176;
 			this->button_open_port->Text = L"Open Port";
 			this->button_open_port->UseVisualStyleBackColor = true;
@@ -427,10 +431,10 @@ private: System::Windows::Forms::Label^ label10;
 			// 
 			this->button_connect_PGV->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_connect_PGV->Location = System::Drawing::Point(266, 422);
+			this->button_connect_PGV->Location = System::Drawing::Point(115, 454);
 			this->button_connect_PGV->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_connect_PGV->Name = L"button_connect_PGV";
-			this->button_connect_PGV->Size = System::Drawing::Size(119, 47);
+			this->button_connect_PGV->Size = System::Drawing::Size(67, 15);
 			this->button_connect_PGV->TabIndex = 175;
 			this->button_connect_PGV->Text = L"PGV";
 			this->button_connect_PGV->UseVisualStyleBackColor = true;
@@ -697,10 +701,10 @@ private: System::Windows::Forms::Label^ label10;
 			// 
 			this->button_start_motion->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_start_motion->Location = System::Drawing::Point(12, 421);
+			this->button_start_motion->Location = System::Drawing::Point(12, 454);
 			this->button_start_motion->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_start_motion->Name = L"button_start_motion";
-			this->button_start_motion->Size = System::Drawing::Size(119, 48);
+			this->button_start_motion->Size = System::Drawing::Size(48, 15);
 			this->button_start_motion->TabIndex = 180;
 			this->button_start_motion->Text = L"StartMotion +";
 			this->button_start_motion->UseVisualStyleBackColor = true;
@@ -949,11 +953,33 @@ private: System::Windows::Forms::Label^ label10;
 			this->button_goto_IO->UseVisualStyleBackColor = true;
 			this->button_goto_IO->Click += gcnew System::EventHandler(this, &MainForm::button_goto_IO_Click);
 			// 
+			// button_CW
+			// 
+			this->button_CW->Location = System::Drawing::Point(755, 421);
+			this->button_CW->Name = L"button_CW";
+			this->button_CW->Size = System::Drawing::Size(109, 48);
+			this->button_CW->TabIndex = 201;
+			this->button_CW->Text = L"CW -->";
+			this->button_CW->UseVisualStyleBackColor = true;
+			this->button_CW->Click += gcnew System::EventHandler(this, &MainForm::button_CW_Click);
+			// 
+			// button_ccw
+			// 
+			this->button_ccw->Location = System::Drawing::Point(575, 421);
+			this->button_ccw->Name = L"button_ccw";
+			this->button_ccw->Size = System::Drawing::Size(170, 48);
+			this->button_ccw->TabIndex = 202;
+			this->button_ccw->Text = L"<-- CCW , with Barrier";
+			this->button_ccw->UseVisualStyleBackColor = true;
+			this->button_ccw->Click += gcnew System::EventHandler(this, &MainForm::button_ccw_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(957, 492);
+			this->Controls->Add(this->button_ccw);
+			this->Controls->Add(this->button_CW);
 			this->Controls->Add(this->button_goto_IO);
 			this->Controls->Add(this->button_goto_position);
 			this->Controls->Add(this->textBox_io2);
@@ -1062,8 +1088,13 @@ private: System::Windows::Forms::Label^ label10;
 		unsigned char* data = &inData7[0];
 		const char* convertedData = reinterpret_cast<const char*>(data);
 		size_t length = strlen(convertedData);
-		if ((length == 1) && (isTargetTagFound)) {  // if sensor is ON, motor is stopped.
-			wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
+		if (length == 1) {  // if sensor is ON, motor is stopped.
+			//wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
+			// wmxlib_cm.motion->ExecQuickStop(0); // quickStop
+			
+			//TODO Just servo OFF because of Welcom Driver Issue ( Welcon driver cannot stop )
+			// parameter ( Axis, OFF==0, button to change color )
+			servoOnOff(0, 0 , this->button_servo);
 		}
 
 
@@ -1091,12 +1122,12 @@ private: System::Windows::Forms::Label^ label10;
 			}
 		}
 
-		if ( (isDuringGoToByIO) && (isTargetTagFound) ) {
+		/*if ((isDuringGoToByIO) && (isTargetTagFound)) {
 			if (length2 == 1) {  // if sensor is ON, motor is stopped.
 				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
 				isDuringGoToByIO = false;
 			}
-		}
+		}*/
 
 
 
@@ -1126,12 +1157,12 @@ private: System::Windows::Forms::Label^ label10;
 			}
 		}
 
-		if ((isDuringGoToByIO) && (isTargetTagFound)) {
+		/*if ((isDuringGoToByIO) && (isTargetTagFound)) {
 			if (length0 == 1) {  // if sensor is ON, motor is stopped.
 				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
 				isDuringGoToByIO = false;
 			}
-		}
+		}*/
 
 	}
 
@@ -1332,6 +1363,11 @@ private: System::Windows::Forms::Label^ label10;
 	}
 
 
+	//PPR( MovenSys Unit ) into RPM Equation
+	int RPMFromPPR(double RPMValue) {
+		return encoderPPR * (RPMValue / 60);
+	}
+
 	//----------------------------------------------------------------------------
 	// Event Functions.
 	//----------------------------------------------------------------------------
@@ -1418,7 +1454,9 @@ private: System::Windows::Forms::Label^ label10;
 
 
 	private: System::Void button_stop_motion_Click(System::Object^ sender, System::EventArgs^ e) {
-		wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
+		// wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
+
+		wmxlib_cm.motion->ExecQuickStop(0); // quick stop
 	}
 	
 	private: System::Void button_start_motion_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1522,59 +1560,6 @@ private: System::Windows::Forms::Label^ label10;
 		// this->thrAwaitSlow->Start();
 	}
 	private: System::Void button_goto_IO_Click(System::Object^ sender, System::EventArgs^ e) {
-		isTargetTagFound = false;
-		isDuringGoTo = false;
-		isDuringGoToByIO = true;
-		isTargetTagFound = false;
-		// Get Tag Goto value from input Text
-		std::string strGotoTag = msclr::interop::marshal_as<std::string>(textBox_goto->Text);
-
-		// TODO Check it is valid Tag or not In programatic way
-		// Testing version check test with default value ( 0001 0r 0006 )
-		if (strGotoTag == "1118481") {
-			tagName = "1118481";
-			std::string strPosition = msclr::interop::marshal_as<std::string>(textBox_position1->Text);
-			gotoPosition = std::stod(strPosition);
-		}
-		else if (strGotoTag == "1234") {
-			tagName = "1234";
-			std::string strPosition = msclr::interop::marshal_as<std::string>(textBox_position2->Text);
-			gotoPosition = std::stod(strPosition);
-		}
-		else {
-			this->richTextBoxMessage->Text = "Invalid Tag!!";
-			return;
-		}
-
-
-
-		//get current position of the motor
-		std::string strCurrentPosition = msclr::interop::marshal_as<std::string>(labelStatusActPos0->Text);
-		double currentPosition = std::stod(strCurrentPosition);
-
-
-		Motion::JogCommand jogCommand = Motion::JogCommand();
-		jogCommand.profile.type = ProfileType::SCurve;
-		jogCommand.axis = 0;
-
-
-		// decide CW or CCW to go to IO port
-		if (currentPosition < gotoPosition) {
-			jogCommand.profile.velocity = normalJogSpeed;
-			jogCommand.profile.acc = normalAccelSpeed;
-			jogCommand.profile.dec = normalDecelSpeed;
-		}
-		else {
-			jogCommand.profile.velocity = -normalJogSpeed;
-			jogCommand.profile.acc = -normalAccelSpeed;
-			jogCommand.profile.dec = -normalDecelSpeed;
-		}
-
-		wmxlib_cm.motion->StartJog(&jogCommand);
-
-		// A thread is called to change the SLOW speed when QR code is read
-		//this->thrAwaitSlow = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MainForm::threadReadQR));
-		//this->thrAwaitSlow->Start();
 	}
 	private: System::Void button_port_serial_Click(System::Object^ sender, System::EventArgs^ e) {
 
@@ -1612,5 +1597,25 @@ private: System::Windows::Forms::Label^ label10;
 		}
 	}
 
+	//Equation MovenSys unit to RPM
+	//
+	private: System::Void button_CW_Click(System::Object^ sender, System::EventArgs^ e) {
+		Motion::JogCommand jogCommand = Motion::JogCommand();
+		jogCommand.profile.type = ProfileType::SCurve;
+		jogCommand.axis = 0;
+		jogCommand.profile.velocity = 30000;
+		jogCommand.profile.acc = 30000;
+		jogCommand.profile.dec = 30000;
+		wmxlib_cm.motion->StartJog(&jogCommand);
+	}
+	private: System::Void button_ccw_Click(System::Object^ sender, System::EventArgs^ e) {
+		Motion::JogCommand jogCommand = Motion::JogCommand();
+		jogCommand.profile.type = ProfileType::SCurve;
+		jogCommand.axis = 0;
+		jogCommand.profile.velocity = -30000;
+		jogCommand.profile.acc = 30000;
+		jogCommand.profile.dec = 30000;
+		wmxlib_cm.motion->StartJog(&jogCommand);
+	}
 };
 }
