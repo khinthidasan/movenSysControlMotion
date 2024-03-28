@@ -1344,9 +1344,34 @@ namespace movenSysControlMotion {
 
 
 	private: System::Void button_stop_motion_Click(System::Object^ sender, System::EventArgs^ e) {
-		wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
-		// Test
-		// isAGVTagPosition = true;
+		//wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
+
+		Velocity::VelCommand vel;
+
+		//Set axis to velocity command mode
+		wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
+
+		////Set velocity command parameters
+		vel.axis = 0;
+		vel.profile.type = ProfileType::SCurve;
+		vel.profile.velocity = 1000;
+		vel.profile.acc = 1000;
+		vel.profile.dec = 1000;
+
+		////Execute a velocity command
+		wmxlib_cm.velocity->StartVel(&vel);
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+		////Set velocity command parameters
+		vel.axis = 0;
+		vel.profile.type = ProfileType::SCurve;
+		vel.profile.velocity = 0;
+		vel.profile.acc = 0;
+		vel.profile.dec = 0;
+
+		////Execute a velocity command
+		wmxlib_cm.velocity->StartVel(&vel);
 	}
 	
 	private: System::Void button_start_motion_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1492,10 +1517,13 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 	//Set axis to velocity command mode
 	wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
 
+	// 1.5 m/s 2300
+	//2.0 m/s 3066
+
 	////Set velocity command parameters
 	vel.axis = 0;
 	vel.profile.type = ProfileType::Trapezoidal;
-	vel.profile.velocity = -2300;
+	vel.profile.velocity = -2300; 
 	vel.profile.acc = 1500;
 	vel.profile.dec = 1500;
 
@@ -1511,7 +1539,7 @@ private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e
 	////Set velocity command parameters
 	vel.axis = 0;
 	vel.profile.type = ProfileType::Trapezoidal;
-	vel.profile.velocity = 2300;
+	vel.profile.velocity = 3066;
 	vel.profile.acc = 1500;
 	vel.profile.dec = 1500;
 
