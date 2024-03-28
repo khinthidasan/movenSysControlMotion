@@ -225,6 +225,8 @@ namespace movenSysControlMotion {
 	private: System::Windows::Forms::TextBox^ textBox_tag2;
 	private: System::Windows::Forms::Button^ button_goto_position;
 	private: System::Windows::Forms::Button^ button_goto_IO;
+	private: System::Windows::Forms::Button^ button2;
+	private: System::Windows::Forms::Button^ button3;
 
 
 
@@ -292,6 +294,8 @@ namespace movenSysControlMotion {
 			this->textBox_tag2 = (gcnew System::Windows::Forms::TextBox());
 			this->button_goto_position = (gcnew System::Windows::Forms::Button());
 			this->button_goto_IO = (gcnew System::Windows::Forms::Button());
+			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -891,11 +895,33 @@ namespace movenSysControlMotion {
 			this->button_goto_IO->UseVisualStyleBackColor = true;
 			this->button_goto_IO->Click += gcnew System::EventHandler(this, &MainForm::button_goto_IO_Click);
 			// 
+			// button2
+			// 
+			this->button2->Location = System::Drawing::Point(187, 431);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(133, 49);
+			this->button2->TabIndex = 201;
+			this->button2->Text = L"<< button2";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &MainForm::button2_Click);
+			// 
+			// button3
+			// 
+			this->button3->Location = System::Drawing::Point(336, 433);
+			this->button3->Name = L"button3";
+			this->button3->Size = System::Drawing::Size(133, 47);
+			this->button3->TabIndex = 202;
+			this->button3->Text = L"button3 >>";
+			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Click += gcnew System::EventHandler(this, &MainForm::button3_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(957, 492);
+			this->Controls->Add(this->button3);
+			this->Controls->Add(this->button2);
 			this->Controls->Add(this->button_goto_IO);
 			this->Controls->Add(this->button_goto_position);
 			this->Controls->Add(this->textBox_io2);
@@ -1460,5 +1486,37 @@ namespace movenSysControlMotion {
 		this->thrAwaitSlow = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MainForm::threadReadQR));
 		this->thrAwaitSlow->Start();
 	}
+private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	Velocity::VelCommand vel;
+
+	//Set axis to velocity command mode
+	wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
+
+	////Set velocity command parameters
+	vel.axis = 0;
+	vel.profile.type = ProfileType::Trapezoidal;
+	vel.profile.velocity = -2300;
+	vel.profile.acc = 1500;
+	vel.profile.dec = 1500;
+
+	////Execute a velocity command
+	wmxlib_cm.velocity->StartVel(&vel);
+}
+private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+	Velocity::VelCommand vel;
+
+	//Set axis to velocity command mode
+	wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
+
+	////Set velocity command parameters
+	vel.axis = 0;
+	vel.profile.type = ProfileType::Trapezoidal;
+	vel.profile.velocity = 2300;
+	vel.profile.acc = 1500;
+	vel.profile.dec = 1500;
+
+	////Execute a velocity command
+	wmxlib_cm.velocity->StartVel(&vel);
+}
 };
 }
