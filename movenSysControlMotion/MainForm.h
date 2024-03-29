@@ -1823,7 +1823,7 @@ private: System::Windows::Forms::Label^ label13;
 
 		////Execute a velocity command
 		wmxlib_cm.velocity->StartVel(&vel);
-
+		///
 
 	}
 
