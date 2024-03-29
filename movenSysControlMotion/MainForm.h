@@ -130,6 +130,8 @@ namespace movenSysControlMotion {
 	bool isDuringCalibrition = false;
 	bool isDuringGoTo = false;
 
+	bool isDuringGoToForward = false;
+	bool isDuringGoToBackward = false;
 
 
 	//define vector for tag value, position and current
@@ -257,6 +259,7 @@ private: System::Windows::Forms::TextBox^ textBox_current3;
 private: System::Windows::Forms::TextBox^ textBox_current4;
 private: System::Windows::Forms::TextBox^ textBox_test_position;
 private: System::Windows::Forms::Label^ label12;
+private: System::Windows::Forms::Button^ button_goto_position1;
 
 
 
@@ -342,6 +345,7 @@ private: System::Windows::Forms::Label^ label12;
 			this->textBox_current4 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox_test_position = (gcnew System::Windows::Forms::TextBox());
 			this->label12 = (gcnew System::Windows::Forms::Label());
+			this->button_goto_position1 = (gcnew System::Windows::Forms::Button());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -941,7 +945,7 @@ private: System::Windows::Forms::Label^ label12;
 			this->button_goto_position->BackColor = System::Drawing::SystemColors::Control;
 			this->button_goto_position->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_goto_position->Location = System::Drawing::Point(1203, 453);
+			this->button_goto_position->Location = System::Drawing::Point(1153, 491);
 			this->button_goto_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_goto_position->Name = L"button_goto_position";
 			this->button_goto_position->Size = System::Drawing::Size(115, 44);
@@ -1130,11 +1134,26 @@ private: System::Windows::Forms::Label^ label12;
 			this->label12->TabIndex = 216;
 			this->label12->Text = L"Test Position";
 			// 
+			// button_goto_position1
+			// 
+			this->button_goto_position1->BackColor = System::Drawing::SystemColors::Control;
+			this->button_goto_position1->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->button_goto_position1->Location = System::Drawing::Point(1032, 491);
+			this->button_goto_position1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_goto_position1->Name = L"button_goto_position1";
+			this->button_goto_position1->Size = System::Drawing::Size(115, 44);
+			this->button_goto_position1->TabIndex = 217;
+			this->button_goto_position1->Text = L"<< Start Travel ";
+			this->button_goto_position1->UseVisualStyleBackColor = false;
+			this->button_goto_position1->Click += gcnew System::EventHandler(this, &MainForm::button_goto_position1_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1345, 595);
+			this->Controls->Add(this->button_goto_position1);
 			this->Controls->Add(this->label12);
 			this->Controls->Add(this->textBox_test_position);
 			this->Controls->Add(this->textBox_current4);
@@ -1265,8 +1284,8 @@ private: System::Windows::Forms::Label^ label12;
 			wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
 		}
 
-
-		if (isDuringGoTo) {
+		// encoder is increasing
+		if (isDuringGoToForward) {
 
 			double encoderGoto = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_test_position->Text));
 			double encoderActual = std::stod(msclr::interop::marshal_as<std::string>(this->labelStatusActPos0->Text));
@@ -1284,9 +1303,31 @@ private: System::Windows::Forms::Label^ label12;
 				vel.profile.dec = 0;
 				////Execute a velocity command
 				wmxlib_cm.velocity->StartVel(&vel);
+				isDuringGoToForward = false;
 			}
-		
-		
+		}
+
+		// encoder is decreasing
+		if (isDuringGoToBackward) {
+
+			double encoderGoto = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_test_position->Text));
+			double encoderActual = std::stod(msclr::interop::marshal_as<std::string>(this->labelStatusActPos0->Text));
+
+			if (encoderActual < encoderGoto) {
+				Velocity::VelCommand vel;
+
+				//Set axis to velocity command mode
+				wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
+				////Set velocity command parameters
+				vel.axis = 0;
+				vel.profile.type = ProfileType::SCurve;
+				vel.profile.velocity = 0;
+				vel.profile.acc = 0;
+				vel.profile.dec = 0;
+				////Execute a velocity command
+				wmxlib_cm.velocity->StartVel(&vel);
+				isDuringGoToBackward = false;
+			}
 		}
 
 
@@ -1711,7 +1752,27 @@ private: System::Windows::Forms::Label^ label12;
 
 	private: System::Void button_goto_position_Click(System::Object^ sender, System::EventArgs^ e) {
 		
-		isDuringGoTo = true;
+		isDuringGoToForward = true;
+
+		Velocity::VelCommand vel;
+		//Set axis to velocity command mode
+		wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
+
+		////Set velocity command parameters
+		vel.axis = 0;
+		vel.profile.type = ProfileType::Trapezoidal;
+		vel.profile.velocity = 200;
+		vel.profile.acc = 100;
+		vel.profile.dec = 100;
+
+		////Execute a velocity command
+		wmxlib_cm.velocity->StartVel(&vel);
+
+
+	}
+
+	private: System::Void button_goto_position1_Click(System::Object^ sender, System::EventArgs^ e) {
+		isDuringGoToBackward = true;
 
 		Velocity::VelCommand vel;
 		//Set axis to velocity command mode
@@ -1726,8 +1787,7 @@ private: System::Windows::Forms::Label^ label12;
 
 		////Execute a velocity command
 		wmxlib_cm.velocity->StartVel(&vel);
-
-
+	
 	}
 	private: System::Void button_goto_IO_Click(System::Object^ sender, System::EventArgs^ e) {
 		isTargetTagFound = false;
@@ -1860,5 +1920,6 @@ private: System::Void button_check_position_Click(System::Object^ sender, System
 		return;
 	}
 }
+
 };
 }
