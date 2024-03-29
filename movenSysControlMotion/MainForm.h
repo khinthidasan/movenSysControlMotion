@@ -1119,7 +1119,7 @@ private: System::Windows::Forms::Button^ button_goto_position1;
 			this->textBox_test_position->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->textBox_test_position->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_test_position->Location = System::Drawing::Point(1056, 453);
+			this->textBox_test_position->Location = System::Drawing::Point(1032, 453);
 			this->textBox_test_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_test_position->Name = L"textBox_test_position";
 			this->textBox_test_position->Size = System::Drawing::Size(122, 34);
@@ -1128,11 +1128,11 @@ private: System::Windows::Forms::Button^ button_goto_position1;
 			// label12
 			// 
 			this->label12->AutoSize = true;
-			this->label12->Location = System::Drawing::Point(1053, 428);
+			this->label12->Location = System::Drawing::Point(1029, 428);
 			this->label12->Name = L"label12";
-			this->label12->Size = System::Drawing::Size(94, 15);
+			this->label12->Size = System::Drawing::Size(189, 15);
 			this->label12->TabIndex = 216;
-			this->label12->Text = L"Test Position";
+			this->label12->Text = L"Enter Position ( auto stop )";
 			// 
 			// button_goto_position1
 			// 
