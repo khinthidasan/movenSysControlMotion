@@ -43,6 +43,12 @@
 
 namespace movenSysControlMotion {
 
+	struct Data {
+		std::string tag;
+		double position;
+		bool current;
+	};
+
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -125,6 +131,11 @@ namespace movenSysControlMotion {
 	bool isDuringGoTo = false;
 
 
+
+	//define vector for tag value, position and current
+	std::vector<Data> dataVector;
+
+
 	/// <summary>
 	/// Summary for MainForm
 	/// </summary>
@@ -202,13 +213,13 @@ namespace movenSysControlMotion {
 	private: System::Windows::Forms::Button^ button_stop_motion;
 	private: System::Windows::Forms::GroupBox^ groupBox1;
 	private: System::Windows::Forms::GroupBox^ groupBox2;
-	private: System::Windows::Forms::GroupBox^ groupBox3;
-	private: System::Windows::Forms::Label^ label_IO;
+
+
 	private: System::Windows::Forms::Button^ button_calibration_start;
 	private: System::Windows::Forms::TextBox^ textBox_goto;
 
 
-	private: System::Windows::Forms::Label^ label1;
+
 	private: System::Windows::Forms::TextBox^ textBox_tag1;
 
 	private: System::Windows::Forms::Label^ label2;
@@ -227,6 +238,25 @@ namespace movenSysControlMotion {
 	private: System::Windows::Forms::Button^ button_goto_IO;
 	private: System::Windows::Forms::Button^ button2;
 	private: System::Windows::Forms::Button^ button3;
+	private: System::Windows::Forms::ComboBox^ comboBox_brautRate;
+	private: System::Windows::Forms::Label^ label10;
+	private: System::Windows::Forms::ComboBox^ comboBox_serialPort;
+	private: System::Windows::Forms::Label^ label9;
+	private: System::Windows::Forms::Button^ button_serial_port;
+private: System::Windows::Forms::TextBox^ textBox_tag3;
+private: System::Windows::Forms::TextBox^ textBox_position3;
+private: System::Windows::Forms::TextBox^ textBox_position4;
+private: System::Windows::Forms::TextBox^ textBox_tag4;
+private: System::Windows::Forms::Label^ label1;
+private: System::Windows::Forms::Button^ button4;
+private: System::Windows::Forms::Button^ button_check_position;
+private: System::Windows::Forms::TextBox^ textBox_current1;
+private: System::Windows::Forms::Label^ label11;
+private: System::Windows::Forms::TextBox^ textBox_current2;
+private: System::Windows::Forms::TextBox^ textBox_current3;
+private: System::Windows::Forms::TextBox^ textBox_current4;
+private: System::Windows::Forms::TextBox^ textBox_test_position;
+private: System::Windows::Forms::Label^ label12;
 
 
 
@@ -277,12 +307,14 @@ namespace movenSysControlMotion {
 			this->textBoxDeviceName = (gcnew System::Windows::Forms::TextBox());
 			this->button_stop_motion = (gcnew System::Windows::Forms::Button());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->comboBox_brautRate = (gcnew System::Windows::Forms::ComboBox());
+			this->label10 = (gcnew System::Windows::Forms::Label());
+			this->comboBox_serialPort = (gcnew System::Windows::Forms::ComboBox());
+			this->label9 = (gcnew System::Windows::Forms::Label());
+			this->button_serial_port = (gcnew System::Windows::Forms::Button());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
-			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
-			this->label_IO = (gcnew System::Windows::Forms::Label());
 			this->button_calibration_start = (gcnew System::Windows::Forms::Button());
 			this->textBox_goto = (gcnew System::Windows::Forms::TextBox());
-			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->textBox_tag1 = (gcnew System::Windows::Forms::TextBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
@@ -296,11 +328,24 @@ namespace movenSysControlMotion {
 			this->button_goto_IO = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
+			this->textBox_tag3 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_position3 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_position4 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_tag4 = (gcnew System::Windows::Forms::TextBox());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->button4 = (gcnew System::Windows::Forms::Button());
+			this->button_check_position = (gcnew System::Windows::Forms::Button());
+			this->textBox_current1 = (gcnew System::Windows::Forms::TextBox());
+			this->label11 = (gcnew System::Windows::Forms::Label());
+			this->textBox_current2 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_current3 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_current4 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_test_position = (gcnew System::Windows::Forms::TextBox());
+			this->label12 = (gcnew System::Windows::Forms::Label());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
-			this->groupBox3->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// richTextBoxMessage
@@ -381,10 +426,10 @@ namespace movenSysControlMotion {
 			// 
 			this->button_open_port->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_open_port->Location = System::Drawing::Point(19, 42);
+			this->button_open_port->Location = System::Drawing::Point(12, 538);
 			this->button_open_port->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_open_port->Name = L"button_open_port";
-			this->button_open_port->Size = System::Drawing::Size(136, 59);
+			this->button_open_port->Size = System::Drawing::Size(60, 25);
 			this->button_open_port->TabIndex = 176;
 			this->button_open_port->Text = L"Open Port";
 			this->button_open_port->UseVisualStyleBackColor = true;
@@ -394,10 +439,10 @@ namespace movenSysControlMotion {
 			// 
 			this->button_connect_PGV->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_connect_PGV->Location = System::Drawing::Point(161, 45);
+			this->button_connect_PGV->Location = System::Drawing::Point(12, 590);
 			this->button_connect_PGV->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_connect_PGV->Name = L"button_connect_PGV";
-			this->button_connect_PGV->Size = System::Drawing::Size(136, 59);
+			this->button_connect_PGV->Size = System::Drawing::Size(45, 24);
 			this->button_connect_PGV->TabIndex = 175;
 			this->button_connect_PGV->Text = L"PGV";
 			this->button_connect_PGV->UseVisualStyleBackColor = true;
@@ -663,10 +708,10 @@ namespace movenSysControlMotion {
 			// 
 			this->button_start_motion->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_start_motion->Location = System::Drawing::Point(14, 526);
+			this->button_start_motion->Location = System::Drawing::Point(14, 567);
 			this->button_start_motion->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_start_motion->Name = L"button_start_motion";
-			this->button_start_motion->Size = System::Drawing::Size(136, 60);
+			this->button_start_motion->Size = System::Drawing::Size(45, 19);
 			this->button_start_motion->TabIndex = 180;
 			this->button_start_motion->Text = L"StartMotion +";
 			this->button_start_motion->UseVisualStyleBackColor = true;
@@ -699,9 +744,12 @@ namespace movenSysControlMotion {
 			// 
 			// groupBox1
 			// 
+			this->groupBox1->Controls->Add(this->comboBox_brautRate);
 			this->groupBox1->Controls->Add(this->groupBox14);
-			this->groupBox1->Controls->Add(this->button_connect_PGV);
-			this->groupBox1->Controls->Add(this->button_open_port);
+			this->groupBox1->Controls->Add(this->label10);
+			this->groupBox1->Controls->Add(this->comboBox_serialPort);
+			this->groupBox1->Controls->Add(this->label9);
+			this->groupBox1->Controls->Add(this->button_serial_port);
 			this->groupBox1->Location = System::Drawing::Point(552, 12);
 			this->groupBox1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox1->Name = L"groupBox1";
@@ -709,6 +757,53 @@ namespace movenSysControlMotion {
 			this->groupBox1->Size = System::Drawing::Size(530, 208);
 			this->groupBox1->TabIndex = 183;
 			this->groupBox1->TabStop = false;
+			// 
+			// comboBox_brautRate
+			// 
+			this->comboBox_brautRate->FormattingEnabled = true;
+			this->comboBox_brautRate->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"9600", L"38400", L"57600", L"115200" });
+			this->comboBox_brautRate->Location = System::Drawing::Point(104, 70);
+			this->comboBox_brautRate->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->comboBox_brautRate->Name = L"comboBox_brautRate";
+			this->comboBox_brautRate->Size = System::Drawing::Size(143, 23);
+			this->comboBox_brautRate->TabIndex = 208;
+			// 
+			// label10
+			// 
+			this->label10->AutoSize = true;
+			this->label10->Location = System::Drawing::Point(25, 73);
+			this->label10->Name = L"label10";
+			this->label10->Size = System::Drawing::Size(76, 15);
+			this->label10->TabIndex = 207;
+			this->label10->Text = L"Braut Rate";
+			// 
+			// comboBox_serialPort
+			// 
+			this->comboBox_serialPort->FormattingEnabled = true;
+			this->comboBox_serialPort->Location = System::Drawing::Point(104, 22);
+			this->comboBox_serialPort->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->comboBox_serialPort->Name = L"comboBox_serialPort";
+			this->comboBox_serialPort->Size = System::Drawing::Size(143, 23);
+			this->comboBox_serialPort->TabIndex = 205;
+			// 
+			// label9
+			// 
+			this->label9->AutoSize = true;
+			this->label9->Location = System::Drawing::Point(25, 25);
+			this->label9->Name = L"label9";
+			this->label9->Size = System::Drawing::Size(73, 15);
+			this->label9->TabIndex = 206;
+			this->label9->Text = L"COM Port";
+			// 
+			// button_serial_port
+			// 
+			this->button_serial_port->Location = System::Drawing::Point(282, 36);
+			this->button_serial_port->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_serial_port->Name = L"button_serial_port";
+			this->button_serial_port->Size = System::Drawing::Size(143, 38);
+			this->button_serial_port->TabIndex = 204;
+			this->button_serial_port->Text = L"Connect Serial Port";
+			this->button_serial_port->UseVisualStyleBackColor = true;
 			// 
 			// groupBox2
 			// 
@@ -726,36 +821,14 @@ namespace movenSysControlMotion {
 			this->groupBox2->TabIndex = 184;
 			this->groupBox2->TabStop = false;
 			// 
-			// groupBox3
-			// 
-			this->groupBox3->Controls->Add(this->label_IO);
-			this->groupBox3->Location = System::Drawing::Point(552, 248);
-			this->groupBox3->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->groupBox3->Name = L"groupBox3";
-			this->groupBox3->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->groupBox3->Size = System::Drawing::Size(530, 62);
-			this->groupBox3->TabIndex = 185;
-			this->groupBox3->TabStop = false;
-			// 
-			// label_IO
-			// 
-			this->label_IO->AutoSize = true;
-			this->label_IO->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(129)));
-			this->label_IO->Location = System::Drawing::Point(33, 28);
-			this->label_IO->Name = L"label_IO";
-			this->label_IO->Size = System::Drawing::Size(36, 24);
-			this->label_IO->TabIndex = 0;
-			this->label_IO->Text = L"--";
-			// 
 			// button_calibration_start
 			// 
 			this->button_calibration_start->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_calibration_start->Location = System::Drawing::Point(741, 424);
+			this->button_calibration_start->Location = System::Drawing::Point(601, 428);
 			this->button_calibration_start->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_calibration_start->Name = L"button_calibration_start";
-			this->button_calibration_start->Size = System::Drawing::Size(198, 34);
+			this->button_calibration_start->Size = System::Drawing::Size(198, 46);
 			this->button_calibration_start->TabIndex = 186;
 			this->button_calibration_start->Text = L"Calibriation Start";
 			this->button_calibration_start->UseVisualStyleBackColor = true;
@@ -763,28 +836,22 @@ namespace movenSysControlMotion {
 			// 
 			// textBox_goto
 			// 
+			this->textBox_goto->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)));
+			this->textBox_goto->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->textBox_goto->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_goto->Location = System::Drawing::Point(691, 490);
+			this->textBox_goto->Location = System::Drawing::Point(1013, 259);
 			this->textBox_goto->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_goto->Name = L"textBox_goto";
-			this->textBox_goto->Size = System::Drawing::Size(278, 34);
+			this->textBox_goto->Size = System::Drawing::Size(199, 34);
 			this->textBox_goto->TabIndex = 187;
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(553, 230);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(74, 15);
-			this->label1->TabIndex = 189;
-			this->label1->Text = L"IO Sensor";
 			// 
 			// textBox_tag1
 			// 
 			this->textBox_tag1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag1->Location = System::Drawing::Point(765, 342);
+			this->textBox_tag1->Location = System::Drawing::Point(564, 262);
 			this->textBox_tag1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag1->Name = L"textBox_tag1";
 			this->textBox_tag1->Size = System::Drawing::Size(137, 34);
@@ -793,7 +860,7 @@ namespace movenSysControlMotion {
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(768, 324);
+			this->label2->Location = System::Drawing::Point(567, 236);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(108, 15);
 			this->label2->TabIndex = 191;
@@ -802,7 +869,7 @@ namespace movenSysControlMotion {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(918, 320);
+			this->label3->Location = System::Drawing::Point(724, 236);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(101, 15);
 			this->label3->TabIndex = 192;
@@ -812,7 +879,7 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_position1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_position1->Location = System::Drawing::Point(910, 342);
+			this->textBox_position1->Location = System::Drawing::Point(709, 262);
 			this->textBox_position1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_position1->Name = L"textBox_position1";
 			this->textBox_position1->Size = System::Drawing::Size(137, 34);
@@ -821,7 +888,7 @@ namespace movenSysControlMotion {
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(618, 320);
+			this->label4->Location = System::Drawing::Point(1116, 34);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(62, 15);
 			this->label4->TabIndex = 194;
@@ -831,7 +898,7 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_io1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_io1->Location = System::Drawing::Point(621, 342);
+			this->textBox_io1->Location = System::Drawing::Point(1184, 23);
 			this->textBox_io1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_io1->Name = L"textBox_io1";
 			this->textBox_io1->Size = System::Drawing::Size(137, 34);
@@ -842,7 +909,7 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_io2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_io2->Location = System::Drawing::Point(621, 382);
+			this->textBox_io2->Location = System::Drawing::Point(1184, 61);
 			this->textBox_io2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_io2->Name = L"textBox_io2";
 			this->textBox_io2->Size = System::Drawing::Size(137, 34);
@@ -853,7 +920,7 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_position2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_position2->Location = System::Drawing::Point(910, 382);
+			this->textBox_position2->Location = System::Drawing::Point(709, 303);
 			this->textBox_position2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_position2->Name = L"textBox_position2";
 			this->textBox_position2->Size = System::Drawing::Size(137, 34);
@@ -863,7 +930,7 @@ namespace movenSysControlMotion {
 			// 
 			this->textBox_tag2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag2->Location = System::Drawing::Point(765, 382);
+			this->textBox_tag2->Location = System::Drawing::Point(564, 303);
 			this->textBox_tag2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag2->Name = L"textBox_tag2";
 			this->textBox_tag2->Size = System::Drawing::Size(137, 34);
@@ -871,25 +938,26 @@ namespace movenSysControlMotion {
 			// 
 			// button_goto_position
 			// 
+			this->button_goto_position->BackColor = System::Drawing::SystemColors::Control;
 			this->button_goto_position->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_goto_position->Location = System::Drawing::Point(834, 541);
+			this->button_goto_position->Location = System::Drawing::Point(1203, 453);
 			this->button_goto_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_goto_position->Name = L"button_goto_position";
-			this->button_goto_position->Size = System::Drawing::Size(182, 31);
+			this->button_goto_position->Size = System::Drawing::Size(115, 44);
 			this->button_goto_position->TabIndex = 199;
-			this->button_goto_position->Text = L"GOTO (By Position)";
-			this->button_goto_position->UseVisualStyleBackColor = true;
+			this->button_goto_position->Text = L"Start Travel >>";
+			this->button_goto_position->UseVisualStyleBackColor = false;
 			this->button_goto_position->Click += gcnew System::EventHandler(this, &MainForm::button_goto_position_Click);
 			// 
 			// button_goto_IO
 			// 
 			this->button_goto_IO->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_goto_IO->Location = System::Drawing::Point(630, 541);
+			this->button_goto_IO->Location = System::Drawing::Point(78, 538);
 			this->button_goto_IO->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_goto_IO->Name = L"button_goto_IO";
-			this->button_goto_IO->Size = System::Drawing::Size(198, 31);
+			this->button_goto_IO->Size = System::Drawing::Size(121, 25);
 			this->button_goto_IO->TabIndex = 200;
 			this->button_goto_IO->Text = L"GOTO (  By IO )";
 			this->button_goto_IO->UseVisualStyleBackColor = true;
@@ -897,10 +965,10 @@ namespace movenSysControlMotion {
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(214, 539);
+			this->button2->Location = System::Drawing::Point(1088, 130);
 			this->button2->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(152, 61);
+			this->button2->Size = System::Drawing::Size(109, 61);
 			this->button2->TabIndex = 201;
 			this->button2->Text = L"<< button2";
 			this->button2->UseVisualStyleBackColor = true;
@@ -908,22 +976,183 @@ namespace movenSysControlMotion {
 			// 
 			// button3
 			// 
-			this->button3->Location = System::Drawing::Point(384, 541);
+			this->button3->Location = System::Drawing::Point(1203, 131);
 			this->button3->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->button3->Name = L"button3";
-			this->button3->Size = System::Drawing::Size(152, 59);
+			this->button3->Size = System::Drawing::Size(118, 59);
 			this->button3->TabIndex = 202;
 			this->button3->Text = L"button3 >>";
 			this->button3->UseVisualStyleBackColor = true;
 			this->button3->Click += gcnew System::EventHandler(this, &MainForm::button3_Click);
 			// 
+			// textBox_tag3
+			// 
+			this->textBox_tag3->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_tag3->Location = System::Drawing::Point(564, 343);
+			this->textBox_tag3->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_tag3->Name = L"textBox_tag3";
+			this->textBox_tag3->Size = System::Drawing::Size(137, 34);
+			this->textBox_tag3->TabIndex = 203;
+			// 
+			// textBox_position3
+			// 
+			this->textBox_position3->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_position3->Location = System::Drawing::Point(709, 343);
+			this->textBox_position3->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_position3->Name = L"textBox_position3";
+			this->textBox_position3->Size = System::Drawing::Size(137, 34);
+			this->textBox_position3->TabIndex = 204;
+			// 
+			// textBox_position4
+			// 
+			this->textBox_position4->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_position4->Location = System::Drawing::Point(709, 381);
+			this->textBox_position4->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_position4->Name = L"textBox_position4";
+			this->textBox_position4->Size = System::Drawing::Size(137, 34);
+			this->textBox_position4->TabIndex = 206;
+			// 
+			// textBox_tag4
+			// 
+			this->textBox_tag4->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_tag4->Location = System::Drawing::Point(564, 381);
+			this->textBox_tag4->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_tag4->Name = L"textBox_tag4";
+			this->textBox_tag4->Size = System::Drawing::Size(137, 34);
+			this->textBox_tag4->TabIndex = 205;
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(1010, 237);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(118, 15);
+			this->label1->TabIndex = 207;
+			this->label1->Text = L"Fill RFID to travel";
+			// 
+			// button4
+			// 
+			this->button4->Location = System::Drawing::Point(601, 480);
+			this->button4->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+			this->button4->Name = L"button4";
+			this->button4->Size = System::Drawing::Size(198, 45);
+			this->button4->TabIndex = 208;
+			this->button4->Text = L"Assign Position( Temp )";
+			this->button4->UseVisualStyleBackColor = true;
+			this->button4->Click += gcnew System::EventHandler(this, &MainForm::button4_Click);
+			// 
+			// button_check_position
+			// 
+			this->button_check_position->BackColor = System::Drawing::SystemColors::Control;
+			this->button_check_position->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->button_check_position->Location = System::Drawing::Point(1218, 250);
+			this->button_check_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_check_position->Name = L"button_check_position";
+			this->button_check_position->Size = System::Drawing::Size(115, 44);
+			this->button_check_position->TabIndex = 209;
+			this->button_check_position->Text = L"Check Positon";
+			this->button_check_position->UseVisualStyleBackColor = false;
+			this->button_check_position->Click += gcnew System::EventHandler(this, &MainForm::button_check_position_Click);
+			// 
+			// textBox_current1
+			// 
+			this->textBox_current1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_current1->Location = System::Drawing::Point(857, 262);
+			this->textBox_current1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_current1->Name = L"textBox_current1";
+			this->textBox_current1->Size = System::Drawing::Size(137, 34);
+			this->textBox_current1->TabIndex = 210;
+			// 
+			// label11
+			// 
+			this->label11->AutoSize = true;
+			this->label11->Location = System::Drawing::Point(878, 236);
+			this->label11->Name = L"label11";
+			this->label11->Size = System::Drawing::Size(53, 15);
+			this->label11->TabIndex = 211;
+			this->label11->Text = L"Current";
+			// 
+			// textBox_current2
+			// 
+			this->textBox_current2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_current2->Location = System::Drawing::Point(857, 303);
+			this->textBox_current2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_current2->Name = L"textBox_current2";
+			this->textBox_current2->Size = System::Drawing::Size(137, 34);
+			this->textBox_current2->TabIndex = 212;
+			// 
+			// textBox_current3
+			// 
+			this->textBox_current3->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_current3->Location = System::Drawing::Point(857, 346);
+			this->textBox_current3->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_current3->Name = L"textBox_current3";
+			this->textBox_current3->Size = System::Drawing::Size(137, 34);
+			this->textBox_current3->TabIndex = 213;
+			// 
+			// textBox_current4
+			// 
+			this->textBox_current4->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_current4->Location = System::Drawing::Point(857, 384);
+			this->textBox_current4->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_current4->Name = L"textBox_current4";
+			this->textBox_current4->Size = System::Drawing::Size(137, 34);
+			this->textBox_current4->TabIndex = 214;
+			// 
+			// textBox_test_position
+			// 
+			this->textBox_test_position->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)));
+			this->textBox_test_position->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->textBox_test_position->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_test_position->Location = System::Drawing::Point(1056, 453);
+			this->textBox_test_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_test_position->Name = L"textBox_test_position";
+			this->textBox_test_position->Size = System::Drawing::Size(122, 34);
+			this->textBox_test_position->TabIndex = 215;
+			// 
+			// label12
+			// 
+			this->label12->AutoSize = true;
+			this->label12->Location = System::Drawing::Point(1053, 428);
+			this->label12->Name = L"label12";
+			this->label12->Size = System::Drawing::Size(94, 15);
+			this->label12->TabIndex = 216;
+			this->label12->Text = L"Test Position";
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1333, 615);
+			this->ClientSize = System::Drawing::Size(1345, 595);
+			this->Controls->Add(this->label12);
+			this->Controls->Add(this->textBox_test_position);
+			this->Controls->Add(this->textBox_current4);
+			this->Controls->Add(this->textBox_current3);
+			this->Controls->Add(this->textBox_current2);
+			this->Controls->Add(this->label11);
+			this->Controls->Add(this->textBox_current1);
+			this->Controls->Add(this->button_check_position);
+			this->Controls->Add(this->button4);
+			this->Controls->Add(this->label1);
+			this->Controls->Add(this->textBox_position4);
+			this->Controls->Add(this->textBox_tag4);
+			this->Controls->Add(this->textBox_position3);
+			this->Controls->Add(this->textBox_tag3);
 			this->Controls->Add(this->button3);
+			this->Controls->Add(this->button_connect_PGV);
 			this->Controls->Add(this->button2);
+			this->Controls->Add(this->button_open_port);
 			this->Controls->Add(this->button_goto_IO);
 			this->Controls->Add(this->button_goto_position);
 			this->Controls->Add(this->textBox_io2);
@@ -935,10 +1164,8 @@ namespace movenSysControlMotion {
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->textBox_tag1);
-			this->Controls->Add(this->label1);
 			this->Controls->Add(this->textBox_goto);
 			this->Controls->Add(this->button_calibration_start);
-			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->groupBox2);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->richTextBoxMessage);
@@ -948,17 +1175,16 @@ namespace movenSysControlMotion {
 			this->Controls->Add(this->button1);
 			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->Name = L"MainForm";
-			this->Text = L"PGV sensor controlled motion";
+			this->Text = L"Shuttle Motion";
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
 			this->groupBox4->ResumeLayout(false);
 			this->groupBox4->PerformLayout();
 			this->groupBox14->ResumeLayout(false);
 			this->groupBox14->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
 			this->groupBox2->ResumeLayout(false);
 			this->groupBox2->PerformLayout();
-			this->groupBox3->ResumeLayout(false);
-			this->groupBox3->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -967,6 +1193,32 @@ namespace movenSysControlMotion {
 	//----------------------------------------------------------------------------
 	// Custom Functions.
 	//----------------------------------------------------------------------------
+	// 
+	
+	// Function to get a list of active COM ports
+		std::vector<std::wstring> GetActiveCOMPorts() {
+			std::vector<std::wstring> comPorts;
+
+			// Enumerate the COM ports
+			for (int i = 1; i <= 256; ++i) {  // COM ports are typically numbered from 1 to 256
+				wchar_t portName[20];
+				wsprintf(portName, L"\\\\.\\COM%d", i);
+
+				// Try to open the COM port
+				HANDLE hPort = CreateFile(portName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
+				if (hPort != INVALID_HANDLE_VALUE) {
+					std::wstring portNameStr = portName;
+					// Port opened successfully, so it's active
+					CloseHandle(hPort);
+					portNameStr.erase(0, 4);
+					comPorts.push_back(portNameStr);
+				}
+			}
+			return comPorts;
+		}
+
+
+	// 
 	//Control servo On/Off
 		Void servoOnOff(int axis, bool controlFlag, System::Windows::Forms::Button^ btn) {
 			int onOffStatus = 0;
@@ -1004,7 +1256,7 @@ namespace movenSysControlMotion {
 
 	private: System::Void timer_IO(System::Object^ sender, System::EventArgs^ e) {
 
-		// Metal detector  at IO position 4.7
+		// Metal detector  at IO position 4.7 to control STOP
 		Wmx3Lib_Io.GetInBit(0x04, 0x07, &inData7[0]); // For the address [4.7  -> 0x04 ( address ) , 0x07 ( bit ) ]
 		unsigned char* data = &inData7[0];
 		const char* convertedData = reinterpret_cast<const char*>(data);
@@ -1014,58 +1266,31 @@ namespace movenSysControlMotion {
 		}
 
 
-		// Peppel Fruch pass-thru sensor at IO position 4.2
-		Wmx3Lib_Io.GetInBit(0x04, 0x02, &inData2[0]); // For the address [4.2  -> 0x04 ( address ) , 0x02 ( bit ) ]
-		unsigned char* data2 = &inData2[0];
-		const char* convertedData2 = reinterpret_cast<const char*>(data2);
-		size_t length2 = strlen(convertedData2);
+		if (isDuringGoTo) {
 
-		if ((isDuringGoTo) && (isTargetTagFound)) {
-			if (length2 == 1) {  // if sensor is ON, motor is stopped.
-				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
-				isDuringGoTo = false;
-				isTargetTagFound = false;
+			double encoderGoto = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_test_position->Text));
+			double encoderActual = std::stod(msclr::interop::marshal_as<std::string>(this->labelStatusActPos0->Text));
+
+			if (encoderActual > encoderGoto) {
+				Velocity::VelCommand vel;
+
+				//Set axis to velocity command mode
+				wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
+				////Set velocity command parameters
+				vel.axis = 0;
+				vel.profile.type = ProfileType::SCurve;
+				vel.profile.velocity = 0;
+				vel.profile.acc = 0;
+				vel.profile.dec = 0;
+				////Execute a velocity command
+				wmxlib_cm.velocity->StartVel(&vel);
 			}
-		}
-
-		if ((isDuringCalibrition) && (textBox_position1->Text == "")) {
-			if (length2 == 1) {  // if sensor is ON, motor is stopped.
-				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
-				Sleep(500);
-				textBox_position1->Text = labelStatusActPos0->Text;
-				textBox_tag1->Text = label_agv_tagValue->Text;
-				isDuringCalibrition = false;
-			}
-		}
-
-
-
-		// Peppel Fruch pass-thru sensor at IO position 4.0
-		Wmx3Lib_Io.GetInBit(0x04, 0x00, &inData0[0]); // For the address [4.0  -> 0x04 ( address ) , 0x00 ( bit ) ]
-		unsigned char* data0 = &inData0[0];
-		const char* convertedData0 = reinterpret_cast<const char*>(data0);
-		size_t length0 = strlen(convertedData0);
-
-
-		if ((isDuringGoTo) && (isTargetTagFound)) {
-			if (length0 == 1) {  // if sensor is ON, motor is stopped.
-				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
-				isDuringGoTo = false;
-				isTargetTagFound = false;
-			}
+		
+		
 		}
 
 
-		if ((isDuringCalibrition) && (textBox_position2->Text == ""))  {
-			if (length0 == 1) {  // if sensor is ON, motor is stopped.
-				wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
-				Sleep(500);
-				textBox_position2->Text = labelStatusActPos0->Text;
-				textBox_tag2->Text = label_agv_tagValue->Text;
-				isDuringCalibrition = false;
-			}
-		}
-
+		
 
 
 
@@ -1269,6 +1494,64 @@ namespace movenSysControlMotion {
 			Sleep(sensorDataInterval);
 		}
 	}
+		   
+
+	System::String^ ToSystemString(const std::wstring& str) {
+			   return gcnew System::String(str.c_str());
+	}
+
+	System::Void stopMotion() {
+		//wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
+
+		Velocity::VelCommand vel;
+
+		//Set axis to velocity command mode
+		wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
+
+		////Set velocity command parameters
+		vel.axis = 0;
+		vel.profile.type = ProfileType::SCurve;
+		vel.profile.velocity = 1000;
+		vel.profile.acc = 1000;
+		vel.profile.dec = 1000;
+
+		////Execute a velocity command
+		wmxlib_cm.velocity->StartVel(&vel);
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+		////Set velocity command parameters
+		vel.axis = 0;
+		vel.profile.type = ProfileType::SCurve;
+		vel.profile.velocity = 0;
+		vel.profile.acc = 0;
+		vel.profile.dec = 0;
+
+		////Execute a velocity command
+		wmxlib_cm.velocity->StartVel(&vel);
+	}
+
+
+	// Function to get the position value for a given tag
+	double getPosition(const std::vector<Data>& data, const std::string& tag) {
+		for (const auto& item : data) {
+			if (item.tag == tag) {
+				return item.position;
+			}
+		}
+		// Return a default value if tag not found
+		return 0.0;
+	}
+
+	// Function to find if any current is true, return position value
+	double findCurrentTagPosition(const std::vector<Data>& data) {
+		for (const auto& item : data) {
+			if (item.current) {
+				return item.position;
+			}
+		}
+		return 0.0;
+	}
 
 
 
@@ -1276,6 +1559,17 @@ namespace movenSysControlMotion {
 	// Event Functions.
 	//----------------------------------------------------------------------------
 	private: System::Void MainForm_Load(System::Object^ sender, System::EventArgs^ e) {
+
+
+		//Get active Serial COM port to Combo dropdown list
+		std::vector<std::wstring> activeCOMPorts = GetActiveCOMPorts();
+		// Print the list of active COM ports
+		//std::wcout << "Active COM ports:" << std::endl;
+		for (const auto& port : activeCOMPorts) {
+			//std::wcout << port << std::endl;
+			System::String^ portString = ToSystemString(port);
+			this->comboBox_serialPort->Items->Add(portString);
+		}
 
 
 		// Set Timer to show status of the axis
@@ -1346,34 +1640,7 @@ namespace movenSysControlMotion {
 
 
 	private: System::Void button_stop_motion_Click(System::Object^ sender, System::EventArgs^ e) {
-		//wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
-
-		Velocity::VelCommand vel;
-
-		//Set axis to velocity command mode
-		wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
-
-		////Set velocity command parameters
-		vel.axis = 0;
-		vel.profile.type = ProfileType::SCurve;
-		vel.profile.velocity = 1000;
-		vel.profile.acc = 1000;
-		vel.profile.dec = 1000;
-
-		////Execute a velocity command
-		wmxlib_cm.velocity->StartVel(&vel);
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
-		////Set velocity command parameters
-		vel.axis = 0;
-		vel.profile.type = ProfileType::SCurve;
-		vel.profile.velocity = 0;
-		vel.profile.acc = 0;
-		vel.profile.dec = 0;
-
-		////Execute a velocity command
-		wmxlib_cm.velocity->StartVel(&vel);
+		stopMotion();
 	}
 	
 	private: System::Void button_start_motion_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1443,39 +1710,24 @@ namespace movenSysControlMotion {
 	}
 
 	private: System::Void button_goto_position_Click(System::Object^ sender, System::EventArgs^ e) {
-		isTargetTagFound = false;
-		// Get Tag Goto value from input Text
-		std::string strGotoTag = msclr::interop::marshal_as<std::string>(textBox_goto->Text);
+		
+		isDuringGoTo = true;
 
-		// TODO Check it is valid Tag or not In programatic way
-		// Testing version check test with default value ( 0001 0r 0006 )
-		if (strGotoTag == "0001") {
-			tagName = "0001";
-			std::string strPosition = msclr::interop::marshal_as<std::string>(textBox_position1->Text);
-			gotoPosition = std::stod(strPosition);
-		}
-		else if (strGotoTag == "0006") {
-			tagName = "0006";
-			std::string strPosition = msclr::interop::marshal_as<std::string>(textBox_position2->Text);
-			gotoPosition = std::stod(strPosition);
-		}
-		else {
-			this->richTextBoxMessage->Text = "Invalid Tag!!";
-			return;
-		}
+		Velocity::VelCommand vel;
+		//Set axis to velocity command mode
+		wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
 
-		Motion::PosCommand posCommand = Motion::PosCommand();
-		posCommand.profile.type = ProfileType::SCurve;
-		posCommand.axis = 0;
-		posCommand.target = gotoPosition;
-		posCommand.profile.velocity = normalJogSpeed;
-		posCommand.profile.acc = normalAccelSpeed;
-		posCommand.profile.dec = normalDecelSpeed;
-		wmxlib_cm.motion->StartPos(&posCommand);
+		////Set velocity command parameters
+		vel.axis = 0;
+		vel.profile.type = ProfileType::Trapezoidal;
+		vel.profile.velocity = -200;
+		vel.profile.acc = 100;
+		vel.profile.dec = 100;
 
-		// A thread is called to change the SLOW speed when QR code is read
-		// this->thrAwaitSlow = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MainForm::threadReadQR));
-		// this->thrAwaitSlow->Start();
+		////Execute a velocity command
+		wmxlib_cm.velocity->StartVel(&vel);
+
+
 	}
 	private: System::Void button_goto_IO_Click(System::Object^ sender, System::EventArgs^ e) {
 		isTargetTagFound = false;
@@ -1547,6 +1799,66 @@ private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e
 
 	////Execute a velocity command
 	wmxlib_cm.velocity->StartVel(&vel);
+}
+private: System::Void button_serial_port_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+
+private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	dataVector.clear();
+
+	std::string tag1 = msclr::interop::marshal_as<std::string>(this->textBox_tag1->Text);
+	std::string tag2 = msclr::interop::marshal_as<std::string>(this->textBox_tag2->Text);
+	std::string tag3 = msclr::interop::marshal_as<std::string>(this->textBox_tag3->Text);
+	std::string tag4 = msclr::interop::marshal_as<std::string>(this->textBox_tag4->Text);
+
+	double encoderValue1 = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_position1->Text));
+	double encoderValue2 = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_position2->Text));
+	double encoderValue3 = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_position3->Text));
+	double encoderValue4 = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_position4->Text));
+
+	bool isCurrent1, isCurrent2, isCurrent3, isCurrent4;
+	string current1 = msclr::interop::marshal_as<std::string>(this->textBox_current1->Text);
+	string current2 = msclr::interop::marshal_as<std::string>(this->textBox_current2->Text);
+	string current3 = msclr::interop::marshal_as<std::string>(this->textBox_current3->Text);
+	string current4 = msclr::interop::marshal_as<std::string>(this->textBox_current4->Text);
+	if (current1 == "0") { isCurrent1 = false; }
+	else { isCurrent1 = true; }
+
+	if (current2 == "0") { isCurrent2 = false; }
+	else { isCurrent2 = true; }
+
+	if (current3 == "0") { isCurrent3 = false; }
+	else { isCurrent3 = true; }
+
+	if (current4 == "0") { isCurrent4 = false; }
+	else { isCurrent4 = true; }
+
+	dataVector.push_back({ tag1, encoderValue1, isCurrent1 });
+	dataVector.push_back({ tag2, encoderValue2, isCurrent2 });
+	dataVector.push_back({ tag3, encoderValue3, isCurrent3 });
+	dataVector.push_back({ tag4, encoderValue4, isCurrent4 });
+
+}
+private: System::Void button_check_position_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	isTargetTagFound = false;
+	
+	// Get Tag Goto positon value from input Text
+	std::string strGotoTag = msclr::interop::marshal_as<std::string>(textBox_goto->Text);
+
+	double currentPosition = findCurrentTagPosition(dataVector);
+
+	double gotoPosition = getPosition(dataVector, strGotoTag);
+	if (gotoPosition == 0.0) {
+		this->richTextBoxMessage->Text = "Invalid Tag!!";
+		return;
+	}
+	else {
+
+		this->richTextBoxMessage->Text = "Will go to the value " + gotoPosition+ "\n current position "+ currentPosition;
+		return;
+	}
 }
 };
 }
