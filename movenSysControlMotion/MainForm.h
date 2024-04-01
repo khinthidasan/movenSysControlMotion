@@ -1942,6 +1942,17 @@ private: System::ComponentModel::IContainer^ components;
 		return true;
 	}
 
+	private: System::Void RFIDDataReading() {
+			while (true) {
+				if (this->serialPort1->IsOpen) {
+					RFIDLine = msclr::interop::marshal_as<std::string>(this->serialPort1->ReadLine());
+					//cout << RFIDLine << endl;
+				}
+				Sleep(sensorDataInterval);
+			}
+
+		}
+
 	private: System::Void PGVDataReading() {
 		while (true) {
 
