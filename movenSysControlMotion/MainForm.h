@@ -178,6 +178,8 @@ namespace movenSysControlMotion {
 	//define thread
 	private: static System::Threading::Thread^ thrPGVDataReceiving; //PGV sensor data reading
 	private: static System::Threading::Thread^ thrAwaitSlow; //Slow By QR Code
+	private: static System::Threading::Thread^ thrRFIDScanning; //Scanning RFID Tag from RFID module by serial communication
+
 
 	// private: static System::Threading::Thread^ thrCalibration; //Thread for calibriation
 	// private: static System::Threading::Thread^ thrAwaitStop; //Stop By IO sensor
