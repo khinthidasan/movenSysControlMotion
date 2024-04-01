@@ -1820,53 +1820,13 @@ private: System::ComponentModel::IContainer^ components;
 	}
 
 	private: System::Void timer_PGV(System::Object^ sender, System::EventArgs^ e) {
-		if (PGVStart) {
-			//////Warning value
-			//std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[0]) << std::endl;
-			int warningInt = static_cast<int>(receivedData[0]);
-			if (warningInt == 2) {
-
-				isAGVTagPosition = false;
-
+		if (this->serialPort1->IsOpen) {
+			if (RFIDLine == "") {
 				label_agv_tagValue->Text = "No Position";
-				label_agv_tagValue->ForeColor = System::Drawing::Color::Red;
 			}
-			//////Tag Value
-			else {
-				isAGVTagPosition = true;
-				std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[14]) << std::endl;
-				std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[15]) << std::endl;
-				std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[16]) << std::endl;
-				std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[17]) << std::endl;
-
-				int hexTag1 = static_cast<int>(receivedData[14]);
-				int hexTag2 = static_cast<int>(receivedData[15]);
-				int hexTag3 = static_cast<int>(receivedData[16]);
-				int hexTag4 = static_cast<int>(receivedData[17]);
-
-				// Convert integers to hexadecimal strings
-				std::stringstream ss;
-				ss << std::hex << std::setw(2) << std::setfill('0') << hexTag1;
-				std::string strTag1 = ss.str();
-
-				ss.str("");
-				ss << std::hex << std::setw(2) << std::setfill('0') << hexTag2;
-				std::string strTag2 = ss.str();
-
-				ss.str("");
-				ss << std::hex << std::setw(2) << std::setfill('0') << hexTag3;
-				std::string strTag3 = ss.str();
-
-				ss.str("");
-				ss << std::hex << std::setw(2) << std::setfill('0') << hexTag4;
-				std::string strTag4 = ss.str();
-
-				System::String^ fullTagValue = std::stoi(strTag1, nullptr, 16).ToString() + std::stoi(strTag2, nullptr, 16).ToString() + std::stoi(strTag3, nullptr, 16).ToString() + std::stoi(strTag4, nullptr, 16).ToString();
-
-
-				label_agv_tagValue->Text = fullTagValue;
-				label_agv_tagValue->ForeColor = System::Drawing::Color::Lime;
-
+			else
+			{
+				label_agv_tagValue->Text = gcnew System::String(RFIDLine.c_str());
 			}
 		}
 	
