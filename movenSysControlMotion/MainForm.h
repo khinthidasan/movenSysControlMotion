@@ -893,6 +893,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->button_serial_port->TabIndex = 204;
 			this->button_serial_port->Text = L"Connect Serial Port";
 			this->button_serial_port->UseVisualStyleBackColor = true;
+			this->button_serial_port->Click += gcnew System::EventHandler(this, &MainForm::button_serial_port_Click_1);
 			// 
 			// groupBox2
 			// 
@@ -2463,6 +2464,34 @@ private: System::Void button_tag4_forward_Click(System::Object^ sender, System::
 	travelForward();
 }
 private: System::Void button5_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void button_serial_port_Click_1(System::Object^ sender, System::EventArgs^ e) {
+	if (this->serialPort1->IsOpen) {
+		this->serialPort1->Close();
+		this->thrRFIDScanning->Abort();
+		this->button_serial_port->BackColor = System::Drawing::Color::White;
+		return;
+	}
+
+
+	if (this->comboBox_serialPort->Text == String::Empty || this->comboBox_brautRate->Text == String::Empty) {
+		this->richTextBoxMessage->Text = "Please Select Port & BrautRate!";
+		this->button_serial_port->BackColor = System::Drawing::Color::White;
+		return;
+	}
+
+	try {
+		this->serialPort1->PortName = this->comboBox_serialPort->Text;
+		this->serialPort1->BaudRate = Int32::Parse(this->comboBox_brautRate->Text);
+		this->serialPort1->Open();
+		this->button_serial_port->BackColor = System::Drawing::Color::GreenYellow;
+
+		this->thrRFIDScanning = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MainForm::RFIDDataReading));
+		this->thrRFIDScanning->Start();
+	}
+	catch (UnauthorizedAccessException^) {
+		this->richTextBoxMessage->Text = "Serial Port cannot connect!";
+	}
 }
 };
 }
