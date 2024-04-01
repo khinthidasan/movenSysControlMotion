@@ -140,7 +140,7 @@ namespace movenSysControlMotion {
 	double slowPosition = 0.0;
 	bool isDuringTravelSlow = false;
 	string direction = "";
-
+	string RFIDLine = "";
 
 
 	//define vector for tag value, position and current
