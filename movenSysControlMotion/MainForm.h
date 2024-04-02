@@ -1172,9 +1172,9 @@ private: System::ComponentModel::IContainer^ components;
 			this->label11->AutoSize = true;
 			this->label11->Location = System::Drawing::Point(829, 228);
 			this->label11->Name = L"label11";
-			this->label11->Size = System::Drawing::Size(119, 12);
+			this->label11->Size = System::Drawing::Size(126, 12);
 			this->label11->TabIndex = 211;
-			this->label11->Text = L"speed slow position";
+			this->label11->Text = L"speedd slow position";
 			// 
 			// textBox_tag2_position_forward
 			// 
