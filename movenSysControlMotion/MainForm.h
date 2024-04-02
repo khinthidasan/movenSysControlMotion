@@ -316,6 +316,13 @@ private: System::Windows::Forms::Button^ button7;
 private: System::IO::Ports::SerialPort^ serialPort1;
 private: System::Windows::Forms::TextBox^ textBox_velocity;
 private: System::Windows::Forms::Label^ label15;
+private: System::Windows::Forms::GroupBox^ groupBox3;
+private: System::Windows::Forms::Button^ button_encoder_forward;
+private: System::Windows::Forms::Button^ button_encoder_backward;
+private: System::Windows::Forms::TextBox^ textBox_encoderDifference;
+private: System::Windows::Forms::TextBox^ textBox_slowDown;
+private: System::Windows::Forms::Label^ label25;
+private: System::Windows::Forms::Label^ label16;
 private: System::ComponentModel::IContainer^ components;
 
 
@@ -438,10 +445,18 @@ private: System::ComponentModel::IContainer^ components;
 			this->serialPort1 = (gcnew System::IO::Ports::SerialPort(this->components));
 			this->textBox_velocity = (gcnew System::Windows::Forms::TextBox());
 			this->label15 = (gcnew System::Windows::Forms::Label());
+			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->button_encoder_forward = (gcnew System::Windows::Forms::Button());
+			this->button_encoder_backward = (gcnew System::Windows::Forms::Button());
+			this->textBox_encoderDifference = (gcnew System::Windows::Forms::TextBox());
+			this->label16 = (gcnew System::Windows::Forms::Label());
+			this->label25 = (gcnew System::Windows::Forms::Label());
+			this->textBox_slowDown = (gcnew System::Windows::Forms::TextBox());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
+			this->groupBox3->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// richTextBoxMessage
@@ -1554,11 +1569,85 @@ private: System::ComponentModel::IContainer^ components;
 			this->label15->TabIndex = 252;
 			this->label15->Text = L"Velocity";
 			// 
+			// groupBox3
+			// 
+			this->groupBox3->Controls->Add(this->textBox_slowDown);
+			this->groupBox3->Controls->Add(this->label25);
+			this->groupBox3->Controls->Add(this->label16);
+			this->groupBox3->Controls->Add(this->button_encoder_forward);
+			this->groupBox3->Controls->Add(this->button_encoder_backward);
+			this->groupBox3->Controls->Add(this->textBox_encoderDifference);
+			this->groupBox3->Location = System::Drawing::Point(1031, 366);
+			this->groupBox3->Name = L"groupBox3";
+			this->groupBox3->Size = System::Drawing::Size(368, 142);
+			this->groupBox3->TabIndex = 253;
+			this->groupBox3->TabStop = false;
+			this->groupBox3->Text = L"Encoder Value";
+			// 
+			// button_encoder_forward
+			// 
+			this->button_encoder_forward->Location = System::Drawing::Point(259, 71);
+			this->button_encoder_forward->Name = L"button_encoder_forward";
+			this->button_encoder_forward->Size = System::Drawing::Size(103, 47);
+			this->button_encoder_forward->TabIndex = 255;
+			this->button_encoder_forward->Text = L"Encoder Forward >>";
+			this->button_encoder_forward->UseVisualStyleBackColor = true;
+			this->button_encoder_forward->Click += gcnew System::EventHandler(this, &MainForm::button_encoder_forward_Click);
+			// 
+			// button_encoder_backward
+			// 
+			this->button_encoder_backward->Location = System::Drawing::Point(164, 71);
+			this->button_encoder_backward->Name = L"button_encoder_backward";
+			this->button_encoder_backward->Size = System::Drawing::Size(94, 49);
+			this->button_encoder_backward->TabIndex = 254;
+			this->button_encoder_backward->Text = L"<< Encoder Backward";
+			this->button_encoder_backward->UseVisualStyleBackColor = true;
+			this->button_encoder_backward->Click += gcnew System::EventHandler(this, &MainForm::button_encoder_backward_Click);
+			// 
+			// textBox_encoderDifference
+			// 
+			this->textBox_encoderDifference->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_encoderDifference->Location = System::Drawing::Point(22, 33);
+			this->textBox_encoderDifference->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_encoderDifference->Name = L"textBox_encoderDifference";
+			this->textBox_encoderDifference->Size = System::Drawing::Size(119, 29);
+			this->textBox_encoderDifference->TabIndex = 254;
+			// 
+			// label16
+			// 
+			this->label16->AutoSize = true;
+			this->label16->Location = System::Drawing::Point(20, 17);
+			this->label16->Name = L"label16";
+			this->label16->Size = System::Drawing::Size(112, 12);
+			this->label16->TabIndex = 254;
+			this->label16->Text = L"Encoder Difference";
+			// 
+			// label25
+			// 
+			this->label25->AutoSize = true;
+			this->label25->Location = System::Drawing::Point(20, 83);
+			this->label25->Name = L"label25";
+			this->label25->Size = System::Drawing::Size(69, 12);
+			this->label25->TabIndex = 256;
+			this->label25->Text = L"Slow Down";
+			// 
+			// textBox_slowDown
+			// 
+			this->textBox_slowDown->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_slowDown->Location = System::Drawing::Point(24, 97);
+			this->textBox_slowDown->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_slowDown->Name = L"textBox_slowDown";
+			this->textBox_slowDown->Size = System::Drawing::Size(119, 29);
+			this->textBox_slowDown->TabIndex = 257;
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1449, 476);
+			this->ClientSize = System::Drawing::Size(1449, 551);
+			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->label15);
 			this->Controls->Add(this->textBox_velocity);
 			this->Controls->Add(this->button7);
@@ -1641,6 +1730,8 @@ private: System::ComponentModel::IContainer^ components;
 			this->groupBox1->PerformLayout();
 			this->groupBox2->ResumeLayout(false);
 			this->groupBox2->PerformLayout();
+			this->groupBox3->ResumeLayout(false);
+			this->groupBox3->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -1727,7 +1818,7 @@ private: System::ComponentModel::IContainer^ components;
 		}
 
 		// encoder is increasing
-		if (isDuringGoToForward) {
+		/*if (isDuringGoToForward) {
 
 			double velocity = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_slow_vel->Text));
 			double acel = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_slow_acel->Text));
@@ -1806,7 +1897,7 @@ private: System::ComponentModel::IContainer^ components;
 				isDuringGoToBackward = false;
 				isDuringGoToBackwardSlow = false;
 			}
-		}
+		}*/
 
 
 
@@ -1829,7 +1920,17 @@ private: System::ComponentModel::IContainer^ components;
 			wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
 
 			//1 slow the speed
-			if ((encoderActual < encoderChangeSpeed) && (!isDuringTravelSlow)) {
+			if ((encoderActual < encoderChangeSpeed) && (!isDuringTravelSlow) && (direction == "backward")) {
+				vel.axis = 0;
+				vel.profile.type = ProfileType::SCurve;
+				vel.profile.velocity = slowVel;
+				vel.profile.acc = slowacel;
+				vel.profile.dec = slowdcel;
+				wmxlib_cm.velocity->StartVel(&vel);
+				isDuringTravelSlow = true;
+			}
+
+			if ((encoderActual > encoderChangeSpeed) && (!isDuringTravelSlow) && (direction == "forward")) {
 				vel.axis = 0;
 				vel.profile.type = ProfileType::SCurve;
 				vel.profile.velocity = slowVel;
@@ -1840,9 +1941,20 @@ private: System::ComponentModel::IContainer^ components;
 			}
 
 
+			//2 stop by encoder
+			if ((encoderActual > gotoPosition) && (direction == "forward")) {
+				stopMotion();
+				isTravel = false;
+			}
+
+			if ((encoderActual < gotoPosition) && (direction == "backward")) {
+				stopMotion();
+				isTravel = false;
+			}
+
 
 			//2 find target RFID
-			if ((encoderActual < encoderChangeSpeed) && (isDuringTravelSlow)) {
+			/*if ((encoderActual < encoderChangeSpeed) && (isDuringTravelSlow)) {
 				std::string strTagName = msclr::interop::marshal_as<std::string>(label_agv_tagValue->Text);
 
 				if (tagName.front() == strTagName.front()) {
@@ -1875,6 +1987,12 @@ private: System::ComponentModel::IContainer^ components;
 				}
 
 			}
+
+			//4 stop by encoder
+			if ((encoderActual > gotoPosition ) && (direction == "forward")) {
+				stopMotion();
+				isTravel = false;
+			}*/
 
 		
 		}
@@ -2592,6 +2710,49 @@ private: System::Void button_serial_port_Click_1(System::Object^ sender, System:
 	catch (UnauthorizedAccessException^) {
 		this->richTextBoxMessage->Text = "Serial Port cannot connect!";
 	}
+}
+private: System::Void button_encoder_backward_Click(System::Object^ sender, System::EventArgs^ e) {
+	isDuringTravelSlow = false;
+	isTravelTagFound = false;
+	tagName = "";
+
+	isTravel = true;
+	direction = "backward";
+
+
+	double encoderDifference = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_encoderDifference->Text));
+	double encoderCurrent = std::stod(msclr::interop::marshal_as<std::string>(this->labelStatusActPos0->Text));
+	double encoderSlow = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_slowDown->Text));
+	gotoPosition = encoderCurrent - encoderDifference ;
+	slowPosition =   encoderSlow+ gotoPosition;
+
+	this->richTextBoxMessage->Text = gotoPosition.ToString() + "\n" + slowPosition.ToString();
+
+	travelBackward();
+
+}
+private: System::Void button_encoder_forward_Click(System::Object^ sender, System::EventArgs^ e) {
+	isDuringTravelSlow = false;
+	isTravelTagFound = false;
+	tagName = "";
+
+	isTravel = true;
+	direction = "forward";
+
+	double encoderDifference = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_encoderDifference->Text));
+	double encoderCurrent = std::stod(msclr::interop::marshal_as<std::string>(this->labelStatusActPos0->Text));
+	double encoderSlow = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_slowDown->Text));
+
+	gotoPosition = encoderDifference + encoderCurrent;
+	
+	
+	slowPosition = gotoPosition - encoderSlow;
+
+
+
+	this->richTextBoxMessage->Text = gotoPosition.ToString() + "\n" + slowPosition.ToString();
+
+	travelForward();
 }
 };
 }
