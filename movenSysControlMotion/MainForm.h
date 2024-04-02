@@ -130,6 +130,9 @@ namespace movenSysControlMotion {
 	bool isDuringCalibrition = false;
 	bool isDuringGoTo = false;
 
+	//RFID Tag Value line
+	string RFIDLine = "";
+
 	bool isDuringGoToForward = false;
 	bool isDuringGoToForwardSlow = false;
 	bool isDuringGoToBackward = false;
@@ -171,6 +174,7 @@ namespace movenSysControlMotion {
 	//define thread
 	private: static System::Threading::Thread^ thrPGVDataReceiving; //PGV sensor data reading
 	private: static System::Threading::Thread^ thrAwaitSlow; //Slow By QR Code
+	private: static System::Threading::Thread^ thrRFIDScanning; //Scanning RFID Tag from RFID module by serial communication
 
 	// private: static System::Threading::Thread^ thrCalibration; //Thread for calibriation
 	// private: static System::Threading::Thread^ thrAwaitStop; //Stop By IO sensor
@@ -264,6 +268,13 @@ private: System::Windows::Forms::Label^ label12;
 private: System::Windows::Forms::Button^ button_goto_position1;
 private: System::Windows::Forms::TextBox^ textBox_positionChangeSpeed;
 private: System::Windows::Forms::Label^ label13;
+private: System::IO::Ports::SerialPort^ serialPort1;
+private: System::Windows::Forms::GroupBox^ groupBox3;
+private: System::Windows::Forms::TextBox^ textBox_vel_travel_speed;
+
+private: System::Windows::Forms::Label^ label14;
+
+private: System::ComponentModel::IContainer^ components;
 
 
 
@@ -271,7 +282,7 @@ private: System::Windows::Forms::Label^ label13;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -280,6 +291,7 @@ private: System::Windows::Forms::Label^ label13;
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			this->richTextBoxMessage = (gcnew System::Windows::Forms::RichTextBox());
 			this->button6 = (gcnew System::Windows::Forms::Button());
 			this->button1 = (gcnew System::Windows::Forms::Button());
@@ -352,10 +364,15 @@ private: System::Windows::Forms::Label^ label13;
 			this->button_goto_position1 = (gcnew System::Windows::Forms::Button());
 			this->textBox_positionChangeSpeed = (gcnew System::Windows::Forms::TextBox());
 			this->label13 = (gcnew System::Windows::Forms::Label());
+			this->serialPort1 = (gcnew System::IO::Ports::SerialPort(this->components));
+			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->textBox_vel_travel_speed = (gcnew System::Windows::Forms::TextBox());
+			this->label14 = (gcnew System::Windows::Forms::Label());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
+			this->groupBox3->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// richTextBoxMessage
@@ -814,6 +831,7 @@ private: System::Windows::Forms::Label^ label13;
 			this->button_serial_port->TabIndex = 204;
 			this->button_serial_port->Text = L"Connect Serial Port";
 			this->button_serial_port->UseVisualStyleBackColor = true;
+			this->button_serial_port->Click += gcnew System::EventHandler(this, &MainForm::button_serial_port_Click_1);
 			// 
 			// groupBox2
 			// 
@@ -866,6 +884,7 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_tag1->Name = L"textBox_tag1";
 			this->textBox_tag1->Size = System::Drawing::Size(120, 29);
 			this->textBox_tag1->TabIndex = 190;
+			this->textBox_tag1->Text = L"111111";
 			// 
 			// label2
 			// 
@@ -894,11 +913,12 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_position1->Name = L"textBox_position1";
 			this->textBox_position1->Size = System::Drawing::Size(120, 29);
 			this->textBox_position1->TabIndex = 193;
+			this->textBox_position1->Text = L"-60000";
 			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(976, 27);
+			this->label4->Location = System::Drawing::Point(977, 21);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(53, 12);
 			this->label4->TabIndex = 194;
@@ -945,16 +965,17 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_tag2->Name = L"textBox_tag2";
 			this->textBox_tag2->Size = System::Drawing::Size(120, 29);
 			this->textBox_tag2->TabIndex = 196;
+			this->textBox_tag2->Text = L"222222";
 			// 
 			// button_goto_position
 			// 
 			this->button_goto_position->BackColor = System::Drawing::SystemColors::Control;
 			this->button_goto_position->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_goto_position->Location = System::Drawing::Point(972, 354);
+			this->button_goto_position->Location = System::Drawing::Point(197, 72);
 			this->button_goto_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_goto_position->Name = L"button_goto_position";
-			this->button_goto_position->Size = System::Drawing::Size(101, 35);
+			this->button_goto_position->Size = System::Drawing::Size(113, 21);
 			this->button_goto_position->TabIndex = 199;
 			this->button_goto_position->Text = L"Start Travel >>";
 			this->button_goto_position->UseVisualStyleBackColor = false;
@@ -975,21 +996,21 @@ private: System::Windows::Forms::Label^ label13;
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(952, 104);
+			this->button2->Location = System::Drawing::Point(952, 85);
 			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(95, 49);
+			this->button2->Size = System::Drawing::Size(95, 42);
 			this->button2->TabIndex = 201;
-			this->button2->Text = L"<< button2";
+			this->button2->Text = L"<< Velocity Motion";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MainForm::button2_Click);
 			// 
 			// button3
 			// 
-			this->button3->Location = System::Drawing::Point(1053, 105);
+			this->button3->Location = System::Drawing::Point(1053, 85);
 			this->button3->Name = L"button3";
-			this->button3->Size = System::Drawing::Size(103, 47);
+			this->button3->Size = System::Drawing::Size(87, 39);
 			this->button3->TabIndex = 202;
-			this->button3->Text = L"button3 >>";
+			this->button3->Text = L"Velocity Motion >>";
 			this->button3->UseVisualStyleBackColor = true;
 			this->button3->Click += gcnew System::EventHandler(this, &MainForm::button3_Click);
 			// 
@@ -1002,6 +1023,7 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_tag3->Name = L"textBox_tag3";
 			this->textBox_tag3->Size = System::Drawing::Size(120, 29);
 			this->textBox_tag3->TabIndex = 203;
+			this->textBox_tag3->Text = L"333333";
 			// 
 			// textBox_position3
 			// 
@@ -1022,6 +1044,7 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_position4->Name = L"textBox_position4";
 			this->textBox_position4->Size = System::Drawing::Size(120, 29);
 			this->textBox_position4->TabIndex = 206;
+			this->textBox_position4->Text = L"2000000";
 			// 
 			// textBox_tag4
 			// 
@@ -1032,6 +1055,7 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_tag4->Name = L"textBox_tag4";
 			this->textBox_tag4->Size = System::Drawing::Size(120, 29);
 			this->textBox_tag4->TabIndex = 205;
+			this->textBox_tag4->Text = L"444444";
 			// 
 			// label1
 			// 
@@ -1057,7 +1081,7 @@ private: System::Windows::Forms::Label^ label13;
 			this->button_check_position->BackColor = System::Drawing::SystemColors::Control;
 			this->button_check_position->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_check_position->Location = System::Drawing::Point(542, 438);
+			this->button_check_position->Location = System::Drawing::Point(189, 473);
 			this->button_check_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_check_position->Name = L"button_check_position";
 			this->button_check_position->Size = System::Drawing::Size(101, 35);
@@ -1075,6 +1099,7 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_current1->Name = L"textBox_current1";
 			this->textBox_current1->Size = System::Drawing::Size(120, 29);
 			this->textBox_current1->TabIndex = 210;
+			this->textBox_current1->Text = L"1";
 			// 
 			// label11
 			// 
@@ -1094,6 +1119,7 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_current2->Name = L"textBox_current2";
 			this->textBox_current2->Size = System::Drawing::Size(120, 29);
 			this->textBox_current2->TabIndex = 212;
+			this->textBox_current2->Text = L"0";
 			// 
 			// textBox_current3
 			// 
@@ -1104,6 +1130,7 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_current3->Name = L"textBox_current3";
 			this->textBox_current3->Size = System::Drawing::Size(120, 29);
 			this->textBox_current3->TabIndex = 213;
+			this->textBox_current3->Text = L"0";
 			// 
 			// textBox_current4
 			// 
@@ -1114,6 +1141,7 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_current4->Name = L"textBox_current4";
 			this->textBox_current4->Size = System::Drawing::Size(120, 29);
 			this->textBox_current4->TabIndex = 214;
+			this->textBox_current4->Text = L"0";
 			// 
 			// textBox_test_position
 			// 
@@ -1122,16 +1150,16 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_test_position->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->textBox_test_position->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_test_position->Location = System::Drawing::Point(894, 321);
+			this->textBox_test_position->Location = System::Drawing::Point(214, 39);
 			this->textBox_test_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_test_position->Name = L"textBox_test_position";
-			this->textBox_test_position->Size = System::Drawing::Size(107, 29);
+			this->textBox_test_position->Size = System::Drawing::Size(134, 29);
 			this->textBox_test_position->TabIndex = 215;
 			// 
 			// label12
 			// 
 			this->label12->AutoSize = true;
-			this->label12->Location = System::Drawing::Point(892, 307);
+			this->label12->Location = System::Drawing::Point(213, 24);
 			this->label12->Name = L"label12";
 			this->label12->Size = System::Drawing::Size(157, 12);
 			this->label12->TabIndex = 216;
@@ -1142,10 +1170,10 @@ private: System::Windows::Forms::Label^ label13;
 			this->button_goto_position1->BackColor = System::Drawing::SystemColors::Control;
 			this->button_goto_position1->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_goto_position1->Location = System::Drawing::Point(865, 354);
+			this->button_goto_position1->Location = System::Drawing::Point(57, 72);
 			this->button_goto_position1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_goto_position1->Name = L"button_goto_position1";
-			this->button_goto_position1->Size = System::Drawing::Size(101, 35);
+			this->button_goto_position1->Size = System::Drawing::Size(134, 21);
 			this->button_goto_position1->TabIndex = 217;
 			this->button_goto_position1->Text = L"<< Start Travel ";
 			this->button_goto_position1->UseVisualStyleBackColor = false;
@@ -1158,31 +1186,64 @@ private: System::Windows::Forms::Label^ label13;
 			this->textBox_positionChangeSpeed->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->textBox_positionChangeSpeed->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_positionChangeSpeed->Location = System::Drawing::Point(894, 270);
+			this->textBox_positionChangeSpeed->Location = System::Drawing::Point(8, 39);
 			this->textBox_positionChangeSpeed->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_positionChangeSpeed->Name = L"textBox_positionChangeSpeed";
-			this->textBox_positionChangeSpeed->Size = System::Drawing::Size(107, 29);
+			this->textBox_positionChangeSpeed->Size = System::Drawing::Size(147, 29);
 			this->textBox_positionChangeSpeed->TabIndex = 218;
 			// 
 			// label13
 			// 
 			this->label13->AutoSize = true;
-			this->label13->Location = System::Drawing::Point(892, 251);
+			this->label13->Location = System::Drawing::Point(6, 23);
 			this->label13->Name = L"label13";
 			this->label13->Size = System::Drawing::Size(200, 12);
 			this->label13->TabIndex = 219;
 			this->label13->Text = L"Enter Position ( to change speed )";
 			// 
+			// groupBox3
+			// 
+			this->groupBox3->Controls->Add(this->textBox_positionChangeSpeed);
+			this->groupBox3->Controls->Add(this->button_goto_position1);
+			this->groupBox3->Controls->Add(this->label13);
+			this->groupBox3->Controls->Add(this->label12);
+			this->groupBox3->Controls->Add(this->textBox_test_position);
+			this->groupBox3->Controls->Add(this->button_goto_position);
+			this->groupBox3->Location = System::Drawing::Point(753, 251);
+			this->groupBox3->Name = L"groupBox3";
+			this->groupBox3->Size = System::Drawing::Size(372, 120);
+			this->groupBox3->TabIndex = 220;
+			this->groupBox3->TabStop = false;
+			this->groupBox3->Text = L"Stop By Encoder Position";
+			// 
+			// textBox_vel_travel_speed
+			// 
+			this->textBox_vel_travel_speed->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_vel_travel_speed->Location = System::Drawing::Point(953, 155);
+			this->textBox_vel_travel_speed->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_vel_travel_speed->Name = L"textBox_vel_travel_speed";
+			this->textBox_vel_travel_speed->Size = System::Drawing::Size(95, 29);
+			this->textBox_vel_travel_speed->TabIndex = 221;
+			this->textBox_vel_travel_speed->Text = L"300";
+			// 
+			// label14
+			// 
+			this->label14->AutoSize = true;
+			this->label14->Location = System::Drawing::Point(961, 141);
+			this->label14->Name = L"label14";
+			this->label14->Size = System::Drawing::Size(86, 12);
+			this->label14->TabIndex = 222;
+			this->label14->Text = L"Speed( RPM )";
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1177, 476);
-			this->Controls->Add(this->label13);
-			this->Controls->Add(this->textBox_positionChangeSpeed);
-			this->Controls->Add(this->button_goto_position1);
-			this->Controls->Add(this->label12);
-			this->Controls->Add(this->textBox_test_position);
+			this->ClientSize = System::Drawing::Size(1177, 519);
+			this->Controls->Add(this->label14);
+			this->Controls->Add(this->textBox_vel_travel_speed);
+			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->textBox_current4);
 			this->Controls->Add(this->textBox_current3);
 			this->Controls->Add(this->textBox_current2);
@@ -1200,7 +1261,6 @@ private: System::Windows::Forms::Label^ label13;
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->button_open_port);
 			this->Controls->Add(this->button_goto_IO);
-			this->Controls->Add(this->button_goto_position);
 			this->Controls->Add(this->textBox_io2);
 			this->Controls->Add(this->textBox_position2);
 			this->Controls->Add(this->textBox_tag2);
@@ -1231,6 +1291,8 @@ private: System::Windows::Forms::Label^ label13;
 			this->groupBox1->PerformLayout();
 			this->groupBox2->ResumeLayout(false);
 			this->groupBox2->PerformLayout();
+			this->groupBox3->ResumeLayout(false);
+			this->groupBox3->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -1311,7 +1373,7 @@ private: System::Windows::Forms::Label^ label13;
 			wmxlib_cm.motion->ExecTimedStop(0, 1); // stop at 1ms
 		}
 
-		// encoder is increasing
+		// encoder is increasing// forward
 		if (isDuringGoToForward) {
 			double encoderGotoChangeSpeed = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_positionChangeSpeed->Text));
 			double encoderGoto = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_test_position->Text));
@@ -1324,9 +1386,9 @@ private: System::Windows::Forms::Label^ label13;
 				////Set velocity command parameters
 				vel.axis = 0;
 				vel.profile.type = ProfileType::SCurve;
-				vel.profile.velocity = 100;
-				vel.profile.acc = 100;
-				vel.profile.dec = 100;
+				vel.profile.velocity = 200;
+				vel.profile.acc = 200;
+				vel.profile.dec = 200;
 				////Execute a velocity command
 				wmxlib_cm.velocity->StartVel(&vel);
 				isDuringGoToForwardSlow = true;
@@ -1359,9 +1421,9 @@ private: System::Windows::Forms::Label^ label13;
 				////Set velocity command parameters
 				vel.axis = 0;
 				vel.profile.type = ProfileType::SCurve;
-				vel.profile.velocity = -100;
-				vel.profile.acc = 100;
-				vel.profile.dec = 100;
+				vel.profile.velocity = -200;
+				vel.profile.acc = 200;
+				vel.profile.dec = 200;
 				////Execute a velocity command
 				wmxlib_cm.velocity->StartVel(&vel);
 				isDuringGoToBackwardSlow = true;
@@ -1391,53 +1453,13 @@ private: System::Windows::Forms::Label^ label13;
 	}
 
 	private: System::Void timer_PGV(System::Object^ sender, System::EventArgs^ e) {
-		if (PGVStart) {
-			//////Warning value
-			//std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[0]) << std::endl;
-			int warningInt = static_cast<int>(receivedData[0]);
-			if (warningInt == 2) {
-
-				isAGVTagPosition = false;
-
+		if (this->serialPort1->IsOpen) {
+			if (RFIDLine == "") {
 				label_agv_tagValue->Text = "No Position";
-				label_agv_tagValue->ForeColor = System::Drawing::Color::Red;
 			}
-			//////Tag Value
-			else {
-				isAGVTagPosition = true;
-				std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[14]) << std::endl;
-				std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[15]) << std::endl;
-				std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[16]) << std::endl;
-				std::cout << std::setw(2) << std::setfill('0') << std::hex << static_cast<int>(receivedData[17]) << std::endl;
-
-				int hexTag1 = static_cast<int>(receivedData[14]);
-				int hexTag2 = static_cast<int>(receivedData[15]);
-				int hexTag3 = static_cast<int>(receivedData[16]);
-				int hexTag4 = static_cast<int>(receivedData[17]);
-
-				// Convert integers to hexadecimal strings
-				std::stringstream ss;
-				ss << std::hex << std::setw(2) << std::setfill('0') << hexTag1;
-				std::string strTag1 = ss.str();
-
-				ss.str("");
-				ss << std::hex << std::setw(2) << std::setfill('0') << hexTag2;
-				std::string strTag2 = ss.str();
-
-				ss.str("");
-				ss << std::hex << std::setw(2) << std::setfill('0') << hexTag3;
-				std::string strTag3 = ss.str();
-
-				ss.str("");
-				ss << std::hex << std::setw(2) << std::setfill('0') << hexTag4;
-				std::string strTag4 = ss.str();
-
-				System::String^ fullTagValue = std::stoi(strTag1, nullptr, 16).ToString() + std::stoi(strTag2, nullptr, 16).ToString() + std::stoi(strTag3, nullptr, 16).ToString() + std::stoi(strTag4, nullptr, 16).ToString();
-
-
-				label_agv_tagValue->Text = fullTagValue;
-				label_agv_tagValue->ForeColor = System::Drawing::Color::Lime;
-
+			else
+			{
+				label_agv_tagValue->Text = gcnew System::String(RFIDLine.c_str());
 			}
 		}
 	
@@ -1551,7 +1573,16 @@ private: System::Windows::Forms::Label^ label13;
 		button_open_port->Text = "Close Port";
 		return true;
 	}
+	private: System::Void RFIDDataReading() {
+			while (true) {
+				if (this->serialPort1->IsOpen) {
+					RFIDLine = msclr::interop::marshal_as<std::string>(this->serialPort1->ReadLine());
+					//cout << RFIDLine << endl;
+				}
+				Sleep(sensorDataInterval);
+			}
 
+	}
 	private: System::Void PGVDataReading() {
 		while (true) {
 
@@ -1817,9 +1848,9 @@ private: System::Windows::Forms::Label^ label13;
 		////Set velocity command parameters
 		vel.axis = 0;
 		vel.profile.type = ProfileType::Trapezoidal;
-		vel.profile.velocity = 200;
-		vel.profile.acc = 100;
-		vel.profile.dec = 100;
+		vel.profile.velocity = 2000;
+		vel.profile.acc = 1500;
+		vel.profile.dec = 1500;
 
 		////Execute a velocity command
 		wmxlib_cm.velocity->StartVel(&vel);
@@ -1837,9 +1868,9 @@ private: System::Windows::Forms::Label^ label13;
 		////Set velocity command parameters
 		vel.axis = 0;
 		vel.profile.type = ProfileType::Trapezoidal;
-		vel.profile.velocity = -500;
-		vel.profile.acc = 100;
-		vel.profile.dec = 100;
+		vel.profile.velocity = -2000;
+		vel.profile.acc = 1500;
+		vel.profile.dec = 1500;
 
 		////Execute a velocity command
 		wmxlib_cm.velocity->StartVel(&vel);
@@ -1890,17 +1921,21 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 	// 1.5 m/s 2300
 	//2.0 m/s 3066
 
+	double velTravelSpeed = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_vel_travel_speed->Text));
+
 	////Set velocity command parameters
 	vel.axis = 0;
 	vel.profile.type = ProfileType::Trapezoidal;
-	vel.profile.velocity = -200; 
-	vel.profile.acc = 100;
-	vel.profile.dec = 100;
+	vel.profile.velocity = -velTravelSpeed;
+	vel.profile.acc = velTravelSpeed;
+	vel.profile.dec = velTravelSpeed;
 
 	////Execute a velocity command
 	wmxlib_cm.velocity->StartVel(&vel);
 }
 private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+	double velTravelSpeed = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_vel_travel_speed->Text));
+
 	Velocity::VelCommand vel;
 
 	//Set axis to velocity command mode
@@ -1909,9 +1944,9 @@ private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e
 	////Set velocity command parameters
 	vel.axis = 0;
 	vel.profile.type = ProfileType::Trapezoidal;
-	vel.profile.velocity = 200;
-	vel.profile.acc = 100;
-	vel.profile.dec = 100;
+	vel.profile.velocity = velTravelSpeed;
+	vel.profile.acc = velTravelSpeed;
+	vel.profile.dec = velTravelSpeed;
 
 	////Execute a velocity command
 	wmxlib_cm.velocity->StartVel(&vel);
@@ -1977,5 +2012,46 @@ private: System::Void button_check_position_Click(System::Object^ sender, System
 	}
 }
 
+private: System::Void button_serial_port_Click_1(System::Object^ sender, System::EventArgs^ e) {
+
+	if (this->serialPort1->IsOpen) {
+		this->serialPort1->Close();
+		this->thrRFIDScanning->Abort();
+		this->button_serial_port->BackColor = System::Drawing::Color::White;
+		return;
+	}
+
+
+	if (this->comboBox_serialPort->Text == String::Empty || this->comboBox_brautRate->Text == String::Empty) {
+		this->richTextBoxMessage->Text = "Please Select Port & BrautRate!";
+		this->button_serial_port->BackColor = System::Drawing::Color::White;
+		return;
+	}
+
+	try {
+		this->serialPort1->PortName = this->comboBox_serialPort->Text;
+		this->serialPort1->BaudRate = Int32::Parse(this->comboBox_brautRate->Text);
+		this->serialPort1->Open();
+		this->button_serial_port->BackColor = System::Drawing::Color::GreenYellow;
+
+		this->thrRFIDScanning = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MainForm::RFIDDataReading));
+		this->thrRFIDScanning->Start();
+	}
+	catch (UnauthorizedAccessException^) {
+		this->richTextBoxMessage->Text = "Serial Port cannot connect!";
+	}
+}
+	private: System::Void button5_Click(System::Object^ sender, System::EventArgs^ e) {
+		// Goto Tag4 ( the maximum encoder value/ forward / increasing )
+		/*double realTimePosition = std::stod(msclr::interop::marshal_as<std::string>(this->labelStatusActPos0->Text));
+		
+		double tag1position = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_position1->Text));
+		double tag4position = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_position4->Text));
+		double targetEncoderDifference = tag4position - tag1position;
+		this->richTextBoxMessage->Text = targetEncoderDifference.ToString();*/
+
+
+
+	}
 };
 }
