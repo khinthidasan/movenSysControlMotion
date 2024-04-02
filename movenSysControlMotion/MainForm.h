@@ -1845,7 +1845,7 @@ private: System::ComponentModel::IContainer^ components;
 			if ((encoderActual < encoderChangeSpeed) && (isDuringTravelSlow)) {
 				std::string strTagName = msclr::interop::marshal_as<std::string>(label_agv_tagValue->Text);
 
-				if (tagName == strTagName) {
+				if (tagName.front() == strTagName.front()) {
 					isTravelTagFound = true;
 				}
 				else {
@@ -1863,14 +1863,15 @@ private: System::ComponentModel::IContainer^ components;
 				size_t length0 = strlen(convertedData0);
 
 				// Metal detector  at IO position 4.1 to control STOP
-				Wmx3Lib_Io.GetInBit(0x04, 0x00, &inData1[0]); // For the address [4.0  -> 0x04 ( address ) , 0x01 ( bit ) ]
+				Wmx3Lib_Io.GetInBit(0x04, 0x01, &inData1[0]); // For the address [4.0  -> 0x04 ( address ) , 0x01 ( bit ) ]
 				unsigned char* data1 = &inData1[0];
-				const char* convertedData1 = reinterpret_cast<const char*>(data0);
+				const char* convertedData1 = reinterpret_cast<const char*>(data1);
 				size_t length1 = strlen(convertedData1);
 
 
-				if ((length0 == 0) && (length1 == 0)) {
+				if ((length0 == 1) && (length1 == 0)) {
 					stopMotion();
+					isTravel = false;
 				}
 
 			}
@@ -2497,6 +2498,7 @@ private: System::Void button_check_position_Click(System::Object^ sender, System
 private: System::Void button_tag1_backward_Click(System::Object^ sender, System::EventArgs^ e) {
 	isDuringTravelSlow = false;
 	isTravelTagFound = false;
+	tagName = "";
 
 	isTravel = true;
 	direction = "backward";
@@ -2507,6 +2509,7 @@ private: System::Void button_tag1_backward_Click(System::Object^ sender, System:
 private: System::Void button_tag2_backward_Click(System::Object^ sender, System::EventArgs^ e) {
 	isDuringTravelSlow = false;
 	isTravelTagFound = false;
+	tagName = "";
 
 	isTravel = true;
 	direction = "backward";
@@ -2517,6 +2520,7 @@ private: System::Void button_tag2_backward_Click(System::Object^ sender, System:
 private: System::Void button_tag3_backward_Click(System::Object^ sender, System::EventArgs^ e) {
 	isDuringTravelSlow = false;
 	isTravelTagFound = false;
+	tagName = "";
 
 	isTravel = true;
 	direction = "backward";
@@ -2529,6 +2533,7 @@ private: System::Void button_tag3_backward_Click(System::Object^ sender, System:
 private: System::Void button_tag2_forward_Click(System::Object^ sender, System::EventArgs^ e) {
 	isDuringTravelSlow = false;
 	isTravelTagFound = false;
+	tagName = "";
 
 	isTravel = true;
 	direction = "forward";
@@ -2539,6 +2544,7 @@ private: System::Void button_tag2_forward_Click(System::Object^ sender, System::
 private: System::Void button_tag3_forward_Click(System::Object^ sender, System::EventArgs^ e) {
 	isDuringTravelSlow = false;
 	isTravelTagFound = false;
+	tagName = "";
 
 	isTravel = true;
 	direction = "forward";
@@ -2549,6 +2555,7 @@ private: System::Void button_tag3_forward_Click(System::Object^ sender, System::
 private: System::Void button_tag4_forward_Click(System::Object^ sender, System::EventArgs^ e) {
 	isDuringTravelSlow = false;
 	isTravelTagFound = false;
+	tagName = "";
 
 	isTravel = true;
 	direction = "forward";
