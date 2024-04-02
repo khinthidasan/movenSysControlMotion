@@ -85,7 +85,8 @@ namespace movenSysControlMotion {
 
 
 	///define IO port
-	unsigned char inData0[8000]; // Peppel Fruch Thru bean sensor 
+	unsigned char inData0[8000]; // Peppel Fruch Thru bean sensor
+	unsigned char inData1[8000]; // Peppel Fruch Thru bean sensor 
 	unsigned char inData2[8000]; // Peppel Fruch Thru bean sensor 
 	unsigned char inData7[8000]; // Peppel Fruch Metal Detector 
 
@@ -313,6 +314,8 @@ private: System::Windows::Forms::TextBox^ textBox_tag4_position_backward;
 private: System::Windows::Forms::Button^ button5;
 private: System::Windows::Forms::Button^ button7;
 private: System::IO::Ports::SerialPort^ serialPort1;
+private: System::Windows::Forms::TextBox^ textBox_velocity;
+private: System::Windows::Forms::Label^ label15;
 private: System::ComponentModel::IContainer^ components;
 
 
@@ -433,6 +436,8 @@ private: System::ComponentModel::IContainer^ components;
 			this->button5 = (gcnew System::Windows::Forms::Button());
 			this->button7 = (gcnew System::Windows::Forms::Button());
 			this->serialPort1 = (gcnew System::IO::Ports::SerialPort(this->components));
+			this->textBox_velocity = (gcnew System::Windows::Forms::TextBox());
+			this->label15 = (gcnew System::Windows::Forms::Label());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -441,10 +446,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// richTextBoxMessage
 			// 
-			this->richTextBoxMessage->Location = System::Drawing::Point(12, 237);
+			this->richTextBoxMessage->Location = System::Drawing::Point(14, 219);
 			this->richTextBoxMessage->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->richTextBoxMessage->Name = L"richTextBoxMessage";
-			this->richTextBoxMessage->Size = System::Drawing::Size(275, 203);
+			this->richTextBoxMessage->Size = System::Drawing::Size(320, 188);
 			this->richTextBoxMessage->TabIndex = 9;
 			this->richTextBoxMessage->Text = L"";
 			// 
@@ -452,10 +457,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button6->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button6->Location = System::Drawing::Point(-534, 132);
+			this->button6->Location = System::Drawing::Point(-623, 122);
 			this->button6->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button6->Name = L"button6";
-			this->button6->Size = System::Drawing::Size(300, 98);
+			this->button6->Size = System::Drawing::Size(350, 90);
 			this->button6->TabIndex = 10;
 			this->button6->Text = L"Create Device";
 			this->button6->UseVisualStyleBackColor = true;
@@ -465,10 +470,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->button1->Enabled = false;
 			this->button1->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button1->Location = System::Drawing::Point(-534, 167);
+			this->button1->Location = System::Drawing::Point(-623, 154);
 			this->button1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(300, 98);
+			this->button1->Size = System::Drawing::Size(350, 90);
 			this->button1->TabIndex = 8;
 			this->button1->Text = L"Stopped";
 			this->button1->UseVisualStyleBackColor = true;
@@ -477,10 +482,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_create_device->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_create_device->Location = System::Drawing::Point(16, 37);
+			this->button_create_device->Location = System::Drawing::Point(19, 34);
 			this->button_create_device->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_create_device->Name = L"button_create_device";
-			this->button_create_device->Size = System::Drawing::Size(102, 51);
+			this->button_create_device->Size = System::Drawing::Size(119, 47);
 			this->button_create_device->TabIndex = 12;
 			this->button_create_device->Text = L"Create Device";
 			this->button_create_device->UseVisualStyleBackColor = true;
@@ -491,10 +496,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->button_communication->Enabled = false;
 			this->button_communication->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_communication->Location = System::Drawing::Point(123, 39);
+			this->button_communication->Location = System::Drawing::Point(143, 36);
 			this->button_communication->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_communication->Name = L"button_communication";
-			this->button_communication->Size = System::Drawing::Size(102, 51);
+			this->button_communication->Size = System::Drawing::Size(119, 47);
 			this->button_communication->TabIndex = 11;
 			this->button_communication->Text = L"Stopped";
 			this->button_communication->UseVisualStyleBackColor = true;
@@ -504,10 +509,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_clear_message->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_clear_message->Location = System::Drawing::Point(234, 445);
+			this->button_clear_message->Location = System::Drawing::Point(273, 411);
 			this->button_clear_message->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_clear_message->Name = L"button_clear_message";
-			this->button_clear_message->Size = System::Drawing::Size(46, 23);
+			this->button_clear_message->Size = System::Drawing::Size(54, 21);
 			this->button_clear_message->TabIndex = 174;
 			this->button_clear_message->Text = L"Clear Message";
 			this->button_clear_message->UseVisualStyleBackColor = true;
@@ -517,10 +522,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_open_port->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_open_port->Location = System::Drawing::Point(9, 466);
+			this->button_open_port->Location = System::Drawing::Point(10, 430);
 			this->button_open_port->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_open_port->Name = L"button_open_port";
-			this->button_open_port->Size = System::Drawing::Size(45, 22);
+			this->button_open_port->Size = System::Drawing::Size(52, 20);
 			this->button_open_port->TabIndex = 176;
 			this->button_open_port->Text = L"Open Port";
 			this->button_open_port->UseVisualStyleBackColor = true;
@@ -530,10 +535,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_connect_PGV->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_connect_PGV->Location = System::Drawing::Point(9, 511);
+			this->button_connect_PGV->Location = System::Drawing::Point(10, 472);
 			this->button_connect_PGV->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_connect_PGV->Name = L"button_connect_PGV";
-			this->button_connect_PGV->Size = System::Drawing::Size(33, 21);
+			this->button_connect_PGV->Size = System::Drawing::Size(38, 19);
 			this->button_connect_PGV->TabIndex = 175;
 			this->button_connect_PGV->Text = L"PGV";
 			this->button_connect_PGV->UseVisualStyleBackColor = true;
@@ -543,10 +548,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_servo->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_servo->Location = System::Drawing::Point(230, 40);
+			this->button_servo->Location = System::Drawing::Point(268, 37);
 			this->button_servo->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_servo->Name = L"button_servo";
-			this->button_servo->Size = System::Drawing::Size(102, 51);
+			this->button_servo->Size = System::Drawing::Size(119, 47);
 			this->button_servo->TabIndex = 177;
 			this->button_servo->Text = L"Servo On";
 			this->button_servo->UseVisualStyleBackColor = true;
@@ -571,11 +576,11 @@ private: System::ComponentModel::IContainer^ components;
 			this->groupBox4->Controls->Add(this->label5);
 			this->groupBox4->Controls->Add(this->labelStatusAxis0);
 			this->groupBox4->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-			this->groupBox4->Location = System::Drawing::Point(15, 95);
+			this->groupBox4->Location = System::Drawing::Point(17, 88);
 			this->groupBox4->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox4->Name = L"groupBox4";
 			this->groupBox4->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->groupBox4->Size = System::Drawing::Size(363, 116);
+			this->groupBox4->Size = System::Drawing::Size(423, 107);
 			this->groupBox4->TabIndex = 178;
 			this->groupBox4->TabStop = false;
 			// 
@@ -585,7 +590,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->label49->Font = (gcnew System::Drawing::Font(L"Gadugi", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label49->ForeColor = System::Drawing::Color::Yellow;
-			this->label49->Location = System::Drawing::Point(5, 0);
+			this->label49->Location = System::Drawing::Point(6, 0);
 			this->label49->Name = L"label49";
 			this->label49->Size = System::Drawing::Size(72, 16);
 			this->label49->TabIndex = 163;
@@ -595,9 +600,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->labelStatusActVel3->AutoSize = true;
 			this->labelStatusActVel3->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusActVel3->Location = System::Drawing::Point(561, 144);
+			this->labelStatusActVel3->Location = System::Drawing::Point(654, 133);
 			this->labelStatusActVel3->Name = L"labelStatusActVel3";
-			this->labelStatusActVel3->Size = System::Drawing::Size(13, 13);
+			this->labelStatusActVel3->Size = System::Drawing::Size(11, 12);
 			this->labelStatusActVel3->TabIndex = 28;
 			this->labelStatusActVel3->Text = L"0";
 			// 
@@ -605,9 +610,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->labelStatusActVel2->AutoSize = true;
 			this->labelStatusActVel2->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusActVel2->Location = System::Drawing::Point(561, 121);
+			this->labelStatusActVel2->Location = System::Drawing::Point(654, 112);
 			this->labelStatusActVel2->Name = L"labelStatusActVel2";
-			this->labelStatusActVel2->Size = System::Drawing::Size(13, 13);
+			this->labelStatusActVel2->Size = System::Drawing::Size(11, 12);
 			this->labelStatusActVel2->TabIndex = 27;
 			this->labelStatusActVel2->Text = L"0";
 			// 
@@ -615,9 +620,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->labelStatusActVel0->AutoSize = true;
 			this->labelStatusActVel0->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusActVel0->Location = System::Drawing::Point(260, 72);
+			this->labelStatusActVel0->Location = System::Drawing::Point(303, 66);
 			this->labelStatusActVel0->Name = L"labelStatusActVel0";
-			this->labelStatusActVel0->Size = System::Drawing::Size(13, 13);
+			this->labelStatusActVel0->Size = System::Drawing::Size(11, 12);
 			this->labelStatusActVel0->TabIndex = 25;
 			this->labelStatusActVel0->Text = L"0";
 			// 
@@ -625,9 +630,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->labelStatusVelCmd3->AutoSize = true;
 			this->labelStatusVelCmd3->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusVelCmd3->Location = System::Drawing::Point(444, 144);
+			this->labelStatusVelCmd3->Location = System::Drawing::Point(518, 133);
 			this->labelStatusVelCmd3->Name = L"labelStatusVelCmd3";
-			this->labelStatusVelCmd3->Size = System::Drawing::Size(13, 13);
+			this->labelStatusVelCmd3->Size = System::Drawing::Size(11, 12);
 			this->labelStatusVelCmd3->TabIndex = 24;
 			this->labelStatusVelCmd3->Text = L"0";
 			// 
@@ -635,9 +640,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->labelStatusVelCmd2->AutoSize = true;
 			this->labelStatusVelCmd2->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusVelCmd2->Location = System::Drawing::Point(444, 121);
+			this->labelStatusVelCmd2->Location = System::Drawing::Point(518, 112);
 			this->labelStatusVelCmd2->Name = L"labelStatusVelCmd2";
-			this->labelStatusVelCmd2->Size = System::Drawing::Size(13, 13);
+			this->labelStatusVelCmd2->Size = System::Drawing::Size(11, 12);
 			this->labelStatusVelCmd2->TabIndex = 23;
 			this->labelStatusVelCmd2->Text = L"0";
 			// 
@@ -645,9 +650,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->labelStatusVelCmd0->AutoSize = true;
 			this->labelStatusVelCmd0->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusVelCmd0->Location = System::Drawing::Point(260, 47);
+			this->labelStatusVelCmd0->Location = System::Drawing::Point(303, 43);
 			this->labelStatusVelCmd0->Name = L"labelStatusVelCmd0";
-			this->labelStatusVelCmd0->Size = System::Drawing::Size(13, 13);
+			this->labelStatusVelCmd0->Size = System::Drawing::Size(11, 12);
 			this->labelStatusVelCmd0->TabIndex = 21;
 			this->labelStatusVelCmd0->Text = L"0";
 			// 
@@ -655,9 +660,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->labelStatusActPos0->AutoSize = true;
 			this->labelStatusActPos0->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusActPos0->Location = System::Drawing::Point(93, 72);
+			this->labelStatusActPos0->Location = System::Drawing::Point(108, 66);
 			this->labelStatusActPos0->Name = L"labelStatusActPos0";
-			this->labelStatusActPos0->Size = System::Drawing::Size(13, 13);
+			this->labelStatusActPos0->Size = System::Drawing::Size(11, 12);
 			this->labelStatusActPos0->TabIndex = 17;
 			this->labelStatusActPos0->Text = L"0";
 			// 
@@ -665,9 +670,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->labelStatusPosCmd0->AutoSize = true;
 			this->labelStatusPosCmd0->ForeColor = System::Drawing::Color::GreenYellow;
-			this->labelStatusPosCmd0->Location = System::Drawing::Point(93, 47);
+			this->labelStatusPosCmd0->Location = System::Drawing::Point(108, 43);
 			this->labelStatusPosCmd0->Name = L"labelStatusPosCmd0";
-			this->labelStatusPosCmd0->Size = System::Drawing::Size(13, 13);
+			this->labelStatusPosCmd0->Size = System::Drawing::Size(11, 12);
 			this->labelStatusPosCmd0->TabIndex = 13;
 			this->labelStatusPosCmd0->Text = L"0";
 			// 
@@ -675,9 +680,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->labelStatusOP0->AutoSize = true;
 			this->labelStatusOP0->BackColor = System::Drawing::Color::Green;
-			this->labelStatusOP0->Location = System::Drawing::Point(160, 17);
+			this->labelStatusOP0->Location = System::Drawing::Point(187, 16);
 			this->labelStatusOP0->Name = L"labelStatusOP0";
-			this->labelStatusOP0->Size = System::Drawing::Size(51, 13);
+			this->labelStatusOP0->Size = System::Drawing::Size(55, 12);
 			this->labelStatusOP0->TabIndex = 9;
 			this->labelStatusOP0->Text = L"OFFLINE";
 			// 
@@ -686,7 +691,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->label8->AutoSize = true;
 			this->label8->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->label8->Location = System::Drawing::Point(206, 72);
+			this->label8->Location = System::Drawing::Point(240, 66);
 			this->label8->Name = L"label8";
 			this->label8->Size = System::Drawing::Size(47, 12);
 			this->label8->TabIndex = 8;
@@ -697,7 +702,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->label7->AutoSize = true;
 			this->label7->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->label7->Location = System::Drawing::Point(200, 47);
+			this->label7->Location = System::Drawing::Point(233, 43);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(56, 12);
 			this->label7->TabIndex = 7;
@@ -708,7 +713,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->label6->AutoSize = true;
 			this->label6->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->label6->Location = System::Drawing::Point(24, 72);
+			this->label6->Location = System::Drawing::Point(28, 66);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(51, 12);
 			this->label6->TabIndex = 6;
@@ -719,7 +724,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->label5->Location = System::Drawing::Point(18, 47);
+			this->label5->Location = System::Drawing::Point(21, 43);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(60, 12);
 			this->label5->TabIndex = 5;
@@ -728,9 +733,9 @@ private: System::ComponentModel::IContainer^ components;
 			// labelStatusAxis0
 			// 
 			this->labelStatusAxis0->AutoSize = true;
-			this->labelStatusAxis0->Location = System::Drawing::Point(90, 18);
+			this->labelStatusAxis0->Location = System::Drawing::Point(105, 17);
 			this->labelStatusAxis0->Name = L"labelStatusAxis0";
-			this->labelStatusAxis0->Size = System::Drawing::Size(32, 13);
+			this->labelStatusAxis0->Size = System::Drawing::Size(36, 12);
 			this->labelStatusAxis0->TabIndex = 0;
 			this->labelStatusAxis0->Text = L"Axis0";
 			// 
@@ -741,11 +746,11 @@ private: System::ComponentModel::IContainer^ components;
 			this->groupBox14->Controls->Add(this->label_agv_tagValue);
 			this->groupBox14->Controls->Add(this->label53);
 			this->groupBox14->Controls->Add(this->label47);
-			this->groupBox14->Location = System::Drawing::Point(15, 95);
+			this->groupBox14->Location = System::Drawing::Point(17, 88);
 			this->groupBox14->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox14->Name = L"groupBox14";
 			this->groupBox14->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->groupBox14->Size = System::Drawing::Size(363, 70);
+			this->groupBox14->Size = System::Drawing::Size(423, 65);
 			this->groupBox14->TabIndex = 179;
 			this->groupBox14->TabStop = false;
 			// 
@@ -755,7 +760,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->label_agv_warningValue->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
 			this->label_agv_warningValue->ForeColor = System::Drawing::Color::Lime;
-			this->label_agv_warningValue->Location = System::Drawing::Point(249, 37);
+			this->label_agv_warningValue->Location = System::Drawing::Point(290, 34);
 			this->label_agv_warningValue->Name = L"label_agv_warningValue";
 			this->label_agv_warningValue->Size = System::Drawing::Size(19, 12);
 			this->label_agv_warningValue->TabIndex = 172;
@@ -767,7 +772,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->label_agv_tagValue->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
 			this->label_agv_tagValue->ForeColor = System::Drawing::Color::Lime;
-			this->label_agv_tagValue->Location = System::Drawing::Point(106, 37);
+			this->label_agv_tagValue->Location = System::Drawing::Point(124, 34);
 			this->label_agv_tagValue->Name = L"label_agv_tagValue";
 			this->label_agv_tagValue->Size = System::Drawing::Size(19, 12);
 			this->label_agv_tagValue->TabIndex = 168;
@@ -777,9 +782,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label53->AutoSize = true;
 			this->label53->ForeColor = System::Drawing::Color::White;
-			this->label53->Location = System::Drawing::Point(63, 37);
+			this->label53->Location = System::Drawing::Point(73, 34);
 			this->label53->Name = L"label53";
-			this->label53->Size = System::Drawing::Size(26, 13);
+			this->label53->Size = System::Drawing::Size(27, 12);
 			this->label53->TabIndex = 167;
 			this->label53->Text = L"Tag";
 			// 
@@ -789,7 +794,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->label47->Font = (gcnew System::Drawing::Font(L"Gadugi", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label47->ForeColor = System::Drawing::Color::Yellow;
-			this->label47->Location = System::Drawing::Point(4, 0);
+			this->label47->Location = System::Drawing::Point(5, 0);
 			this->label47->Name = L"label47";
 			this->label47->Size = System::Drawing::Size(81, 16);
 			this->label47->TabIndex = 164;
@@ -799,10 +804,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_start_motion->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_start_motion->Location = System::Drawing::Point(10, 492);
+			this->button_start_motion->Location = System::Drawing::Point(12, 454);
 			this->button_start_motion->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_start_motion->Name = L"button_start_motion";
-			this->button_start_motion->Size = System::Drawing::Size(33, 16);
+			this->button_start_motion->Size = System::Drawing::Size(38, 15);
 			this->button_start_motion->TabIndex = 180;
 			this->button_start_motion->Text = L"StartMotion +";
 			this->button_start_motion->UseVisualStyleBackColor = true;
@@ -813,10 +818,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBoxDeviceName->Font = (gcnew System::Drawing::Font(L"Gulim", 10.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBoxDeviceName->Location = System::Drawing::Point(20, 12);
+			this->textBoxDeviceName->Location = System::Drawing::Point(23, 11);
 			this->textBoxDeviceName->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBoxDeviceName->Name = L"textBoxDeviceName";
-			this->textBoxDeviceName->Size = System::Drawing::Size(106, 23);
+			this->textBoxDeviceName->Size = System::Drawing::Size(123, 23);
 			this->textBoxDeviceName->TabIndex = 181;
 			this->textBoxDeviceName->Text = L"Lab2mDevice";
 			// 
@@ -824,10 +829,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_stop_motion->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_stop_motion->Location = System::Drawing::Point(333, 41);
+			this->button_stop_motion->Location = System::Drawing::Point(388, 38);
 			this->button_stop_motion->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_stop_motion->Name = L"button_stop_motion";
-			this->button_stop_motion->Size = System::Drawing::Size(52, 49);
+			this->button_stop_motion->Size = System::Drawing::Size(61, 45);
 			this->button_stop_motion->TabIndex = 182;
 			this->button_stop_motion->Text = L"STOP";
 			this->button_stop_motion->UseVisualStyleBackColor = true;
@@ -841,11 +846,11 @@ private: System::ComponentModel::IContainer^ components;
 			this->groupBox1->Controls->Add(this->comboBox_serialPort);
 			this->groupBox1->Controls->Add(this->label9);
 			this->groupBox1->Controls->Add(this->button_serial_port);
-			this->groupBox1->Location = System::Drawing::Point(414, 11);
+			this->groupBox1->Location = System::Drawing::Point(483, 10);
 			this->groupBox1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->groupBox1->Size = System::Drawing::Size(398, 180);
+			this->groupBox1->Size = System::Drawing::Size(464, 166);
 			this->groupBox1->TabIndex = 183;
 			this->groupBox1->TabStop = false;
 			// 
@@ -853,45 +858,45 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->comboBox_brautRate->FormattingEnabled = true;
 			this->comboBox_brautRate->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"9600", L"38400", L"57600", L"115200" });
-			this->comboBox_brautRate->Location = System::Drawing::Point(78, 61);
+			this->comboBox_brautRate->Location = System::Drawing::Point(91, 56);
 			this->comboBox_brautRate->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->comboBox_brautRate->Name = L"comboBox_brautRate";
-			this->comboBox_brautRate->Size = System::Drawing::Size(109, 21);
+			this->comboBox_brautRate->Size = System::Drawing::Size(126, 20);
 			this->comboBox_brautRate->TabIndex = 208;
 			// 
 			// label10
 			// 
 			this->label10->AutoSize = true;
-			this->label10->Location = System::Drawing::Point(19, 63);
+			this->label10->Location = System::Drawing::Point(22, 58);
 			this->label10->Name = L"label10";
-			this->label10->Size = System::Drawing::Size(58, 13);
+			this->label10->Size = System::Drawing::Size(63, 12);
 			this->label10->TabIndex = 207;
 			this->label10->Text = L"Braut Rate";
 			// 
 			// comboBox_serialPort
 			// 
 			this->comboBox_serialPort->FormattingEnabled = true;
-			this->comboBox_serialPort->Location = System::Drawing::Point(78, 20);
+			this->comboBox_serialPort->Location = System::Drawing::Point(91, 18);
 			this->comboBox_serialPort->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->comboBox_serialPort->Name = L"comboBox_serialPort";
-			this->comboBox_serialPort->Size = System::Drawing::Size(109, 21);
+			this->comboBox_serialPort->Size = System::Drawing::Size(126, 20);
 			this->comboBox_serialPort->TabIndex = 205;
 			// 
 			// label9
 			// 
 			this->label9->AutoSize = true;
-			this->label9->Location = System::Drawing::Point(19, 22);
+			this->label9->Location = System::Drawing::Point(22, 20);
 			this->label9->Name = L"label9";
-			this->label9->Size = System::Drawing::Size(53, 13);
+			this->label9->Size = System::Drawing::Size(60, 12);
 			this->label9->TabIndex = 206;
 			this->label9->Text = L"COM Port";
 			// 
 			// button_serial_port
 			// 
-			this->button_serial_port->Location = System::Drawing::Point(212, 31);
+			this->button_serial_port->Location = System::Drawing::Point(247, 29);
 			this->button_serial_port->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_serial_port->Name = L"button_serial_port";
-			this->button_serial_port->Size = System::Drawing::Size(107, 33);
+			this->button_serial_port->Size = System::Drawing::Size(125, 30);
 			this->button_serial_port->TabIndex = 204;
 			this->button_serial_port->Text = L"Connect Serial Port";
 			this->button_serial_port->UseVisualStyleBackColor = true;
@@ -905,11 +910,11 @@ private: System::ComponentModel::IContainer^ components;
 			this->groupBox2->Controls->Add(this->textBoxDeviceName);
 			this->groupBox2->Controls->Add(this->button_create_device);
 			this->groupBox2->Controls->Add(this->button_stop_motion);
-			this->groupBox2->Location = System::Drawing::Point(12, 11);
+			this->groupBox2->Location = System::Drawing::Point(14, 10);
 			this->groupBox2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->groupBox2->Name = L"groupBox2";
 			this->groupBox2->Padding = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->groupBox2->Size = System::Drawing::Size(398, 221);
+			this->groupBox2->Size = System::Drawing::Size(464, 204);
 			this->groupBox2->TabIndex = 184;
 			this->groupBox2->TabStop = false;
 			// 
@@ -917,10 +922,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_calibration_start->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_calibration_start->Location = System::Drawing::Point(285, 424);
+			this->button_calibration_start->Location = System::Drawing::Point(332, 391);
 			this->button_calibration_start->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_calibration_start->Name = L"button_calibration_start";
-			this->button_calibration_start->Size = System::Drawing::Size(148, 40);
+			this->button_calibration_start->Size = System::Drawing::Size(173, 37);
 			this->button_calibration_start->TabIndex = 186;
 			this->button_calibration_start->Text = L"Calibriation Start";
 			this->button_calibration_start->UseVisualStyleBackColor = true;
@@ -933,37 +938,38 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_goto->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->textBox_goto->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_goto->Location = System::Drawing::Point(467, 439);
+			this->textBox_goto->Location = System::Drawing::Point(545, 405);
 			this->textBox_goto->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_goto->Name = L"textBox_goto";
-			this->textBox_goto->Size = System::Drawing::Size(149, 29);
+			this->textBox_goto->Size = System::Drawing::Size(173, 29);
 			this->textBox_goto->TabIndex = 187;
 			// 
 			// textBox_tag1
 			// 
 			this->textBox_tag1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag1->Location = System::Drawing::Point(294, 272);
+			this->textBox_tag1->Location = System::Drawing::Point(343, 251);
 			this->textBox_tag1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag1->Name = L"textBox_tag1";
-			this->textBox_tag1->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag1->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag1->TabIndex = 190;
+			this->textBox_tag1->Text = L"111111111";
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(296, 249);
+			this->label2->Location = System::Drawing::Point(345, 230);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(86, 13);
+			this->label2->Size = System::Drawing::Size(95, 12);
 			this->label2->TabIndex = 191;
 			this->label2->Text = L"Tag/RFID Value";
 			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(414, 249);
+			this->label3->Location = System::Drawing::Point(483, 230);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(74, 13);
+			this->label3->Size = System::Drawing::Size(86, 12);
 			this->label3->TabIndex = 192;
 			this->label3->Text = L"Position Value";
 			// 
@@ -971,18 +977,18 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_position1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_position1->Location = System::Drawing::Point(402, 272);
+			this->textBox_position1->Location = System::Drawing::Point(469, 251);
 			this->textBox_position1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_position1->Name = L"textBox_position1";
-			this->textBox_position1->Size = System::Drawing::Size(103, 29);
+			this->textBox_position1->Size = System::Drawing::Size(119, 29);
 			this->textBox_position1->TabIndex = 193;
 			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(837, 29);
+			this->label4->Location = System::Drawing::Point(976, 27);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(48, 13);
+			this->label4->Size = System::Drawing::Size(53, 12);
 			this->label4->TabIndex = 194;
 			this->label4->Text = L"IO Value";
 			// 
@@ -990,10 +996,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_io1->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_io1->Location = System::Drawing::Point(888, 20);
+			this->textBox_io1->Location = System::Drawing::Point(1036, 18);
 			this->textBox_io1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_io1->Name = L"textBox_io1";
-			this->textBox_io1->Size = System::Drawing::Size(103, 29);
+			this->textBox_io1->Size = System::Drawing::Size(66, 29);
 			this->textBox_io1->TabIndex = 195;
 			this->textBox_io1->Text = L"0x00";
 			// 
@@ -1001,10 +1007,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_io2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_io2->Location = System::Drawing::Point(888, 53);
+			this->textBox_io2->Location = System::Drawing::Point(1108, 19);
 			this->textBox_io2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_io2->Name = L"textBox_io2";
-			this->textBox_io2->Size = System::Drawing::Size(103, 29);
+			this->textBox_io2->Size = System::Drawing::Size(66, 29);
 			this->textBox_io2->TabIndex = 198;
 			this->textBox_io2->Text = L"0x01";
 			// 
@@ -1012,31 +1018,32 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_position2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_position2->Location = System::Drawing::Point(402, 307);
+			this->textBox_position2->Location = System::Drawing::Point(469, 283);
 			this->textBox_position2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_position2->Name = L"textBox_position2";
-			this->textBox_position2->Size = System::Drawing::Size(103, 29);
+			this->textBox_position2->Size = System::Drawing::Size(119, 29);
 			this->textBox_position2->TabIndex = 197;
 			// 
 			// textBox_tag2
 			// 
 			this->textBox_tag2->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag2->Location = System::Drawing::Point(294, 307);
+			this->textBox_tag2->Location = System::Drawing::Point(343, 283);
 			this->textBox_tag2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag2->Name = L"textBox_tag2";
-			this->textBox_tag2->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag2->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag2->TabIndex = 196;
+			this->textBox_tag2->Text = L"22222";
 			// 
 			// button_goto_position
 			// 
 			this->button_goto_position->BackColor = System::Drawing::SystemColors::Control;
 			this->button_goto_position->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_goto_position->Location = System::Drawing::Point(1133, 133);
+			this->button_goto_position->Location = System::Drawing::Point(1322, 123);
 			this->button_goto_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_goto_position->Name = L"button_goto_position";
-			this->button_goto_position->Size = System::Drawing::Size(87, 38);
+			this->button_goto_position->Size = System::Drawing::Size(101, 35);
 			this->button_goto_position->TabIndex = 199;
 			this->button_goto_position->Text = L"Start Travel >>";
 			this->button_goto_position->UseVisualStyleBackColor = false;
@@ -1046,10 +1053,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_goto_IO->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_goto_IO->Location = System::Drawing::Point(58, 466);
+			this->button_goto_IO->Location = System::Drawing::Point(68, 430);
 			this->button_goto_IO->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_goto_IO->Name = L"button_goto_IO";
-			this->button_goto_IO->Size = System::Drawing::Size(91, 22);
+			this->button_goto_IO->Size = System::Drawing::Size(106, 20);
 			this->button_goto_IO->TabIndex = 200;
 			this->button_goto_IO->Text = L"GOTO (  By IO )";
 			this->button_goto_IO->UseVisualStyleBackColor = true;
@@ -1057,9 +1064,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(816, 113);
+			this->button2->Location = System::Drawing::Point(952, 104);
 			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(81, 53);
+			this->button2->Size = System::Drawing::Size(94, 49);
 			this->button2->TabIndex = 201;
 			this->button2->Text = L"<< Vel Backward";
 			this->button2->UseVisualStyleBackColor = true;
@@ -1067,9 +1074,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// button3
 			// 
-			this->button3->Location = System::Drawing::Point(903, 114);
+			this->button3->Location = System::Drawing::Point(1053, 105);
 			this->button3->Name = L"button3";
-			this->button3->Size = System::Drawing::Size(88, 51);
+			this->button3->Size = System::Drawing::Size(103, 47);
 			this->button3->TabIndex = 202;
 			this->button3->Text = L"Vel Forward >>";
 			this->button3->UseVisualStyleBackColor = true;
@@ -1079,56 +1086,58 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_tag3->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag3->Location = System::Drawing::Point(294, 341);
+			this->textBox_tag3->Location = System::Drawing::Point(343, 315);
 			this->textBox_tag3->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag3->Name = L"textBox_tag3";
-			this->textBox_tag3->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag3->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag3->TabIndex = 203;
+			this->textBox_tag3->Text = L"33333";
 			// 
 			// textBox_position3
 			// 
 			this->textBox_position3->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_position3->Location = System::Drawing::Point(402, 341);
+			this->textBox_position3->Location = System::Drawing::Point(469, 315);
 			this->textBox_position3->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_position3->Name = L"textBox_position3";
-			this->textBox_position3->Size = System::Drawing::Size(103, 29);
+			this->textBox_position3->Size = System::Drawing::Size(119, 29);
 			this->textBox_position3->TabIndex = 204;
 			// 
 			// textBox_position4
 			// 
 			this->textBox_position4->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_position4->Location = System::Drawing::Point(402, 375);
+			this->textBox_position4->Location = System::Drawing::Point(469, 346);
 			this->textBox_position4->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_position4->Name = L"textBox_position4";
-			this->textBox_position4->Size = System::Drawing::Size(103, 29);
+			this->textBox_position4->Size = System::Drawing::Size(119, 29);
 			this->textBox_position4->TabIndex = 206;
 			// 
 			// textBox_tag4
 			// 
 			this->textBox_tag4->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag4->Location = System::Drawing::Point(294, 375);
+			this->textBox_tag4->Location = System::Drawing::Point(343, 346);
 			this->textBox_tag4->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag4->Name = L"textBox_tag4";
-			this->textBox_tag4->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag4->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag4->TabIndex = 205;
+			this->textBox_tag4->Text = L"44444";
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(466, 424);
+			this->label1->Location = System::Drawing::Point(544, 391);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(88, 13);
+			this->label1->Size = System::Drawing::Size(99, 12);
 			this->label1->TabIndex = 207;
 			this->label1->Text = L"Fill RFID to travel";
 			// 
 			// button4
 			// 
-			this->button4->Location = System::Drawing::Point(285, 466);
+			this->button4->Location = System::Drawing::Point(332, 430);
 			this->button4->Name = L"button4";
-			this->button4->Size = System::Drawing::Size(148, 39);
+			this->button4->Size = System::Drawing::Size(173, 36);
 			this->button4->TabIndex = 208;
 			this->button4->Text = L"Assign Position( Temp )";
 			this->button4->UseVisualStyleBackColor = true;
@@ -1139,10 +1148,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->button_check_position->BackColor = System::Drawing::SystemColors::Control;
 			this->button_check_position->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_check_position->Location = System::Drawing::Point(465, 475);
+			this->button_check_position->Location = System::Drawing::Point(542, 438);
 			this->button_check_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_check_position->Name = L"button_check_position";
-			this->button_check_position->Size = System::Drawing::Size(87, 38);
+			this->button_check_position->Size = System::Drawing::Size(101, 35);
 			this->button_check_position->TabIndex = 209;
 			this->button_check_position->Text = L"Check Positon";
 			this->button_check_position->UseVisualStyleBackColor = false;
@@ -1152,18 +1161,18 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_tag1_position_backward->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag1_position_backward->Location = System::Drawing::Point(519, 270);
+			this->textBox_tag1_position_backward->Location = System::Drawing::Point(605, 249);
 			this->textBox_tag1_position_backward->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag1_position_backward->Name = L"textBox_tag1_position_backward";
-			this->textBox_tag1_position_backward->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag1_position_backward->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag1_position_backward->TabIndex = 210;
 			// 
 			// label11
 			// 
 			this->label11->AutoSize = true;
-			this->label11->Location = System::Drawing::Point(711, 247);
+			this->label11->Location = System::Drawing::Point(829, 228);
 			this->label11->Name = L"label11";
-			this->label11->Size = System::Drawing::Size(99, 13);
+			this->label11->Size = System::Drawing::Size(119, 12);
 			this->label11->TabIndex = 211;
 			this->label11->Text = L"speed slow position";
 			// 
@@ -1171,30 +1180,30 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_tag2_position_forward->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag2_position_forward->Location = System::Drawing::Point(707, 308);
+			this->textBox_tag2_position_forward->Location = System::Drawing::Point(825, 284);
 			this->textBox_tag2_position_forward->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag2_position_forward->Name = L"textBox_tag2_position_forward";
-			this->textBox_tag2_position_forward->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag2_position_forward->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag2_position_forward->TabIndex = 212;
 			// 
 			// textBox_tag3_position_forward
 			// 
 			this->textBox_tag3_position_forward->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag3_position_forward->Location = System::Drawing::Point(707, 346);
+			this->textBox_tag3_position_forward->Location = System::Drawing::Point(825, 319);
 			this->textBox_tag3_position_forward->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag3_position_forward->Name = L"textBox_tag3_position_forward";
-			this->textBox_tag3_position_forward->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag3_position_forward->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag3_position_forward->TabIndex = 213;
 			// 
 			// textBox_tag4_position_forward
 			// 
 			this->textBox_tag4_position_forward->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag4_position_forward->Location = System::Drawing::Point(707, 378);
+			this->textBox_tag4_position_forward->Location = System::Drawing::Point(825, 349);
 			this->textBox_tag4_position_forward->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag4_position_forward->Name = L"textBox_tag4_position_forward";
-			this->textBox_tag4_position_forward->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag4_position_forward->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag4_position_forward->TabIndex = 214;
 			// 
 			// textBox_test_position
@@ -1204,18 +1213,18 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_test_position->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->textBox_test_position->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_test_position->Location = System::Drawing::Point(1066, 97);
+			this->textBox_test_position->Location = System::Drawing::Point(1244, 90);
 			this->textBox_test_position->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_test_position->Name = L"textBox_test_position";
-			this->textBox_test_position->Size = System::Drawing::Size(92, 29);
+			this->textBox_test_position->Size = System::Drawing::Size(107, 29);
 			this->textBox_test_position->TabIndex = 215;
 			// 
 			// label12
 			// 
 			this->label12->AutoSize = true;
-			this->label12->Location = System::Drawing::Point(1065, 82);
+			this->label12->Location = System::Drawing::Point(1242, 76);
 			this->label12->Name = L"label12";
-			this->label12->Size = System::Drawing::Size(131, 13);
+			this->label12->Size = System::Drawing::Size(157, 12);
 			this->label12->TabIndex = 216;
 			this->label12->Text = L"Enter Position ( auto stop )";
 			// 
@@ -1224,10 +1233,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->button_goto_position1->BackColor = System::Drawing::SystemColors::Control;
 			this->button_goto_position1->Font = (gcnew System::Drawing::Font(L"Gulim", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->button_goto_position1->Location = System::Drawing::Point(1041, 133);
+			this->button_goto_position1->Location = System::Drawing::Point(1214, 123);
 			this->button_goto_position1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->button_goto_position1->Name = L"button_goto_position1";
-			this->button_goto_position1->Size = System::Drawing::Size(87, 38);
+			this->button_goto_position1->Size = System::Drawing::Size(101, 35);
 			this->button_goto_position1->TabIndex = 217;
 			this->button_goto_position1->Text = L"<< Start Travel ";
 			this->button_goto_position1->UseVisualStyleBackColor = false;
@@ -1240,26 +1249,26 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_positionChangeSpeed->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->textBox_positionChangeSpeed->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_positionChangeSpeed->Location = System::Drawing::Point(1066, 42);
+			this->textBox_positionChangeSpeed->Location = System::Drawing::Point(1244, 39);
 			this->textBox_positionChangeSpeed->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_positionChangeSpeed->Name = L"textBox_positionChangeSpeed";
-			this->textBox_positionChangeSpeed->Size = System::Drawing::Size(92, 29);
+			this->textBox_positionChangeSpeed->Size = System::Drawing::Size(107, 29);
 			this->textBox_positionChangeSpeed->TabIndex = 218;
 			// 
 			// label13
 			// 
 			this->label13->AutoSize = true;
-			this->label13->Location = System::Drawing::Point(1065, 21);
+			this->label13->Location = System::Drawing::Point(1242, 19);
 			this->label13->Name = L"label13";
-			this->label13->Size = System::Drawing::Size(167, 13);
+			this->label13->Size = System::Drawing::Size(200, 12);
 			this->label13->TabIndex = 219;
 			this->label13->Text = L"Enter Position ( to change speed )";
 			// 
 			// button_tag1_backward
 			// 
-			this->button_tag1_backward->Location = System::Drawing::Point(626, 271);
+			this->button_tag1_backward->Location = System::Drawing::Point(730, 250);
 			this->button_tag1_backward->Name = L"button_tag1_backward";
-			this->button_tag1_backward->Size = System::Drawing::Size(63, 29);
+			this->button_tag1_backward->Size = System::Drawing::Size(73, 27);
 			this->button_tag1_backward->TabIndex = 221;
 			this->button_tag1_backward->Text = L"<< Tag1";
 			this->button_tag1_backward->UseVisualStyleBackColor = true;
@@ -1267,9 +1276,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// button_tag2_forward
 			// 
-			this->button_tag2_forward->Location = System::Drawing::Point(816, 309);
+			this->button_tag2_forward->Location = System::Drawing::Point(952, 285);
 			this->button_tag2_forward->Name = L"button_tag2_forward";
-			this->button_tag2_forward->Size = System::Drawing::Size(63, 29);
+			this->button_tag2_forward->Size = System::Drawing::Size(73, 27);
 			this->button_tag2_forward->TabIndex = 222;
 			this->button_tag2_forward->Text = L">> Tag2";
 			this->button_tag2_forward->UseVisualStyleBackColor = true;
@@ -1277,9 +1286,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// button_tag2_backward
 			// 
-			this->button_tag2_backward->Location = System::Drawing::Point(626, 308);
+			this->button_tag2_backward->Location = System::Drawing::Point(730, 284);
 			this->button_tag2_backward->Name = L"button_tag2_backward";
-			this->button_tag2_backward->Size = System::Drawing::Size(63, 29);
+			this->button_tag2_backward->Size = System::Drawing::Size(73, 27);
 			this->button_tag2_backward->TabIndex = 224;
 			this->button_tag2_backward->Text = L"<< Tag2";
 			this->button_tag2_backward->UseVisualStyleBackColor = true;
@@ -1289,26 +1298,26 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_tag2_position_backward->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag2_position_backward->Location = System::Drawing::Point(519, 307);
+			this->textBox_tag2_position_backward->Location = System::Drawing::Point(605, 283);
 			this->textBox_tag2_position_backward->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag2_position_backward->Name = L"textBox_tag2_position_backward";
-			this->textBox_tag2_position_backward->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag2_position_backward->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag2_position_backward->TabIndex = 223;
 			// 
 			// label14
 			// 
 			this->label14->AutoSize = true;
-			this->label14->Location = System::Drawing::Point(523, 247);
+			this->label14->Location = System::Drawing::Point(610, 228);
 			this->label14->Name = L"label14";
-			this->label14->Size = System::Drawing::Size(99, 13);
+			this->label14->Size = System::Drawing::Size(119, 12);
 			this->label14->TabIndex = 225;
 			this->label14->Text = L"speed slow position";
 			// 
 			// button_tag3_forward
 			// 
-			this->button_tag3_forward->Location = System::Drawing::Point(816, 346);
+			this->button_tag3_forward->Location = System::Drawing::Point(952, 319);
 			this->button_tag3_forward->Name = L"button_tag3_forward";
-			this->button_tag3_forward->Size = System::Drawing::Size(63, 29);
+			this->button_tag3_forward->Size = System::Drawing::Size(73, 27);
 			this->button_tag3_forward->TabIndex = 227;
 			this->button_tag3_forward->Text = L">> Tag3";
 			this->button_tag3_forward->UseVisualStyleBackColor = true;
@@ -1318,17 +1327,17 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_tag3_position_backward->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag3_position_backward->Location = System::Drawing::Point(517, 345);
+			this->textBox_tag3_position_backward->Location = System::Drawing::Point(603, 318);
 			this->textBox_tag3_position_backward->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag3_position_backward->Name = L"textBox_tag3_position_backward";
-			this->textBox_tag3_position_backward->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag3_position_backward->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag3_position_backward->TabIndex = 226;
 			// 
 			// button_tag3_backward
 			// 
-			this->button_tag3_backward->Location = System::Drawing::Point(626, 345);
+			this->button_tag3_backward->Location = System::Drawing::Point(730, 318);
 			this->button_tag3_backward->Name = L"button_tag3_backward";
-			this->button_tag3_backward->Size = System::Drawing::Size(63, 29);
+			this->button_tag3_backward->Size = System::Drawing::Size(73, 27);
 			this->button_tag3_backward->TabIndex = 228;
 			this->button_tag3_backward->Text = L"<< Tag3";
 			this->button_tag3_backward->UseVisualStyleBackColor = true;
@@ -1336,9 +1345,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// button_tag4_forward
 			// 
-			this->button_tag4_forward->Location = System::Drawing::Point(816, 381);
+			this->button_tag4_forward->Location = System::Drawing::Point(952, 352);
 			this->button_tag4_forward->Name = L"button_tag4_forward";
-			this->button_tag4_forward->Size = System::Drawing::Size(63, 29);
+			this->button_tag4_forward->Size = System::Drawing::Size(73, 27);
 			this->button_tag4_forward->TabIndex = 229;
 			this->button_tag4_forward->Text = L">> Tag4";
 			this->button_tag4_forward->UseVisualStyleBackColor = true;
@@ -1348,10 +1357,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_travel_acel->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_travel_acel->Location = System::Drawing::Point(960, 305);
+			this->textBox_travel_acel->Location = System::Drawing::Point(1120, 282);
 			this->textBox_travel_acel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_travel_acel->Name = L"textBox_travel_acel";
-			this->textBox_travel_acel->Size = System::Drawing::Size(103, 29);
+			this->textBox_travel_acel->Size = System::Drawing::Size(119, 29);
 			this->textBox_travel_acel->TabIndex = 234;
 			this->textBox_travel_acel->Text = L"1200";
 			// 
@@ -1359,19 +1368,19 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_travel_vel->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_travel_vel->Location = System::Drawing::Point(960, 272);
+			this->textBox_travel_vel->Location = System::Drawing::Point(1120, 251);
 			this->textBox_travel_vel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_travel_vel->Name = L"textBox_travel_vel";
-			this->textBox_travel_vel->Size = System::Drawing::Size(103, 29);
+			this->textBox_travel_vel->Size = System::Drawing::Size(119, 29);
 			this->textBox_travel_vel->TabIndex = 233;
 			this->textBox_travel_vel->Text = L"2000";
 			// 
 			// label17
 			// 
 			this->label17->AutoSize = true;
-			this->label17->Location = System::Drawing::Point(957, 249);
+			this->label17->Location = System::Drawing::Point(1116, 230);
 			this->label17->Name = L"label17";
-			this->label17->Size = System::Drawing::Size(68, 13);
+			this->label17->Size = System::Drawing::Size(76, 12);
 			this->label17->TabIndex = 235;
 			this->label17->Text = L"TravelSpeed";
 			// 
@@ -1379,64 +1388,64 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_travel_dcel->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_travel_dcel->Location = System::Drawing::Point(960, 338);
+			this->textBox_travel_dcel->Location = System::Drawing::Point(1120, 312);
 			this->textBox_travel_dcel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_travel_dcel->Name = L"textBox_travel_dcel";
-			this->textBox_travel_dcel->Size = System::Drawing::Size(103, 29);
+			this->textBox_travel_dcel->Size = System::Drawing::Size(119, 29);
 			this->textBox_travel_dcel->TabIndex = 236;
 			this->textBox_travel_dcel->Text = L"1200";
 			// 
 			// label18
 			// 
 			this->label18->AutoSize = true;
-			this->label18->Location = System::Drawing::Point(932, 279);
+			this->label18->Location = System::Drawing::Point(1087, 258);
 			this->label18->Name = L"label18";
-			this->label18->Size = System::Drawing::Size(22, 13);
+			this->label18->Size = System::Drawing::Size(23, 12);
 			this->label18->TabIndex = 237;
 			this->label18->Text = L"Vel";
 			// 
 			// label19
 			// 
 			this->label19->AutoSize = true;
-			this->label19->Location = System::Drawing::Point(932, 312);
+			this->label19->Location = System::Drawing::Point(1087, 288);
 			this->label19->Name = L"label19";
-			this->label19->Size = System::Drawing::Size(28, 13);
+			this->label19->Size = System::Drawing::Size(30, 12);
 			this->label19->TabIndex = 238;
 			this->label19->Text = L"Acel";
 			// 
 			// label20
 			// 
 			this->label20->AutoSize = true;
-			this->label20->Location = System::Drawing::Point(932, 348);
+			this->label20->Location = System::Drawing::Point(1087, 321);
 			this->label20->Name = L"label20";
-			this->label20->Size = System::Drawing::Size(29, 13);
+			this->label20->Size = System::Drawing::Size(30, 12);
 			this->label20->TabIndex = 239;
 			this->label20->Text = L"Dcel";
 			// 
 			// label21
 			// 
 			this->label21->AutoSize = true;
-			this->label21->Location = System::Drawing::Point(1085, 349);
+			this->label21->Location = System::Drawing::Point(1266, 322);
 			this->label21->Name = L"label21";
-			this->label21->Size = System::Drawing::Size(29, 13);
+			this->label21->Size = System::Drawing::Size(30, 12);
 			this->label21->TabIndex = 246;
 			this->label21->Text = L"Dcel";
 			// 
 			// label22
 			// 
 			this->label22->AutoSize = true;
-			this->label22->Location = System::Drawing::Point(1085, 313);
+			this->label22->Location = System::Drawing::Point(1266, 289);
 			this->label22->Name = L"label22";
-			this->label22->Size = System::Drawing::Size(28, 13);
+			this->label22->Size = System::Drawing::Size(30, 12);
 			this->label22->TabIndex = 245;
 			this->label22->Text = L"Acel";
 			// 
 			// label23
 			// 
 			this->label23->AutoSize = true;
-			this->label23->Location = System::Drawing::Point(1085, 280);
+			this->label23->Location = System::Drawing::Point(1266, 258);
 			this->label23->Name = L"label23";
-			this->label23->Size = System::Drawing::Size(22, 13);
+			this->label23->Size = System::Drawing::Size(23, 12);
 			this->label23->TabIndex = 244;
 			this->label23->Text = L"Vel";
 			// 
@@ -1444,19 +1453,19 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_slow_dcel->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_slow_dcel->Location = System::Drawing::Point(1113, 339);
+			this->textBox_slow_dcel->Location = System::Drawing::Point(1298, 313);
 			this->textBox_slow_dcel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_slow_dcel->Name = L"textBox_slow_dcel";
-			this->textBox_slow_dcel->Size = System::Drawing::Size(103, 29);
+			this->textBox_slow_dcel->Size = System::Drawing::Size(119, 29);
 			this->textBox_slow_dcel->TabIndex = 243;
 			this->textBox_slow_dcel->Text = L"200";
 			// 
 			// label24
 			// 
 			this->label24->AutoSize = true;
-			this->label24->Location = System::Drawing::Point(1110, 250);
+			this->label24->Location = System::Drawing::Point(1295, 231);
 			this->label24->Name = L"label24";
-			this->label24->Size = System::Drawing::Size(61, 13);
+			this->label24->Size = System::Drawing::Size(69, 12);
 			this->label24->TabIndex = 242;
 			this->label24->Text = L"SlowSpeed";
 			// 
@@ -1464,10 +1473,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_slow_acel->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_slow_acel->Location = System::Drawing::Point(1113, 306);
+			this->textBox_slow_acel->Location = System::Drawing::Point(1298, 282);
 			this->textBox_slow_acel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_slow_acel->Name = L"textBox_slow_acel";
-			this->textBox_slow_acel->Size = System::Drawing::Size(103, 29);
+			this->textBox_slow_acel->Size = System::Drawing::Size(119, 29);
 			this->textBox_slow_acel->TabIndex = 241;
 			this->textBox_slow_acel->Text = L"200";
 			// 
@@ -1475,10 +1484,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_slow_vel->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_slow_vel->Location = System::Drawing::Point(1113, 273);
+			this->textBox_slow_vel->Location = System::Drawing::Point(1298, 252);
 			this->textBox_slow_vel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_slow_vel->Name = L"textBox_slow_vel";
-			this->textBox_slow_vel->Size = System::Drawing::Size(103, 29);
+			this->textBox_slow_vel->Size = System::Drawing::Size(119, 29);
 			this->textBox_slow_vel->TabIndex = 240;
 			this->textBox_slow_vel->Text = L"200";
 			// 
@@ -1487,10 +1496,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_tag1_position_forward->Enabled = false;
 			this->textBox_tag1_position_forward->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag1_position_forward->Location = System::Drawing::Point(705, 273);
+			this->textBox_tag1_position_forward->Location = System::Drawing::Point(822, 252);
 			this->textBox_tag1_position_forward->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag1_position_forward->Name = L"textBox_tag1_position_forward";
-			this->textBox_tag1_position_forward->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag1_position_forward->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag1_position_forward->TabIndex = 247;
 			// 
 			// textBox_tag4_position_backward
@@ -1498,18 +1507,18 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_tag4_position_backward->Enabled = false;
 			this->textBox_tag4_position_backward->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(129)));
-			this->textBox_tag4_position_backward->Location = System::Drawing::Point(519, 382);
+			this->textBox_tag4_position_backward->Location = System::Drawing::Point(605, 353);
 			this->textBox_tag4_position_backward->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_tag4_position_backward->Name = L"textBox_tag4_position_backward";
-			this->textBox_tag4_position_backward->Size = System::Drawing::Size(103, 29);
+			this->textBox_tag4_position_backward->Size = System::Drawing::Size(119, 29);
 			this->textBox_tag4_position_backward->TabIndex = 248;
 			// 
 			// button5
 			// 
 			this->button5->Enabled = false;
-			this->button5->Location = System::Drawing::Point(820, 274);
+			this->button5->Location = System::Drawing::Point(957, 253);
 			this->button5->Name = L"button5";
-			this->button5->Size = System::Drawing::Size(63, 29);
+			this->button5->Size = System::Drawing::Size(73, 27);
 			this->button5->TabIndex = 249;
 			this->button5->Text = L">> Tag1";
 			this->button5->UseVisualStyleBackColor = true;
@@ -1518,18 +1527,40 @@ private: System::ComponentModel::IContainer^ components;
 			// button7
 			// 
 			this->button7->Enabled = false;
-			this->button7->Location = System::Drawing::Point(628, 382);
+			this->button7->Location = System::Drawing::Point(733, 353);
 			this->button7->Name = L"button7";
-			this->button7->Size = System::Drawing::Size(63, 29);
+			this->button7->Size = System::Drawing::Size(73, 27);
 			this->button7->TabIndex = 250;
 			this->button7->Text = L">> Tag4";
 			this->button7->UseVisualStyleBackColor = true;
 			// 
+			// textBox_velocity
+			// 
+			this->textBox_velocity->Font = (gcnew System::Drawing::Font(L"Gulim", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(129)));
+			this->textBox_velocity->Location = System::Drawing::Point(1036, 71);
+			this->textBox_velocity->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_velocity->Name = L"textBox_velocity";
+			this->textBox_velocity->Size = System::Drawing::Size(119, 29);
+			this->textBox_velocity->TabIndex = 251;
+			this->textBox_velocity->Text = L"300";
+			// 
+			// label15
+			// 
+			this->label15->AutoSize = true;
+			this->label15->Location = System::Drawing::Point(955, 79);
+			this->label15->Name = L"label15";
+			this->label15->Size = System::Drawing::Size(50, 12);
+			this->label15->TabIndex = 252;
+			this->label15->Text = L"Velocity";
+			// 
 			// MainForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(7, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1242, 516);
+			this->ClientSize = System::Drawing::Size(1449, 476);
+			this->Controls->Add(this->label15);
+			this->Controls->Add(this->textBox_velocity);
 			this->Controls->Add(this->button7);
 			this->Controls->Add(this->button5);
 			this->Controls->Add(this->textBox_tag4_position_backward);
@@ -1681,6 +1712,11 @@ private: System::ComponentModel::IContainer^ components;
 
 	private: System::Void timer_IO(System::Object^ sender, System::EventArgs^ e) {
 
+
+
+
+
+
 		// Metal detector  at IO position 4.7 to control STOP
 		Wmx3Lib_Io.GetInBit(0x04, 0x07, &inData7[0]); // For the address [4.7  -> 0x04 ( address ) , 0x07 ( bit ) ]
 		unsigned char* data = &inData7[0];
@@ -1692,6 +1728,12 @@ private: System::ComponentModel::IContainer^ components;
 
 		// encoder is increasing
 		if (isDuringGoToForward) {
+
+			double velocity = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_slow_vel->Text));
+			double acel = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_slow_acel->Text));
+			double decl = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_slow_dcel->Text));
+
+
 			double encoderGotoChangeSpeed = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_positionChangeSpeed->Text));
 			double encoderGoto = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_test_position->Text));
 			double encoderActual = std::stod(msclr::interop::marshal_as<std::string>(this->labelStatusActPos0->Text));
@@ -1703,9 +1745,9 @@ private: System::ComponentModel::IContainer^ components;
 				////Set velocity command parameters
 				vel.axis = 0;
 				vel.profile.type = ProfileType::SCurve;
-				vel.profile.velocity = 100;
-				vel.profile.acc = 100;
-				vel.profile.dec = 100;
+				vel.profile.velocity = velocity;
+				vel.profile.acc = acel;
+				vel.profile.dec = decl;
 				////Execute a velocity command
 				wmxlib_cm.velocity->StartVel(&vel);
 				isDuringGoToForwardSlow = true;
@@ -1727,6 +1769,11 @@ private: System::ComponentModel::IContainer^ components;
 
 		// encoder is decreasing
 		if (isDuringGoToBackward){
+
+			double velocity = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_slow_vel->Text));
+			double acel = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_slow_acel->Text));
+			double decl = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_slow_dcel->Text));
+
 			double encoderGotoChangeSpeed = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_positionChangeSpeed->Text));
 			double encoderGoto = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_test_position->Text));
 			double encoderActual = std::stod(msclr::interop::marshal_as<std::string>(this->labelStatusActPos0->Text));
@@ -1738,9 +1785,9 @@ private: System::ComponentModel::IContainer^ components;
 				////Set velocity command parameters
 				vel.axis = 0;
 				vel.profile.type = ProfileType::SCurve;
-				vel.profile.velocity = -100;
-				vel.profile.acc = 100;
-				vel.profile.dec = 100;
+				vel.profile.velocity = -velocity;
+				vel.profile.acc = acel;
+				vel.profile.dec = decl;
 				////Execute a velocity command
 				wmxlib_cm.velocity->StartVel(&vel);
 				isDuringGoToBackwardSlow = true;
@@ -1808,7 +1855,24 @@ private: System::ComponentModel::IContainer^ components;
 
 			//3 wait to stop when two IO ports is ON
 			if ((encoderActual < encoderChangeSpeed) && (isTravelTagFound)) {
-				stopMotion();
+
+				// Metal detector  at IO position 4.0 to control STOP
+				Wmx3Lib_Io.GetInBit(0x04, 0x00, &inData0[0]); // For the address [4.0  -> 0x04 ( address ) , 0x00 ( bit ) ]
+				unsigned char* data0 = &inData0[0];
+				const char* convertedData0 = reinterpret_cast<const char*>(data0);
+				size_t length0 = strlen(convertedData0);
+
+				// Metal detector  at IO position 4.1 to control STOP
+				Wmx3Lib_Io.GetInBit(0x04, 0x00, &inData1[0]); // For the address [4.0  -> 0x04 ( address ) , 0x01 ( bit ) ]
+				unsigned char* data1 = &inData1[0];
+				const char* convertedData1 = reinterpret_cast<const char*>(data0);
+				size_t length1 = strlen(convertedData1);
+
+
+				if ((length0 == 0) && (length1 == 0)) {
+					stopMotion();
+				}
+
 			}
 
 		
@@ -2244,7 +2308,12 @@ private: System::ComponentModel::IContainer^ components;
 	}
 
 	private: System::Void button_goto_position_Click(System::Object^ sender, System::EventArgs^ e) {
-		
+
+		double velocity = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_travel_vel->Text));
+		double acel = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_travel_acel->Text));
+		double decl = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_travel_dcel->Text));
+
+
 		isDuringGoToForward = true;
 
 		Velocity::VelCommand vel;
@@ -2254,9 +2323,9 @@ private: System::ComponentModel::IContainer^ components;
 		////Set velocity command parameters
 		vel.axis = 0;
 		vel.profile.type = ProfileType::Trapezoidal;
-		vel.profile.velocity = 200;
-		vel.profile.acc = 100;
-		vel.profile.dec = 100;
+		vel.profile.velocity = velocity;
+		vel.profile.acc = acel;
+		vel.profile.dec = decl;
 
 		////Execute a velocity command
 		wmxlib_cm.velocity->StartVel(&vel);
@@ -2265,6 +2334,12 @@ private: System::ComponentModel::IContainer^ components;
 	}
 
 	private: System::Void button_goto_position1_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		double velocity = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_travel_vel->Text));
+		double acel = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_travel_acel->Text));
+		double decl = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_travel_dcel->Text));
+		
+
 		isDuringGoToBackward = true;
 
 		Velocity::VelCommand vel;
@@ -2274,9 +2349,9 @@ private: System::ComponentModel::IContainer^ components;
 		////Set velocity command parameters
 		vel.axis = 0;
 		vel.profile.type = ProfileType::Trapezoidal;
-		vel.profile.velocity = -500;
-		vel.profile.acc = 100;
-		vel.profile.dec = 100;
+		vel.profile.velocity = -velocity;
+		vel.profile.acc = acel;
+		vel.profile.dec = decl;
 
 		////Execute a velocity command
 		wmxlib_cm.velocity->StartVel(&vel);
@@ -2319,6 +2394,9 @@ private: System::ComponentModel::IContainer^ components;
 		this->thrAwaitSlow->Start();
 	}
 private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	double velocity = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_velocity->Text));
+
 	Velocity::VelCommand vel;
 
 	//Set axis to velocity command mode
@@ -2330,14 +2408,16 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 	////Set velocity command parameters
 	vel.axis = 0;
 	vel.profile.type = ProfileType::Trapezoidal;
-	vel.profile.velocity = -200; 
-	vel.profile.acc = 100;
-	vel.profile.dec = 100;
+	vel.profile.velocity = -velocity;
+	vel.profile.acc = velocity;
+	vel.profile.dec = velocity;
 
 	////Execute a velocity command
 	wmxlib_cm.velocity->StartVel(&vel);
 }
 private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
+	double velocity = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_velocity->Text));
+
 	Velocity::VelCommand vel;
 
 	//Set axis to velocity command mode
@@ -2346,9 +2426,9 @@ private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e
 	////Set velocity command parameters
 	vel.axis = 0;
 	vel.profile.type = ProfileType::Trapezoidal;
-	vel.profile.velocity = 200;
-	vel.profile.acc = 100;
-	vel.profile.dec = 100;
+	vel.profile.velocity = velocity;
+	vel.profile.acc = velocity;
+	vel.profile.dec = velocity;
 
 	////Execute a velocity command
 	wmxlib_cm.velocity->StartVel(&vel);
