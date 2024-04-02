@@ -316,6 +316,7 @@ private: System::Windows::Forms::Button^ button7;
 private: System::IO::Ports::SerialPort^ serialPort1;
 private: System::Windows::Forms::TextBox^ textBox_velocity;
 private: System::Windows::Forms::Label^ label15;
+private: System::Windows::Forms::Button^ button8;
 private: System::ComponentModel::IContainer^ components;
 
 
@@ -438,6 +439,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->serialPort1 = (gcnew System::IO::Ports::SerialPort(this->components));
 			this->textBox_velocity = (gcnew System::Windows::Forms::TextBox());
 			this->label15 = (gcnew System::Windows::Forms::Label());
+			this->button8 = (gcnew System::Windows::Forms::Button());
 			this->groupBox4->SuspendLayout();
 			this->groupBox14->SuspendLayout();
 			this->groupBox1->SuspendLayout();
@@ -1554,11 +1556,22 @@ private: System::ComponentModel::IContainer^ components;
 			this->label15->TabIndex = 252;
 			this->label15->Text = L"Velocity";
 			// 
+			// button8
+			// 
+			this->button8->Location = System::Drawing::Point(1026, 391);
+			this->button8->Name = L"button8";
+			this->button8->Size = System::Drawing::Size(75, 23);
+			this->button8->TabIndex = 253;
+			this->button8->Text = L"button8";
+			this->button8->UseVisualStyleBackColor = true;
+			this->button8->Click += gcnew System::EventHandler(this, &MainForm::button8_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1449, 476);
+			this->Controls->Add(this->button8);
 			this->Controls->Add(this->label15);
 			this->Controls->Add(this->textBox_velocity);
 			this->Controls->Add(this->button7);
@@ -1874,6 +1887,12 @@ private: System::ComponentModel::IContainer^ components;
 					isTravel = false;
 				}
 
+			}
+
+			//3 wait to stop when two IO ports is ON
+			if ((direction=="backward") && (encoderActual < gotoPosition)) {
+				stopMotion();
+				isTravel = false;
 			}
 
 		
@@ -2504,6 +2523,7 @@ private: System::Void button_tag1_backward_Click(System::Object^ sender, System:
 	direction = "backward";
 	tagName = msclr::interop::marshal_as<std::string>(textBox_tag1->Text);
 	slowPosition = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_tag1_position_backward->Text));
+	gotoPosition = std::stod(msclr::interop::marshal_as<std::string>(this->textBox_position1->Text));
 	travelBackward();
 }
 private: System::Void button_tag2_backward_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -2592,6 +2612,24 @@ private: System::Void button_serial_port_Click_1(System::Object^ sender, System:
 	catch (UnauthorizedAccessException^) {
 		this->richTextBoxMessage->Text = "Serial Port cannot connect!";
 	}
+}
+private: System::Void button8_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	Velocity::VelCommand vel;
+
+	//Set axis to velocity command mode
+	wmxlib_cm.axisControl->SetAxisCommandMode(0, AxisCommandMode::Velocity);
+
+	////Set velocity command parameters
+	vel.axis = 0;
+	vel.profile.type = ProfileType::Trapezoidal;
+	vel.profile.velocity = 500;
+	vel.profile.acc = 500;
+	vel.profile.dec = 500;
+
+	////Execute a velocity command
+	wmxlib_cm.velocity->StartVel(&vel);
+
 }
 };
 }
